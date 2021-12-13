@@ -1,0 +1,580 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 51;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		43228812FC89EC6FE9668022 /* Pods_StopWatch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D5E8619A05D6284273C99B3 /* Pods_StopWatch.framework */; };
+		DB076D5B26A696AB0063D3C6 /* GoalTimeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB076D5A26A696AB0063D3C6 /* GoalTimeTableViewCell.swift */; };
+		DB08F0C32765DB88001EBBEE /* StopWatchDAO.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB08F0C22765DB88001EBBEE /* StopWatchDAO.swift */; };
+		DB0E89B9262842BE00533009 /* StopButtonTappedModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0E89B8262842BE00533009 /* StopButtonTappedModalView.swift */; };
+		DB0F172C2614310F007C8448 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0F172B2614310F007C8448 /* Common.swift */; };
+		DB20750D265FA012001BA325 /* GoalTimeEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB20750C265FA012001BA325 /* GoalTimeEditViewController.swift */; };
+		DB28904A261C500800FCC4BC /* CircleGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB289049261C500800FCC4BC /* CircleGraphView.swift */; };
+		DB2890752623074A00FCC4BC /* DrawView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2890742623074900FCC4BC /* DrawView.swift */; };
+		DB40D1F92609B32C00A4E9FC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB40D1F82609B32C00A4E9FC /* AppDelegate.swift */; };
+		DB40D2002609B32C00A4E9FC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB40D1FE2609B32C00A4E9FC /* Main.storyboard */; };
+		DB40D2022609B32E00A4E9FC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DB40D2012609B32E00A4E9FC /* Assets.xcassets */; };
+		DB40D2052609B32E00A4E9FC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB40D2032609B32E00A4E9FC /* LaunchScreen.storyboard */; };
+		DB4FE82426BF80F100B1DF3E /* Modeling.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4FE82326BF80F100B1DF3E /* Modeling.swift */; };
+		DB4FE82626BF9D2400B1DF3E /* GoalTimeHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4FE82526BF9D2400B1DF3E /* GoalTimeHeaderView.swift */; };
+		DB798EE426C792CD004A00DB /* GoalTimeTotalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB798EE326C792CC004A00DB /* GoalTimeTotalView.swift */; };
+		DB8DB1882611E1C600A5814A /* ConcentrationTimeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8DB1872611E1C600A5814A /* ConcentrationTimeViewController.swift */; };
+		DB8DB18D2611E67900A5814A /* StopWatchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8DB18C2611E67900A5814A /* StopWatchViewController.swift */; };
+		DB8F532526F05C1A0071F911 /* EditCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8F532426F05C1A0071F911 /* EditCategoryViewController.swift */; };
+		DB8F532826F07A3A0071F911 /* PaletteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8F532726F07A3A0071F911 /* PaletteCell.swift */; };
+		DB8F532F26F085E60071F911 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8F532E26F085E60071F911 /* CustomTextField.swift */; };
+		DB8F533126F22FBD0071F911 /* TodoListHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8F533026F22FBD0071F911 /* TodoListHeaderView.swift */; };
+		DB8F533326F316AE0071F911 /* TodoListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8F533226F316AE0071F911 /* TodoListCell.swift */; };
+		DB945B2B272042900033D603 /* EditListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB945B2A2720428F0033D603 /* EditListView.swift */; };
+		DBAD2A4926D3E4370083478E /* BlackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBAD2A4826D3E4370083478E /* BlackViewController.swift */; };
+		DBBD52FC263677C5002F5157 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBD52FB263677C5002F5157 /* SettingViewController.swift */; };
+		DBBD53002636B109002F5157 /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBD52FF2636B109002F5157 /* CategoryViewController.swift */; };
+		DBBD53052636BB78002F5157 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBD53042636BB78002F5157 /* CategoryCell.swift */; };
+		DBBDF7562643DC59003F55FE /* PreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBDF7552643DC59003F55FE /* PreView.swift */; };
+		DBBDF75826527986003F55FE /* drawBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBDF75726527986003F55FE /* drawBarView.swift */; };
+		DBEC2268276864380083ECDA /* EditTodoListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBEC2267276864380083ECDA /* EditTodoListView.swift */; };
+		DBEC226A276864380083ECDA /* CustomListEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBEC2269276864380083ECDA /* CustomListEditView.swift */; };
+		DBF7E79226AFF438009902BE /* EditGoalTimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF7E79126AFF438009902BE /* EditGoalTimeView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		5CA68B9216F67301B7F37E82 /* Pods-StopWatch.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StopWatch.debug.xcconfig"; path = "Target Support Files/Pods-StopWatch/Pods-StopWatch.debug.xcconfig"; sourceTree = "<group>"; };
+		8D5E8619A05D6284273C99B3 /* Pods_StopWatch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StopWatch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A46D2DC1AD4790441A1758B2 /* Pods-StopWatch.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StopWatch.release.xcconfig"; path = "Target Support Files/Pods-StopWatch/Pods-StopWatch.release.xcconfig"; sourceTree = "<group>"; };
+		DB076D5A26A696AB0063D3C6 /* GoalTimeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalTimeTableViewCell.swift; sourceTree = "<group>"; };
+		DB08F0C22765DB88001EBBEE /* StopWatchDAO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopWatchDAO.swift; sourceTree = "<group>"; };
+		DB0E89B8262842BE00533009 /* StopButtonTappedModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopButtonTappedModalView.swift; sourceTree = "<group>"; };
+		DB0F172B2614310F007C8448 /* Common.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
+		DB20750C265FA012001BA325 /* GoalTimeEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalTimeEditViewController.swift; sourceTree = "<group>"; };
+		DB289049261C500800FCC4BC /* CircleGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleGraphView.swift; sourceTree = "<group>"; };
+		DB2890742623074900FCC4BC /* DrawView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawView.swift; sourceTree = "<group>"; };
+		DB40D1F52609B32C00A4E9FC /* StopWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StopWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DB40D1F82609B32C00A4E9FC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		DB40D1FF2609B32C00A4E9FC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		DB40D2012609B32E00A4E9FC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		DB40D2042609B32E00A4E9FC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		DB40D2062609B32E00A4E9FC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DB4FE82326BF80F100B1DF3E /* Modeling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Modeling.swift; path = StopWatch/Modeling.swift; sourceTree = SOURCE_ROOT; };
+		DB4FE82526BF9D2400B1DF3E /* GoalTimeHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalTimeHeaderView.swift; sourceTree = "<group>"; };
+		DB798EE326C792CC004A00DB /* GoalTimeTotalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalTimeTotalView.swift; sourceTree = "<group>"; };
+		DB8DB1872611E1C600A5814A /* ConcentrationTimeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConcentrationTimeViewController.swift; sourceTree = "<group>"; };
+		DB8DB18C2611E67900A5814A /* StopWatchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopWatchViewController.swift; sourceTree = "<group>"; };
+		DB8F532426F05C1A0071F911 /* EditCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCategoryViewController.swift; sourceTree = "<group>"; };
+		DB8F532726F07A3A0071F911 /* PaletteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaletteCell.swift; sourceTree = "<group>"; };
+		DB8F532E26F085E60071F911 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
+		DB8F533026F22FBD0071F911 /* TodoListHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListHeaderView.swift; sourceTree = "<group>"; };
+		DB8F533226F316AE0071F911 /* TodoListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListCell.swift; sourceTree = "<group>"; };
+		DB945B2A2720428F0033D603 /* EditListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditListView.swift; sourceTree = "<group>"; };
+		DBAD2A4826D3E4370083478E /* BlackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlackViewController.swift; sourceTree = "<group>"; };
+		DBBD52FB263677C5002F5157 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
+		DBBD52FF2636B109002F5157 /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
+		DBBD53042636BB78002F5157 /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
+		DBBDF7552643DC59003F55FE /* PreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreView.swift; sourceTree = "<group>"; };
+		DBBDF75726527986003F55FE /* drawBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = drawBarView.swift; sourceTree = "<group>"; };
+		DBEC2267276864380083ECDA /* EditTodoListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTodoListView.swift; sourceTree = "<group>"; };
+		DBEC2269276864380083ECDA /* CustomListEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomListEditView.swift; sourceTree = "<group>"; };
+		DBF7E79126AFF438009902BE /* EditGoalTimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditGoalTimeView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		DB40D1F22609B32C00A4E9FC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				43228812FC89EC6FE9668022 /* Pods_StopWatch.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		DB076D5826A696110063D3C6 /* MainView */ = {
+			isa = PBXGroup;
+			children = (
+				DB0E89B8262842BE00533009 /* StopButtonTappedModalView.swift */,
+				DB289049261C500800FCC4BC /* CircleGraphView.swift */,
+				DB2890742623074900FCC4BC /* DrawView.swift */,
+				DB945B2A2720428F0033D603 /* EditListView.swift */,
+				DB8F533026F22FBD0071F911 /* TodoListHeaderView.swift */,
+				DB8F533226F316AE0071F911 /* TodoListCell.swift */,
+				DBBDF75726527986003F55FE /* drawBarView.swift */,
+				DBEC2267276864380083ECDA /* EditTodoListView.swift */,
+			);
+			path = MainView;
+			sourceTree = "<group>";
+		};
+		DB076D5926A696380063D3C6 /* CategoryView */ = {
+			isa = PBXGroup;
+			children = (
+				DBBD53042636BB78002F5157 /* CategoryCell.swift */,
+				DBBDF7552643DC59003F55FE /* PreView.swift */,
+				DB8F532726F07A3A0071F911 /* PaletteCell.swift */,
+			);
+			path = CategoryView;
+			sourceTree = "<group>";
+		};
+		DB0F172A261430F7007C8448 /* extension */ = {
+			isa = PBXGroup;
+			children = (
+				DB0F172B2614310F007C8448 /* Common.swift */,
+			);
+			path = extension;
+			sourceTree = "<group>";
+		};
+		DB289046261C4F6600FCC4BC /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				DB8DB18C2611E67900A5814A /* StopWatchViewController.swift */,
+				DB8DB1872611E1C600A5814A /* ConcentrationTimeViewController.swift */,
+				DB8F532426F05C1A0071F911 /* EditCategoryViewController.swift */,
+				DBBD52FB263677C5002F5157 /* SettingViewController.swift */,
+				DBBD52FF2636B109002F5157 /* CategoryViewController.swift */,
+				DB20750C265FA012001BA325 /* GoalTimeEditViewController.swift */,
+				DBAD2A4826D3E4370083478E /* BlackViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		DB289047261C4F8000FCC4BC /* images */ = {
+			isa = PBXGroup;
+			children = (
+				DB40D2012609B32E00A4E9FC /* Assets.xcassets */,
+			);
+			path = images;
+			sourceTree = "<group>";
+		};
+		DB289048261C4FF500FCC4BC /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				DB076D5926A696380063D3C6 /* CategoryView */,
+				DB076D5826A696110063D3C6 /* MainView */,
+				DB447EB726BE3E3500F0970A /* GoalTimeView */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		DB40D1EC2609B32C00A4E9FC = {
+			isa = PBXGroup;
+			children = (
+				DB40D1F72609B32C00A4E9FC /* StopWatch */,
+				DB40D1F62609B32C00A4E9FC /* Products */,
+				F95DBA0BF70FC8275FA2BE45 /* Pods */,
+				DB89756364217619A0677F8E /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		DB40D1F62609B32C00A4E9FC /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DB40D1F52609B32C00A4E9FC /* StopWatch.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		DB40D1F72609B32C00A4E9FC /* StopWatch */ = {
+			isa = PBXGroup;
+			children = (
+				DB8F532D26F085D50071F911 /* Custom */,
+				DB40D1F82609B32C00A4E9FC /* AppDelegate.swift */,
+				DB4FE82326BF80F100B1DF3E /* Modeling.swift */,
+				DB289048261C4FF500FCC4BC /* Views */,
+				DB0F172A261430F7007C8448 /* extension */,
+				DB289046261C4F6600FCC4BC /* Controllers */,
+				DB40D1FE2609B32C00A4E9FC /* Main.storyboard */,
+				DB289047261C4F8000FCC4BC /* images */,
+				DB40D2032609B32E00A4E9FC /* LaunchScreen.storyboard */,
+				DB40D2062609B32E00A4E9FC /* Info.plist */,
+			);
+			path = StopWatch;
+			sourceTree = "<group>";
+		};
+		DB447EB726BE3E3500F0970A /* GoalTimeView */ = {
+			isa = PBXGroup;
+			children = (
+				DB4FE82526BF9D2400B1DF3E /* GoalTimeHeaderView.swift */,
+				DB076D5A26A696AB0063D3C6 /* GoalTimeTableViewCell.swift */,
+				DBF7E79126AFF438009902BE /* EditGoalTimeView.swift */,
+				DB798EE326C792CC004A00DB /* GoalTimeTotalView.swift */,
+			);
+			path = GoalTimeView;
+			sourceTree = "<group>";
+		};
+		DB89756364217619A0677F8E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8D5E8619A05D6284273C99B3 /* Pods_StopWatch.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		DB8F532D26F085D50071F911 /* Custom */ = {
+			isa = PBXGroup;
+			children = (
+				DB8F532E26F085E60071F911 /* CustomTextField.swift */,
+				DB08F0C22765DB88001EBBEE /* StopWatchDAO.swift */,
+				DBEC2269276864380083ECDA /* CustomListEditView.swift */,
+			);
+			path = Custom;
+			sourceTree = "<group>";
+		};
+		F95DBA0BF70FC8275FA2BE45 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				5CA68B9216F67301B7F37E82 /* Pods-StopWatch.debug.xcconfig */,
+				A46D2DC1AD4790441A1758B2 /* Pods-StopWatch.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		DB40D1F42609B32C00A4E9FC /* StopWatch */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DB40D2092609B32E00A4E9FC /* Build configuration list for PBXNativeTarget "StopWatch" */;
+			buildPhases = (
+				30A0D5039940C22D47761409 /* [CP] Check Pods Manifest.lock */,
+				DB40D1F12609B32C00A4E9FC /* Sources */,
+				DB40D1F22609B32C00A4E9FC /* Frameworks */,
+				DB40D1F32609B32C00A4E9FC /* Resources */,
+				EFF0373BC5C2FA27D26D2271 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = StopWatch;
+			productName = StopWatch;
+			productReference = DB40D1F52609B32C00A4E9FC /* StopWatch.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		DB40D1ED2609B32C00A4E9FC /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1240;
+				LastUpgradeCheck = 1240;
+				TargetAttributes = {
+					DB40D1F42609B32C00A4E9FC = {
+						CreatedOnToolsVersion = 12.4;
+					};
+				};
+			};
+			buildConfigurationList = DB40D1F02609B32C00A4E9FC /* Build configuration list for PBXProject "StopWatch" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = DB40D1EC2609B32C00A4E9FC;
+			productRefGroup = DB40D1F62609B32C00A4E9FC /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				DB40D1F42609B32C00A4E9FC /* StopWatch */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		DB40D1F32609B32C00A4E9FC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DB40D2052609B32E00A4E9FC /* LaunchScreen.storyboard in Resources */,
+				DB40D2022609B32E00A4E9FC /* Assets.xcassets in Resources */,
+				DB40D2002609B32C00A4E9FC /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		30A0D5039940C22D47761409 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-StopWatch-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EFF0373BC5C2FA27D26D2271 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-StopWatch/Pods-StopWatch-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-StopWatch/Pods-StopWatch-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-StopWatch/Pods-StopWatch-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		DB40D1F12609B32C00A4E9FC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DB08F0C32765DB88001EBBEE /* StopWatchDAO.swift in Sources */,
+				DB8F532526F05C1A0071F911 /* EditCategoryViewController.swift in Sources */,
+				DBAD2A4926D3E4370083478E /* BlackViewController.swift in Sources */,
+				DBBD53052636BB78002F5157 /* CategoryCell.swift in Sources */,
+				DBF7E79226AFF438009902BE /* EditGoalTimeView.swift in Sources */,
+				DB798EE426C792CD004A00DB /* GoalTimeTotalView.swift in Sources */,
+				DB28904A261C500800FCC4BC /* CircleGraphView.swift in Sources */,
+				DB8DB18D2611E67900A5814A /* StopWatchViewController.swift in Sources */,
+				DB4FE82626BF9D2400B1DF3E /* GoalTimeHeaderView.swift in Sources */,
+				DB8F532F26F085E60071F911 /* CustomTextField.swift in Sources */,
+				DB945B2B272042900033D603 /* EditListView.swift in Sources */,
+				DB8F533126F22FBD0071F911 /* TodoListHeaderView.swift in Sources */,
+				DB076D5B26A696AB0063D3C6 /* GoalTimeTableViewCell.swift in Sources */,
+				DB8F533326F316AE0071F911 /* TodoListCell.swift in Sources */,
+				DB20750D265FA012001BA325 /* GoalTimeEditViewController.swift in Sources */,
+				DB8F532826F07A3A0071F911 /* PaletteCell.swift in Sources */,
+				DB0E89B9262842BE00533009 /* StopButtonTappedModalView.swift in Sources */,
+				DBBD53002636B109002F5157 /* CategoryViewController.swift in Sources */,
+				DB2890752623074A00FCC4BC /* DrawView.swift in Sources */,
+				DBBD52FC263677C5002F5157 /* SettingViewController.swift in Sources */,
+				DBBDF7562643DC59003F55FE /* PreView.swift in Sources */,
+				DBBDF75826527986003F55FE /* drawBarView.swift in Sources */,
+				DB8DB1882611E1C600A5814A /* ConcentrationTimeViewController.swift in Sources */,
+				DBEC226A276864380083ECDA /* CustomListEditView.swift in Sources */,
+				DB0F172C2614310F007C8448 /* Common.swift in Sources */,
+				DB40D1F92609B32C00A4E9FC /* AppDelegate.swift in Sources */,
+				DB4FE82426BF80F100B1DF3E /* Modeling.swift in Sources */,
+				DBEC2268276864380083ECDA /* EditTodoListView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		DB40D1FE2609B32C00A4E9FC /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DB40D1FF2609B32C00A4E9FC /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		DB40D2032609B32E00A4E9FC /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DB40D2042609B32E00A4E9FC /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		DB40D2072609B32E00A4E9FC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		DB40D2082609B32E00A4E9FC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		DB40D20A2609B32E00A4E9FC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5CA68B9216F67301B7F37E82 /* Pods-StopWatch.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = V2YNV9QV27;
+				INFOPLIST_FILE = StopWatch/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ssw522.StopWatch;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		DB40D20B2609B32E00A4E9FC /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A46D2DC1AD4790441A1758B2 /* Pods-StopWatch.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = V2YNV9QV27;
+				INFOPLIST_FILE = StopWatch/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ssw522.StopWatch;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		DB40D1F02609B32C00A4E9FC /* Build configuration list for PBXProject "StopWatch" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DB40D2072609B32E00A4E9FC /* Debug */,
+				DB40D2082609B32E00A4E9FC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DB40D2092609B32E00A4E9FC /* Build configuration list for PBXNativeTarget "StopWatch" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DB40D20A2609B32E00A4E9FC /* Debug */,
+				DB40D20B2609B32E00A4E9FC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = DB40D1ED2609B32C00A4E9FC /* Project object */;
+}
