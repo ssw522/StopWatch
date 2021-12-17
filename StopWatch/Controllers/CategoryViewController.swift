@@ -47,6 +47,7 @@ class CategoryViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        StopWatchDAO().create(date: (UIApplication.shared.delegate as! AppDelegate).saveDate)
         self.tableView.reloadData()
         self.navigationController?.navigationBar.isHidden = false
     }
@@ -149,10 +150,11 @@ extension CategoryViewController: UITableViewDelegate, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let preView = PreView()
-        preView.heightAnchor.constraint(equalToConstant: self.view.frame.height * 0.3).isActive = true
-        
-        return preView
+        return PreView()
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return self.view.frame.height * 0.3
     }
     
 }
