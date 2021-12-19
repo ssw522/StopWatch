@@ -18,6 +18,8 @@ class EditGoalTimeView: UIView {
     
     var selectedHour:TimeInterval = 0
     var selectedMinute:TimeInterval = 0
+    var goal: TimeInterval = 0 // 현재 목표시간 받아올 변수
+    var dailyData: DailyData?
     
     lazy var timePicker:UIPickerView = {
         let picker = UIPickerView()
@@ -33,7 +35,7 @@ class EditGoalTimeView: UIView {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("OK", for: .normal)
         button.layer.cornerRadius = 10
-        button.backgroundColor = .customPurpleColor
+        button.backgroundColor = .darkGray
         button.titleLabel?.textColor = .white
         button.layer.masksToBounds = true
         button.titleLabel?.textAlignment = .center
@@ -48,7 +50,7 @@ class EditGoalTimeView: UIView {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Cancel", for: .normal)
         button.layer.cornerRadius = 10
-        button.backgroundColor = .customPurpleColor
+        button.backgroundColor = .darkGray
         button.titleLabel?.textColor = .white
         button.layer.masksToBounds = true
         button.titleLabel?.textAlignment = .center
@@ -139,6 +141,10 @@ extension EditGoalTimeView: UIPickerViewDelegate,UIPickerViewDataSource{
         }else {
             return NSAttributedString(string: minuteArray[row], attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray])
         }
+    }
+    
+    func initSelectedRow(){
+        
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {

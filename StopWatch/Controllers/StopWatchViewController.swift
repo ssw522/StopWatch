@@ -13,17 +13,24 @@ class StopWatchViewController: UIViewController {
     //MARK: Properties
     let realm = try! Realm()
     let palette = Palette()
-    var saveDate = ""
+    var saveDate = "" {
+        didSet{
+            self.setGoalTime()
+            self.setTimeLabel()
+        }
+    }
     var totalTime: TimeInterval = 0
     var totalGoalTime: TimeInterval = 0
     var motionManager: CMMotionManager?
     var concentraionTimerVC: ConcentrationTimeViewController?
     var editListView: EditTodoListView?
     var startDate: TimeInterval?
+    var editGoalTimeView: EditGoalTimeView?
     var circleGraphView: CircleGraphView?
     var calendarView: CalendarView?
     var cellYPosition:CGFloat?
     var tapGesture: UITapGestureRecognizer?
+    var tapView: UIView?
     
     let titleView: TitleView = {
         let view = TitleView()
@@ -32,43 +39,48 @@ class StopWatchViewController: UIViewController {
         return view
     }()
 
-//    let goalTimeView: UIView = {
-//        let view = UIView()
-//        view.layer.cornerRadius = 10
-//        view.layer.borderColor = UIColor.lightGray.cgColor
-//        view.layer.masksToBounds = true
-//        view.layer.borderWidth = 1
+    let goalTimeView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+
+        return view
+    }()
 //
-//        return view
-//    }()
-//
-//    lazy var goalTimeTitle: UILabel = {
-//        let label = UILabel()
-//        label.translatesAutoresizingMaskIntoConstraints = false
-//        label.backgroundColor = .standardColor
-//        label.textAlignment = .center
-//        label.text = "GOAL"
-//        label.textColor = .lightGray
-//        label.layer.borderColor = UIColor.lightGray.cgColor
-//        label.layer.borderWidth = 1
-//        label.layer.cornerRadius = 10
-//        label.layer.masksToBounds = true
-//        self.goalTimeView.addSubview(label)
-//
-//        return label
-//    }()
-//
-//    lazy var goalTimeLabel: UILabel = {
-//        let label = UILabel()
-//        label.text = " 00 : 00"
-//        label.textColor = .lightGray
-//        label.backgroundColor = .standardColor
-//        label.translatesAutoresizingMaskIntoConstraints = false
-//        label.textAlignment = .center
-//        self.goalTimeView.addSubview(label)
-//
-//        return label
-//    }()
+    lazy var goalTimeTitle: UIImageView = {
+        let view = UIImageView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .white
+        view.image = UIImage(systemName: "flag.fill")
+        view.tintColor = .darkGray
+        self.goalTimeView.addSubview(view)
+
+        return view
+    }()
+
+    lazy var goalTimeLabel: UILabel = {
+        let label = UILabel()
+        label.text = " 00 : 00"
+        label.textColor = .darkGray
+        label.backgroundColor = .white
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .center
+        label.font = .systemFont(ofSize: 14, weight: .light)
+        self.goalTimeView.addSubview(label)
+
+        return label
+    }()
+    
+    lazy var goalTimeButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        self.goalTimeView.addSubview(button)
+//        button.setTitle("SET", for: .normal)
+//        button.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .light)
+//        button.setTitleColor(.darkGray, for: .normal)
+        button.addTarget(self, action: #selector(self.openGoalTimeEditVC(_:)), for: .touchUpInside)
+        
+        return button
+    }()
     
     let frameView: UIView = {
         let view = UIView()
@@ -194,8 +206,6 @@ class StopWatchViewController: UIViewController {
         //persent,progress reload
         self.reloadProgressBar()
         self.setDeviceMotion()
-        
-        
         self.toDoTableView.reloadData()
         
         self.navigationController?.navigationBar.isHidden = false
@@ -233,14 +243,18 @@ class StopWatchViewController: UIViewController {
     }
     
     func setTimeLabel(){
-        let (subSecond,second,minute,hour) = self.divideSecond(timeInterval: self.totalTime)
+        let dailyData = realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)
+        let time = dailyData?.totalTime ?? 0 // 오늘의 데이터가 없으면 0
+        let (subSecond,second,minute,hour) = self.divideSecond(timeInterval: time)
         self.subTimeLabel.text = subSecond
         self.mainTimeLabel.text = "\(hour) : \(minute) :  \(second)"
     }
     
     func setGoalTime(){
-        let (_,_,minute,hour) = self.divideSecond(timeInterval: totalGoalTime)
-//        self.goalTimeLabel.text = " \(hour) : \(minute)"
+        let dailyData = realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)
+        let goal = dailyData?.totalGoalTime ?? 0 // 오늘의 데이터가 없으면 0
+        let (_,_,minute,hour) = self.divideSecond(timeInterval: goal)
+        self.goalTimeLabel.text = " \(hour) : \(minute)"
     }
     
     func setSwipeGesture(){
@@ -253,8 +267,17 @@ class StopWatchViewController: UIViewController {
     }
     
     func setTapGesture(){
-        self.tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.respondToTapGesture(_:)))
-        self.view.addGestureRecognizer(self.tapGesture!)
+        if self.tapView == nil {
+            self.tapView = UIView()
+        }
+        if let _tapView = self.tapView {
+            _tapView.frame  = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
+            self.view.addSubview(_tapView)
+            self.tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.respondToTapGesture(_:)))
+            
+            _tapView.addGestureRecognizer(self.tapGesture!)
+        }
+        
     }
     
     func zeroTimeAlert(){
@@ -309,7 +332,6 @@ class StopWatchViewController: UIViewController {
                 modal.transform = CGAffineTransform(translationX: 0, y: self.view.frame.height)
             }) {_ in
                 modal.removeFromSuperview()
-               // self.modalView!.delegate = nil
                 self.circleGraphView = nil
             }
         }
@@ -317,14 +339,6 @@ class StopWatchViewController: UIViewController {
     
     //SetNavigationItem
     func setNavigationItem() {
-//        let settingBarButtonItem: UIBarButtonItem = {
-//            let button = UIBarButtonItem(image: UIImage(systemName: "gearshape.fill"), style: .plain, target: self, action: #selector(barButtonItemMethod(_:)))
-//            button.tintColor = .lightGray
-//            button.tag = 1
-//
-//            return button
-//        }()
-        
         let categoryEditBarButtonItem: UIBarButtonItem = {
             let button = UIBarButtonItem(image: UIImage(systemName: "list.star"), style: .plain, target: self, action: #selector(barButtonItemMethod(_:)))
             button.tintColor = .lightGray
@@ -332,21 +346,8 @@ class StopWatchViewController: UIViewController {
             
             return button
         }()
-        
-//        let goalTimeEditBarButtonItem: UIBarButtonItem = {
-//            let button = UIBarButtonItem(image: UIImage(systemName: "graduationcap.fill"), style: .plain, target: self, action: #selector(barButtonItemMethod(_:)))
-//            button.tintColor = .lightGray
-//            button.tag = 3
-//
-//            return button
-//        }()
-        
-        self.navigationItem.leftBarButtonItems =  [
-            categoryEditBarButtonItem,
-            
-        ]
-//        let rightButton = UIBarButtonItem(customView: goalTimeView)
-//        self.navigationItem.rightBarButtonItem = rightButton
+
+        self.navigationItem.leftBarButtonItems =  [categoryEditBarButtonItem]
     }
     
     //MARK: Selector
@@ -367,6 +368,66 @@ class StopWatchViewController: UIViewController {
         }
     }
     
+    //목표 시간 설정 뷰 열기
+    @objc func openGoalTimeEditVC(_ sender: UIButton) {
+        guard self.editGoalTimeView == nil else { return } // 이미 객체가 생성되었으면 더 못생성되게 막기
+        self.editGoalTimeView = EditGoalTimeView()
+        
+        self.editGoalTimeView!.frame.size = CGSize(width: self.view.frame.width - 80, height: 240)
+        self.editGoalTimeView!.center = CGPoint(x: self.view.frame.width / 2, y: self.view.frame.height + 120)
+        
+        self.view.addSubview(editGoalTimeView!)
+        self.editGoalTimeView!.cancelButton.addTarget(self, action: #selector(self.didFinishEditingGoalTime(_:)), for: .touchUpInside)
+        self.editGoalTimeView!.okButton.addTarget(self, action: #selector(self.didFinishEditingGoalTime(_:)), for: .touchUpInside)
+        StopWatchDAO().create(date: self.saveDate) // 오늘 데이터가 없으면 데이터 생성
+        
+        let dailyData = realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)!
+        let goal = dailyData.totalGoalTime
+        let hourIndex = Int(goal / 3600) % 24 // 3600초 (1시간)으로 나눈 몫을 24로 나누면 시간 인덱스와 같다.
+        let miniuteIndex = ((Int(goal) % 3600 ) / 60) / 5 // 남은 분을 5로 나누면 5분간격의 분 인덱스와 같다.
+        print("hourIndex : \(hourIndex)")
+        print("miniuteIndex : \(miniuteIndex)")
+        self.editGoalTimeView!.timePicker.selectRow(hourIndex, inComponent: 0, animated: false) //시간초기값
+        self.editGoalTimeView!.timePicker.selectRow(miniuteIndex, inComponent: 1, animated: false)//분초기값
+        self.editGoalTimeView!.selectedMinute = TimeInterval(Int(goal) % 3600)
+        self.editGoalTimeView!.selectedHour = goal - self.editGoalTimeView!.selectedMinute
+        
+        
+        UIView.animate(withDuration: 0.3){
+            self.editGoalTimeView!.center = CGPoint(x: self.view.frame.width / 2, y: self.view.frame.height - 130)
+        }
+    }
+    // 목표 시간 설정 뷰 닫기
+    @objc func didFinishEditingGoalTime(_ sender: UIButton){
+        if sender.tag == 1 {
+            let dailyData = realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)
+            try! realm.write{
+                dailyData!.totalGoalTime =
+                    self.editGoalTimeView!.selectedHour + self.editGoalTimeView!.selectedMinute
+            }
+            self.reloadProgressBar() //
+            self.setGoalTime()
+            UIView.animate(withDuration: 0.3,animations: {
+                self.editGoalTimeView!.frame.size = CGSize(width: self.view.frame.width - 80, height: 240)
+                self.editGoalTimeView!.center = CGPoint(x: self.view.frame.width / 2, y: self.view.frame.height + 120)
+            }){_ in
+                self.editGoalTimeView!.removeFromSuperview()
+                self.editGoalTimeView = nil
+            }
+           
+        }
+        
+        if sender.tag == 2 {
+            UIView.animate(withDuration: 0.3,animations: {
+                self.editGoalTimeView!.frame.size = CGSize(width: self.view.frame.width - 80, height: 240)
+                self.editGoalTimeView!.center = CGPoint(x: self.view.frame.width / 2, y: self.view.frame.height + 120)
+            }){_ in
+                self.editGoalTimeView!.removeFromSuperview()
+                self.editGoalTimeView = nil
+            }
+        }
+    }
+    
     @objc func clickToChartButton(){
         if self.circleGraphView == nil {
             self.openCircleGrpahView()
@@ -375,18 +436,18 @@ class StopWatchViewController: UIViewController {
         }
     }
     
+    
     @objc func barButtonItemMethod(_ button: UIBarButtonItem){
         let settingVC = SettingViewController()
         let categoryVC = CategoryViewController()
-        let goalTimeVC = GoalTimeEditViewController()
+        
         
         switch button.tag {
         case 1:
             self.navigationController?.pushViewController(settingVC, animated: true)
         case 2:
             self.navigationController?.pushViewController(categoryVC, animated: true)
-        case 3:
-            self.navigationController?.pushViewController(goalTimeVC, animated: true)
+        
         default:
             break;
         }
@@ -436,29 +497,42 @@ class StopWatchViewController: UIViewController {
     
     //탭 제스쳐를 감지하여 뷰를 닫는 액션함수
     @objc func respondToTapGesture(_ sender: Any){
+        guard let _tapGesture = self.tapGesture else { return } // nil이면 그냥 종료
+        self.view.removeGestureRecognizer(_tapGesture) // 제스쳐 제거
+        //편집 뷰가 열려 있으면 편집 뷰 닫기
         if let editView = self.editListView {
-            guard let _tapGesture = self.tapGesture else { return } // nil이면 그냥 종료
-            self.view.removeGestureRecognizer(_tapGesture) // 제스쳐 제거
-            UIView.animate(withDuration: 0.5,animations: {
+            UIView.animate(withDuration: 0.3,animations: {
                 editView.center = CGPoint(x: self.view.frame.width / 2, y: self.view.frame.height + 40)
             }){ (_) in
                 editView.removeFromSuperview() // 슈퍼뷰에서 제거!
                 self.editListView = nil
-                self.tapGesture = nil
             }
         }
-        
+        // 캘린더가 열려있으면 캘린더 닫기
+        if let calendar = self.calendarView {
+            calendar.delegate = nil
+            self.calendarView = nil
+            self.titleView.label.text = self.saveDate
+            calendar.removeFromSuperview()
+        }
+        self.tapGesture = nil
+        self.tapView?.removeFromSuperview()
+        self.tapView = nil
     }
+    
     //MARK: CalendarView method
     //캘린더 뷰 여는 메소드!
     @objc func clickCalendar(_ sender: Any){
+        guard self.calendarView == nil else { return }
         self.calendarView = CalendarView()
+        self.setTapGesture()
+        
         if let calendar = self.calendarView {
             calendar.translatesAutoresizingMaskIntoConstraints = false
             calendar.delegate = self
             self.view.addSubview(calendar)
             calendar.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-            calendar.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: -150).isActive = true
+            calendar.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: -100).isActive = true
             calendar.widthAnchor.constraint(equalToConstant: self.view.frame.width - 60).isActive = true
             calendar.heightAnchor.constraint(equalToConstant: 280).isActive = true
         }
@@ -475,8 +549,6 @@ class StopWatchViewController: UIViewController {
             calendar.removeFromSuperview()
         }
     }
-    
-    
 }
 
 
@@ -544,7 +616,9 @@ extension StopWatchViewController {
         self.view.addSubview(self.titleLabel)
         self.view.addSubview(self.chartViewButton)
         self.view.addSubview(self.toDoListLabel)
+        self.view.addSubview(self.goalTimeView)
         self.view.addSubview(self.toDoTableView)
+        
         
         self.frameView.addSubview(self.mainTimeLabel)
         
@@ -576,9 +650,9 @@ extension StopWatchViewController {
         ])
         
         NSLayoutConstraint.activate([
-            self.barView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -40),
+            self.barView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -30),
             self.barView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-            self.barView.heightAnchor.constraint(equalToConstant: 75),
+            self.barView.heightAnchor.constraint(equalToConstant: 40),
             self.barView.widthAnchor.constraint(equalToConstant: 300),
         ])
         
@@ -587,11 +661,34 @@ extension StopWatchViewController {
             self.toDoListLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10)
             
         ])
+        
+        NSLayoutConstraint.activate([
+            self.goalTimeView.widthAnchor.constraint(equalToConstant: 80),
+            self.goalTimeView.heightAnchor.constraint(equalToConstant: 30),
+            self.goalTimeView.bottomAnchor.constraint(equalTo: self.barView.topAnchor, constant: 0),
+            self.goalTimeView.leadingAnchor.constraint(equalTo: self.barView.leadingAnchor, constant: -4),
+
+            self.goalTimeLabel.topAnchor.constraint(equalTo: self.goalTimeView.topAnchor),
+            self.goalTimeLabel.bottomAnchor.constraint(equalTo: self.goalTimeView.bottomAnchor),
+            self.goalTimeLabel.trailingAnchor.constraint(equalTo: self.goalTimeView.trailingAnchor, constant: 6),
+            self.goalTimeLabel.leadingAnchor.constraint(equalTo: self.goalTimeTitle.trailingAnchor),
+
+            self.goalTimeTitle.centerYAnchor.constraint(equalTo: self.goalTimeView.centerYAnchor),
+            self.goalTimeTitle.leadingAnchor.constraint(equalTo: self.goalTimeView.leadingAnchor),
+            self.goalTimeTitle.widthAnchor.constraint(equalToConstant: 16),
+            self.goalTimeTitle.heightAnchor.constraint(equalToConstant: 16),
+            
+            self.goalTimeButton.leadingAnchor.constraint(equalTo: self.goalTimeView.leadingAnchor),
+            self.goalTimeButton.trailingAnchor.constraint(equalTo: self.goalTimeView.trailingAnchor),
+            self.goalTimeButton.topAnchor.constraint(equalTo: self.goalTimeView.topAnchor),
+            self.goalTimeButton.bottomAnchor.constraint(equalTo: self.goalTimeView.bottomAnchor)
+            
+        ])
        
         
         NSLayoutConstraint.activate([
             self.toDoTableView.topAnchor.constraint(equalTo: self.toDoListLabel.bottomAnchor, constant: 12),
-            self.toDoTableView.bottomAnchor.constraint(equalTo: self.barView.topAnchor),
+            self.toDoTableView.bottomAnchor.constraint(equalTo: self.goalTimeView.topAnchor),
             self.toDoTableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20),
             self.toDoTableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20)
         ])
@@ -610,22 +707,6 @@ extension StopWatchViewController {
             self.subTimeLabel.centerYAnchor.constraint(equalTo: self.mainTimeLabel.centerYAnchor, constant: 3),
             self.subTimeLabel.leadingAnchor.constraint(equalTo: self.mainTimeLabel.centerXAnchor, constant: 135)
         ])
-        
-        //rightBarButtonItem layout
-//        NSLayoutConstraint.activate([
-//            self.goalTimeView.widthAnchor.constraint(equalToConstant: 150),
-//            self.goalTimeView.heightAnchor.constraint(equalToConstant: 35),
-//
-//            self.goalTimeLabel.topAnchor.constraint(equalTo: self.goalTimeView.topAnchor),
-//            self.goalTimeLabel.bottomAnchor.constraint(equalTo: self.goalTimeView.bottomAnchor),
-//            self.goalTimeLabel.trailingAnchor.constraint(equalTo: self.goalTimeView.trailingAnchor),
-//            self.goalTimeLabel.leadingAnchor.constraint(equalTo: self.goalTimeTitle.trailingAnchor,constant:  -5),
-//
-//            self.goalTimeTitle.topAnchor.constraint(equalTo: self.goalTimeView.topAnchor),
-//            self.goalTimeTitle.bottomAnchor.constraint(equalTo: self.goalTimeView.bottomAnchor),
-//            self.goalTimeTitle.leadingAnchor.constraint(equalTo: self.goalTimeView.leadingAnchor),
-//            self.goalTimeTitle.widthAnchor.constraint(equalToConstant: 60),
-//        ])
     }
     //MARK: AddTarget
     func addTarget(){
@@ -716,8 +797,9 @@ extension StopWatchViewController: UITableViewDelegate,UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.editListView = EditTodoListView()
+        guard self.editListView == nil else { return }
         
+        self.editListView = EditTodoListView()
         if let _editListView = editListView {// 편집창 열기
             self.view.addSubview(_editListView)
             self.setTapGesture() // 외부 탭 하면 닫히는 제스쳐 추가
@@ -735,10 +817,6 @@ extension StopWatchViewController: UITableViewDelegate,UITableViewDataSource{
             }
             _editListView.indexPath = indexPath
         }
-        
-        
-        
-        
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

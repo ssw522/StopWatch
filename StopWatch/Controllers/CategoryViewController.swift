@@ -49,6 +49,7 @@ class CategoryViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         StopWatchDAO().create(date: (UIApplication.shared.delegate as! AppDelegate).saveDate)
         self.tableView.reloadData()
+        self.navigationController?.navigationBar.barTintColor = .white
         self.navigationController?.navigationBar.isHidden = false
     }
     
@@ -67,7 +68,6 @@ class CategoryViewController: UIViewController {
         self.navigationItem.rightBarButtonItem = addCategoryBarButtonItem
         self.navigationItem.title = "Category"
         let textAttributes = [NSAttributedString.Key.foregroundColor: UIColor.lightGray]
-        self.navigationController?.navigationBar.barTintColor = .white
         self.navigationController?.navigationBar.titleTextAttributes = textAttributes
     }
     

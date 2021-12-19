@@ -9,23 +9,23 @@ import UIKit
 
 class GoalTimeTotalView: UIView {
     //MARK:Properties
-    let titleLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 24, weight: .light)
-        label.text = "GoalTime"
-        label.textAlignment = .left
-        label.textColor = .lightGray
-        
-        
-        return label
-    }()
+//    let titleLabel: UILabel = {
+//        let label = UILabel()
+//        label.translatesAutoresizingMaskIntoConstraints = false
+//        label.font = .systemFont(ofSize: 24, weight: .light)
+//        label.text = "GoalTime"
+//        label.textAlignment = .left
+//        label.textColor = .lightGray
+//
+//
+//        return label
+//    }()
     
     let totalTimeLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 38, weight: .regular)
-        label.text  = "00시간 00분"
+        label.font = .systemFont(ofSize: 38, weight: .light)
+        label.text  = "기타"
         label.textAlignment = .left
         label.textColor = .black
         
@@ -54,23 +54,23 @@ class GoalTimeTotalView: UIView {
     }
     //MARK:Configure
     func configure(){
-        self.backgroundColor = .standardColor
+        self.backgroundColor = .white
     }
     
     //MARK:AddSubView
     func addSubView(){
         self.addSubview(self.totalTimeLabel)
         self.addSubview(self.separateLineView)
-        self.addSubview(self.titleLabel)
+//        self.addSubview(self.titleLabel)
     }
     
     //MARK:Layout
     func layout(){
         NSLayoutConstraint.activate([
-            self.titleLabel.bottomAnchor.constraint(equalTo: self.totalTimeLabel.topAnchor),
-            self.titleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            
-            self.totalTimeLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+//            self.titleLabel.bottomAnchor.constraint(equalTo: self.totalTimeLabel.topAnchor),
+//            self.titleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+//            
+            self.totalTimeLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
             self.totalTimeLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -20),
         ])
         

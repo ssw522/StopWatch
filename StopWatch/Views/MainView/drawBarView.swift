@@ -15,9 +15,10 @@ class DrawBarView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "0%"
-        label.textColor = .black
+        label.textColor = .darkGray
         label.textAlignment = .center
-        self.addSubview(label)
+        label.font = .systemFont(ofSize: 14, weight: .light)
+        self.progressView.addSubview(label)
         
         return label
     }()
@@ -33,7 +34,6 @@ class DrawBarView: UIView {
         view.layer.cornerRadius = 10
         view.layer.masksToBounds = true
         view.progressViewStyle = .default
-        
         return view
         
     }()
@@ -65,15 +65,14 @@ class DrawBarView: UIView {
         NSLayoutConstraint.activate([
             self.progressView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             self.progressView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            self.progressView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            self.progressView.topAnchor.constraint(equalTo: self.topAnchor),
             self.progressView.heightAnchor.constraint(equalToConstant: 35)
         ])
         
         NSLayoutConstraint.activate([
-            self.persentLabel.topAnchor.constraint(equalTo: self.progressView.bottomAnchor, constant: 10),
-            self.persentLabel.heightAnchor.constraint(equalToConstant: 30),
-            self.persentLabel.widthAnchor.constraint(equalToConstant: 65),
-            self.persentLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor)
+//            self.persentLabel.topAnchor.constraint(equalTo: self.progressView.bottomAnchor, constant: 6),
+            self.persentLabel.centerYAnchor.constraint(equalTo: self.progressView.centerYAnchor),
+            self.persentLabel.centerXAnchor.constraint(equalTo: self.progressView.centerXAnchor)
         ])
 
     }

@@ -220,13 +220,13 @@ class CalendarView: UIView,UICollectionViewDelegate,UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         self.seletedCell = indexPath.row
         let row = indexPath.row
-        let dayNumber = getFirstDay(year: self.year, month: self.month, day: self.day)
+        let dayNumber = self.getFirstDay(year: self.year, month: self.month, day: self.day)
         
         
         let formatter = NumberFormatter()
         formatter.minimumIntegerDigits = 2
-        let day = formatter.string(from: NSNumber(value: row + 1 - dayNumber))!
-        let month = formatter.string(from: NSNumber(value: self.month))!
+        let day = self.returnString(row + 1 - dayNumber)
+        let month = self.returnString(self.month)
         let year = self.year
         let string = "\(year). \(month). \(day)"
         

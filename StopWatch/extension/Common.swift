@@ -26,7 +26,8 @@ extension UIViewController {
     //if I click anywhere in the view, the keyboard will disappear
     func hideKeyboardWhenTapped(){
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        tap.cancelsTouchesInView = false //우선순위처리 아니고 하위뷰까지 제스쳐적용
+        tap.cancelsTouchesInView = false // 기본값이 true이면 제스쳐 발동시 터치 이벤트가 뷰로 전달x
+        //즉 제스쳐가 동작하면 뷰의 터치이벤트는 발생하지 않는것 false면 둘 다 작동한다는 뜻 
         view.addGestureRecognizer(tap) //view에 제스쳐추가
     }
 

@@ -8,9 +8,8 @@ class GoalTimeTableHeaderViewInSection: UIView {
     lazy var cellView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.cornerRadius = 10
+        view.layer.cornerRadius = 6
         view.backgroundColor = .white
-//        view.layer.borderColor = UIColor.standardColor.cgColor
         view.layer.shadowColor = UIColor.black.cgColor
         view.layer.shadowOpacity = 0.3
         view.layer.shadowOffset = .zero
@@ -23,28 +22,19 @@ class GoalTimeTableHeaderViewInSection: UIView {
     lazy var nameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 24, weight:.regular)
-        label.textColor = .black
+        label.font = .systemFont(ofSize: 22, weight:.light)
+        label.textColor = .white
         self.cellView.addSubview(label)
         
         return label
     }()
     
-    lazy var colorView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        self.cellView.addSubview(view)
-        view.layer.cornerRadius = 10
-        view.layer.masksToBounds = true
-            
-        return view
-    }()
-    
     lazy var persentLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .black
-        label.font = .systemFont(ofSize: 20)
+        label.textColor = .white
+        label.font = .systemFont(ofSize: 14, weight: .light)
+        
         self.cellView.addSubview(label)
         
         return label
@@ -70,24 +60,19 @@ class GoalTimeTableHeaderViewInSection: UIView {
         
     //MARK: Method
     func configure(){
-        self.backgroundColor = .standardColor
+        self.backgroundColor = .white
     }
     
     //MARK: LayOut
     func layOut() {
         NSLayoutConstraint.activate([
             self.cellView.bottomAnchor.constraint(equalTo: self.bottomAnchor,constant: -4),
-            self.cellView.heightAnchor.constraint(equalToConstant: 60),
+            self.cellView.heightAnchor.constraint(equalToConstant: 30),
             self.cellView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 4),
-            self.cellView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -4),
-            
-            self.colorView.leadingAnchor.constraint(equalTo: self.cellView.leadingAnchor, constant: 20),
-            self.colorView.centerYAnchor.constraint(equalTo: self.cellView.centerYAnchor),
-            self.colorView.heightAnchor.constraint(equalToConstant: 40),
-            self.colorView.widthAnchor.constraint(equalToConstant: 40),
-            
+            self.cellView.widthAnchor.constraint(equalToConstant: 160),
+       
             self.nameLabel.centerYAnchor.constraint(equalTo: self.cellView.centerYAnchor),
-            self.nameLabel.leadingAnchor.constraint(equalTo: self.colorView.trailingAnchor, constant: 10),
+            self.nameLabel.leadingAnchor.constraint(equalTo: self.cellView.leadingAnchor, constant: 10),
 
             self.persentLabel.centerYAnchor.constraint(equalTo: self.cellView.centerYAnchor),
             self.persentLabel.trailingAnchor.constraint(equalTo: self.cellView.trailingAnchor, constant: -20),

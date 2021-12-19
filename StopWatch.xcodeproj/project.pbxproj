@@ -24,6 +24,7 @@
 		DB5AE4A8276CB61C00CF737C /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5AE4A7276CB61C00CF737C /* CalendarView.swift */; };
 		DB5AE4AA276CB6D800CF737C /* CalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5AE4A9276CB6D800CF737C /* CalendarCell.swift */; };
 		DB5AE4AC276CB72300CF737C /* CalendarHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5AE4AB276CB72300CF737C /* CalendarHeaderView.swift */; };
+		DB5AE4AE276EFBF700CF737C /* GoalTimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5AE4AD276EFBF700CF737C /* GoalTimeView.swift */; };
 		DB798EE426C792CD004A00DB /* GoalTimeTotalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB798EE326C792CC004A00DB /* GoalTimeTotalView.swift */; };
 		DB8DB1882611E1C600A5814A /* ConcentrationTimeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8DB1872611E1C600A5814A /* ConcentrationTimeViewController.swift */; };
 		DB8DB18D2611E67900A5814A /* StopWatchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8DB18C2611E67900A5814A /* StopWatchViewController.swift */; };
@@ -67,6 +68,7 @@
 		DB5AE4A7276CB61C00CF737C /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		DB5AE4A9276CB6D800CF737C /* CalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCell.swift; sourceTree = "<group>"; };
 		DB5AE4AB276CB72300CF737C /* CalendarHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarHeaderView.swift; sourceTree = "<group>"; };
+		DB5AE4AD276EFBF700CF737C /* GoalTimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalTimeView.swift; sourceTree = "<group>"; };
 		DB798EE326C792CC004A00DB /* GoalTimeTotalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalTimeTotalView.swift; sourceTree = "<group>"; };
 		DB8DB1872611E1C600A5814A /* ConcentrationTimeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConcentrationTimeViewController.swift; sourceTree = "<group>"; };
 		DB8DB18C2611E67900A5814A /* StopWatchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopWatchViewController.swift; sourceTree = "<group>"; };
@@ -209,6 +211,7 @@
 				DB076D5A26A696AB0063D3C6 /* GoalTimeTableViewCell.swift */,
 				DBF7E79126AFF438009902BE /* EditGoalTimeView.swift */,
 				DB798EE326C792CC004A00DB /* GoalTimeTotalView.swift */,
+				DB5AE4AD276EFBF700CF737C /* GoalTimeView.swift */,
 			);
 			path = GoalTimeView;
 			sourceTree = "<group>";
@@ -369,6 +372,7 @@
 				DBAD2A4926D3E4370083478E /* BlackViewController.swift in Sources */,
 				DBBD53052636BB78002F5157 /* CategoryCell.swift in Sources */,
 				DBF7E79226AFF438009902BE /* EditGoalTimeView.swift in Sources */,
+				DB5AE4AE276EFBF700CF737C /* GoalTimeView.swift in Sources */,
 				DB798EE426C792CD004A00DB /* GoalTimeTotalView.swift in Sources */,
 				DB28904A261C500800FCC4BC /* CircleGraphView.swift in Sources */,
 				DB5AE4AA276CB6D800CF737C /* CalendarCell.swift in Sources */,

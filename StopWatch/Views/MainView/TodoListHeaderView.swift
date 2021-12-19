@@ -20,7 +20,7 @@ class TodoListHeaderView: UIView {
         
         return view
     }()
-    
+
     let plusImageView: UIImageView = {
         let view = UIImageView()
         view.translatesAutoresizingMaskIntoConstraints = false

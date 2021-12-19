@@ -27,7 +27,7 @@ class GoalTimeEditViewController: UIViewController {
         let view = UITableView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.register(GoalTimeTableViewCell.self, forCellReuseIdentifier: "GoalTimeCell")
-        view.backgroundColor = .standardColor
+        view.backgroundColor = .white
         view.separatorStyle = .none
         self.view.addSubview(view)
         
@@ -50,12 +50,13 @@ class GoalTimeEditViewController: UIViewController {
         self.layOut()
         self.tableView.delegate = self
         self.tableView.dataSource = self
+        self.totalGoalTimeView.backgroundColor = palette.paints[15]
         // Do any additional setup after loading the view.
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        self.navigationController?.navigationBar.barTintColor = .white
     }
     
     func setGoalTime(){
@@ -96,12 +97,12 @@ class GoalTimeEditViewController: UIViewController {
     
     //MARK: Configure
     func configure(){
-        self.view.backgroundColor = .standardColor
+        self.view.backgroundColor = .white
         
         self.navigationItem.title = "GoalTime"
-        let textAttributes = [NSAttributedString.Key.foregroundColor: UIColor.lightGray]
+        let textAttributes = [NSAttributedString.Key.foregroundColor: UIColor.darkGray]
         self.navigationController?.navigationBar.titleTextAttributes = textAttributes
-        self.setGoalTime()
+//        self.setGoalTime()
     }
     //MARK: Layout
     func layOut(){
@@ -131,6 +132,11 @@ class GoalTimeEditViewController: UIViewController {
 }
 //MARK: Extension - tableview
 extension GoalTimeEditViewController:UITableViewDelegate,UITableViewDataSource{
+    func numberOfSections(in tableView: UITableView) -> Int {
+        let segments = realm.objects(Segments.self)
+        return segments.count
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if self.sectionIsOn.contains(section) {
             return 1
@@ -169,10 +175,7 @@ extension GoalTimeEditViewController:UITableViewDelegate,UITableViewDataSource{
         return cell
     }
     
-    func numberOfSections(in tableView: UITableView) -> Int {
-        
-        return SingleTonSegment.shared.segments.count
-    }
+  
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.layoutEditView()
@@ -184,22 +187,23 @@ extension GoalTimeEditViewController:UITableViewDelegate,UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-
-        return 70
+        return 40
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView: GoalTimeTableHeaderViewInSection = {
             let view = GoalTimeTableHeaderViewInSection()
-            let colorRow = SingleTonSegment.shared.segments[section].colorRow
-            let color = self.palette.paints[colorRow]
-            let name = SingleTonSegment.shared.segments[section].name
-            let goal = SingleTonSegment.shared.segments[section].goal
-            let value = SingleTonSegment.shared.segments[section].value
+            let segment = realm.objects(Segments.self)
             
-            view.colorView.backgroundColor = color
+            let colorRow = segment[section].colorRow
+            let color = self.palette.paints[colorRow]
+            let name = segment[section].name
+            let goal = TimeInterval(0)
+            let value = TimeInterval(0)
+            
             view.nameLabel.text = name
             view.sectionClickedButton.tag = section
+            view.cellView.backgroundColor = color
 //            view.layer.shadowPath = UIBezierPath(rect:view.bounds).cgPath
 //            view.layer.shouldRasterize = true
 //            view.layer.rasterizationScale = UIScreen.main.scale
