@@ -50,7 +50,6 @@ class DrawView: UIView {
     
     //MARK: Draw
     override func draw(_ rect: CGRect) {
-        self.saveDate = date()
         let filter = realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)
         let segment = filter!.dailySegment
         self.total = segment.reduce(0){

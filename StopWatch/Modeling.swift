@@ -10,25 +10,6 @@ import RealmSwift
 
 let realm = try! Realm()
 
-struct Segment {
-
-    /// The colorRow of the segment
-    var colorRow: Int
-
-    /// The name of the segment
-    var name : String
-
-    /// The value of the segment
-    var value : TimeInterval
-    
-    /// The goalTime of the segment
-    var goal : TimeInterval
-    
-    /// To do list
-    var toDoList: [String] = []
-    var listCheckImageIndex: [Int] = []
-}
-
 struct checkImage {
     let images: [UIImage?] = [
         nil,
@@ -36,19 +17,6 @@ struct checkImage {
         UIImage(systemName: "triangle"),
         UIImage(systemName: "xmark")
     ]
-}
-
-class SingleTonSegment{
-    static let shared = SingleTonSegment()
-    
-    private init() {
-    }
-    
-    var segments: [Segment] = [Segment(colorRow: 17, name: "기타", value: 0, goal: 0)]
-    
-    func addSegment(segment: Segment){
-        SingleTonSegment.shared.segments.append(segment)
-    }
 }
 
 struct Palette {
@@ -105,8 +73,6 @@ class DailyData: Object {
     @Persisted var dailySegment = List<SegmentData>()
     
 }
-
-var totalGoalTime: TimeInterval = 0
 
 struct CalendarViewInfo{
     var cellSize: CGFloat?

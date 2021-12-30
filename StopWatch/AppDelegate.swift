@@ -31,30 +31,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = UINavigationController(rootViewController: StopWatchViewController())
         window?.makeKeyAndVisible()
         
-        //DB 아무것도 없을 때 기본 과목 설정.
-        func setFirstDB(){
-            try! realm.write{
-                if realm.objects(Segments.self).count == 0 {
-                    let data = Segments()
-                    data.colorRow = 17
-                    data.name = "기타"
-                    
-                    realm.add(data)
-                }
-            }
-        }
+        self.setFirstDB() // 아무 과목도 없을시  기타 과목 추가
         
         return true
     }
     
     //오늘 날짜 리턴 메소드
     func date() -> String{
-        let date = DateFormatter()
-        date.locale = Locale(identifier: Locale.current.identifier)
-        date.timeZone = TimeZone(identifier: TimeZone.current.identifier)
-        date.dateFormat = "YYYY. MM. dd"
-        
-        return date.string(from: Date())
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: Locale.current.identifier)
+        formatter.timeZone = TimeZone(identifier: TimeZone.current.identifier)
+        formatter.dateFormat = "yyyy. MM. dd"
+        formatter.locale = Locale(identifier: "ko_KR")
+        return formatter.string(from: Date())
+    }
+    
+    //DB 아무것도 없을 때 기본 과목 설정.
+    func setFirstDB(){
+        try! realm.write{
+            if realm.objects(Segments.self).count == 0 {
+                let data = Segments()
+                data.colorRow = 17
+                data.name = "기타"
+                
+                realm.add(data)
+            }
+        }
     }
 }
 

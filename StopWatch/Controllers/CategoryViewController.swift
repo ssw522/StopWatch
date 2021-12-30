@@ -19,6 +19,9 @@ class CategoryViewController: UIViewController {
         self.view.addSubview(view)
         view.separatorStyle = .none
         view.backgroundColor = .white
+        if #available(iOS 15, *) {
+            view.sectionHeaderTopPadding = 0
+        }
 
         return view
     }()
@@ -43,24 +46,26 @@ class CategoryViewController: UIViewController {
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.hideKeyboardWhenTapped()
-        self.saveDate = self.date()
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        self.saveDate = (UIApplication.shared.delegate as! AppDelegate).saveDate
         StopWatchDAO().create(date: (UIApplication.shared.delegate as! AppDelegate).saveDate)
         self.tableView.reloadData()
-        self.navigationController?.navigationBar.barTintColor = .white
+        
         self.navigationController?.navigationBar.isHidden = false
+        if #available(iOS 15.0, *) {
+            let appearance = UINavigationBarAppearance()
+            appearance.configureWithOpaqueBackground()    // 불투명하게
+            appearance.backgroundColor = .white
+            self.navigationController?.navigationBar.standardAppearance = appearance
+            self.navigationController?.navigationBar.scrollEdgeAppearance = appearance    // 동일하게 만들기
+        }else {
+            self.navigationController?.navigationBar.barTintColor = .white
+        }
     }
     
-    func date() -> String{
-        let date = DateFormatter()
-        date.locale = Locale(identifier: Locale.current.identifier)
-        date.timeZone = TimeZone(identifier: TimeZone.current.identifier)
-        date.dateFormat = "YYYY. MM. dd"
-        
-        return date.string(from: Date())
-    }
+    
     
     //MARK: Configure
     func configure(){

@@ -8,11 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		43228812FC89EC6FE9668022 /* Pods_StopWatch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D5E8619A05D6284273C99B3 /* Pods_StopWatch.framework */; };
-		DB076D5B26A696AB0063D3C6 /* GoalTimeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB076D5A26A696AB0063D3C6 /* GoalTimeTableViewCell.swift */; };
 		DB08F0C32765DB88001EBBEE /* StopWatchDAO.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB08F0C22765DB88001EBBEE /* StopWatchDAO.swift */; };
 		DB0E89B9262842BE00533009 /* StopButtonTappedModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0E89B8262842BE00533009 /* StopButtonTappedModalView.swift */; };
 		DB0F172C2614310F007C8448 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0F172B2614310F007C8448 /* Common.swift */; };
-		DB20750D265FA012001BA325 /* GoalTimeEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB20750C265FA012001BA325 /* GoalTimeEditViewController.swift */; };
 		DB28904A261C500800FCC4BC /* CircleGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB289049261C500800FCC4BC /* CircleGraphView.swift */; };
 		DB2890752623074A00FCC4BC /* DrawView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2890742623074900FCC4BC /* DrawView.swift */; };
 		DB40D1F92609B32C00A4E9FC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB40D1F82609B32C00A4E9FC /* AppDelegate.swift */; };
@@ -20,12 +18,10 @@
 		DB40D2022609B32E00A4E9FC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DB40D2012609B32E00A4E9FC /* Assets.xcassets */; };
 		DB40D2052609B32E00A4E9FC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB40D2032609B32E00A4E9FC /* LaunchScreen.storyboard */; };
 		DB4FE82426BF80F100B1DF3E /* Modeling.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4FE82326BF80F100B1DF3E /* Modeling.swift */; };
-		DB4FE82626BF9D2400B1DF3E /* GoalTimeHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4FE82526BF9D2400B1DF3E /* GoalTimeHeaderView.swift */; };
 		DB5AE4A8276CB61C00CF737C /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5AE4A7276CB61C00CF737C /* CalendarView.swift */; };
 		DB5AE4AA276CB6D800CF737C /* CalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5AE4A9276CB6D800CF737C /* CalendarCell.swift */; };
 		DB5AE4AC276CB72300CF737C /* CalendarHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5AE4AB276CB72300CF737C /* CalendarHeaderView.swift */; };
 		DB5AE4AE276EFBF700CF737C /* GoalTimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5AE4AD276EFBF700CF737C /* GoalTimeView.swift */; };
-		DB798EE426C792CD004A00DB /* GoalTimeTotalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB798EE326C792CC004A00DB /* GoalTimeTotalView.swift */; };
 		DB8DB1882611E1C600A5814A /* ConcentrationTimeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8DB1872611E1C600A5814A /* ConcentrationTimeViewController.swift */; };
 		DB8DB18D2611E67900A5814A /* StopWatchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8DB18C2611E67900A5814A /* StopWatchViewController.swift */; };
 		DB8F532526F05C1A0071F911 /* EditCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8F532426F05C1A0071F911 /* EditCategoryViewController.swift */; };
@@ -50,11 +46,9 @@
 		5CA68B9216F67301B7F37E82 /* Pods-StopWatch.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StopWatch.debug.xcconfig"; path = "Target Support Files/Pods-StopWatch/Pods-StopWatch.debug.xcconfig"; sourceTree = "<group>"; };
 		8D5E8619A05D6284273C99B3 /* Pods_StopWatch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StopWatch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A46D2DC1AD4790441A1758B2 /* Pods-StopWatch.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StopWatch.release.xcconfig"; path = "Target Support Files/Pods-StopWatch/Pods-StopWatch.release.xcconfig"; sourceTree = "<group>"; };
-		DB076D5A26A696AB0063D3C6 /* GoalTimeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalTimeTableViewCell.swift; sourceTree = "<group>"; };
 		DB08F0C22765DB88001EBBEE /* StopWatchDAO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopWatchDAO.swift; sourceTree = "<group>"; };
 		DB0E89B8262842BE00533009 /* StopButtonTappedModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopButtonTappedModalView.swift; sourceTree = "<group>"; };
 		DB0F172B2614310F007C8448 /* Common.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
-		DB20750C265FA012001BA325 /* GoalTimeEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalTimeEditViewController.swift; sourceTree = "<group>"; };
 		DB289049261C500800FCC4BC /* CircleGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleGraphView.swift; sourceTree = "<group>"; };
 		DB2890742623074900FCC4BC /* DrawView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawView.swift; sourceTree = "<group>"; };
 		DB40D1F52609B32C00A4E9FC /* StopWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StopWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -64,12 +58,10 @@
 		DB40D2042609B32E00A4E9FC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DB40D2062609B32E00A4E9FC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DB4FE82326BF80F100B1DF3E /* Modeling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Modeling.swift; path = StopWatch/Modeling.swift; sourceTree = SOURCE_ROOT; };
-		DB4FE82526BF9D2400B1DF3E /* GoalTimeHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalTimeHeaderView.swift; sourceTree = "<group>"; };
 		DB5AE4A7276CB61C00CF737C /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		DB5AE4A9276CB6D800CF737C /* CalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCell.swift; sourceTree = "<group>"; };
 		DB5AE4AB276CB72300CF737C /* CalendarHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarHeaderView.swift; sourceTree = "<group>"; };
 		DB5AE4AD276EFBF700CF737C /* GoalTimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalTimeView.swift; sourceTree = "<group>"; };
-		DB798EE326C792CC004A00DB /* GoalTimeTotalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalTimeTotalView.swift; sourceTree = "<group>"; };
 		DB8DB1872611E1C600A5814A /* ConcentrationTimeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConcentrationTimeViewController.swift; sourceTree = "<group>"; };
 		DB8DB18C2611E67900A5814A /* StopWatchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopWatchViewController.swift; sourceTree = "<group>"; };
 		DB8F532426F05C1A0071F911 /* EditCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCategoryViewController.swift; sourceTree = "<group>"; };
@@ -144,7 +136,6 @@
 				DB8F532426F05C1A0071F911 /* EditCategoryViewController.swift */,
 				DBBD52FB263677C5002F5157 /* SettingViewController.swift */,
 				DBBD52FF2636B109002F5157 /* CategoryViewController.swift */,
-				DB20750C265FA012001BA325 /* GoalTimeEditViewController.swift */,
 				DBAD2A4826D3E4370083478E /* BlackViewController.swift */,
 			);
 			path = Controllers;
@@ -207,10 +198,7 @@
 		DB447EB726BE3E3500F0970A /* GoalTimeView */ = {
 			isa = PBXGroup;
 			children = (
-				DB4FE82526BF9D2400B1DF3E /* GoalTimeHeaderView.swift */,
-				DB076D5A26A696AB0063D3C6 /* GoalTimeTableViewCell.swift */,
 				DBF7E79126AFF438009902BE /* EditGoalTimeView.swift */,
-				DB798EE326C792CC004A00DB /* GoalTimeTotalView.swift */,
 				DB5AE4AD276EFBF700CF737C /* GoalTimeView.swift */,
 			);
 			path = GoalTimeView;
@@ -373,17 +361,13 @@
 				DBBD53052636BB78002F5157 /* CategoryCell.swift in Sources */,
 				DBF7E79226AFF438009902BE /* EditGoalTimeView.swift in Sources */,
 				DB5AE4AE276EFBF700CF737C /* GoalTimeView.swift in Sources */,
-				DB798EE426C792CD004A00DB /* GoalTimeTotalView.swift in Sources */,
 				DB28904A261C500800FCC4BC /* CircleGraphView.swift in Sources */,
 				DB5AE4AA276CB6D800CF737C /* CalendarCell.swift in Sources */,
 				DB8DB18D2611E67900A5814A /* StopWatchViewController.swift in Sources */,
-				DB4FE82626BF9D2400B1DF3E /* GoalTimeHeaderView.swift in Sources */,
 				DB8F532F26F085E60071F911 /* CustomTextField.swift in Sources */,
 				DB945B2B272042900033D603 /* EditListView.swift in Sources */,
 				DB8F533126F22FBD0071F911 /* TodoListHeaderView.swift in Sources */,
-				DB076D5B26A696AB0063D3C6 /* GoalTimeTableViewCell.swift in Sources */,
 				DB8F533326F316AE0071F911 /* TodoListCell.swift in Sources */,
-				DB20750D265FA012001BA325 /* GoalTimeEditViewController.swift in Sources */,
 				DBEC226C276B27740083ECDA /* TitleView.swift in Sources */,
 				DB5AE4AC276CB72300CF737C /* CalendarHeaderView.swift in Sources */,
 				DB8F532826F07A3A0071F911 /* PaletteCell.swift in Sources */,

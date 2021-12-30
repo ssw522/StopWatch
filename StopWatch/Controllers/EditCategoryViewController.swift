@@ -73,14 +73,6 @@ class EditCategoryViewController: UIViewController {
         return button
     }()
     
-    lazy var colorWell: UIColorWell = {
-        let colorWell = UIColorWell()
-        colorWell.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addSubview(colorWell)
-        
-        return colorWell
-    }()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
@@ -224,11 +216,7 @@ class EditCategoryViewController: UIViewController {
             self.cancelButton.topAnchor.constraint(equalTo: self.paletteView.bottomAnchor, constant: 14),
             self.cancelButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 34)
         ])
-        
-        NSLayoutConstraint.activate([
-            self.colorWell.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -30),
-            self.colorWell.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
-        ])
+    
     }
 }
 //MARK:- CollectionView Delegate , datasource

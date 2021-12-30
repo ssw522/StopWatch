@@ -15,8 +15,11 @@ class StopWatchViewController: UIViewController {
     let palette = Palette()
     var saveDate = "" {
         didSet{
-            self.setGoalTime()
-            self.setTimeLabel()
+            self.setGoalTime() // 목표시간 설정
+            self.reloadProgressBar() // 진행바 재로딩
+            self.setTimeLabel() // 시간 다시 표시
+            self.titleView.label.text = self.saveDate // 타이틀 날짜 다시표시
+            self.toDoTableView.reloadData()
         }
     }
     var totalTime: TimeInterval = 0
@@ -28,7 +31,6 @@ class StopWatchViewController: UIViewController {
     var editGoalTimeView: EditGoalTimeView?
     var circleGraphView: CircleGraphView?
     var calendarView: CalendarView?
-    var cellYPosition:CGFloat?
     var tapGesture: UITapGestureRecognizer?
     var tapView: UIView?
     
@@ -74,9 +76,6 @@ class StopWatchViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         self.goalTimeView.addSubview(button)
-//        button.setTitle("SET", for: .normal)
-//        button.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .light)
-//        button.setTitleColor(.darkGray, for: .normal)
         button.addTarget(self, action: #selector(self.openGoalTimeEditVC(_:)), for: .touchUpInside)
         
         return button
@@ -168,6 +167,9 @@ class StopWatchViewController: UIViewController {
         view.separatorStyle = .none
         view.bounces = false
         view.showsVerticalScrollIndicator = false
+        if #available(iOS 15, *) {
+            view.sectionHeaderTopPadding = 0
+        }
         
         return view
     }()
@@ -201,42 +203,33 @@ class StopWatchViewController: UIViewController {
         self.saveDate = (UIApplication.shared.delegate as! AppDelegate).saveDate //오늘 날짜!
         self.totalTime = realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)?.totalTime ?? 0
         self.totalGoalTime = realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)?.totalGoalTime ?? 0
-        
-        self.setGoalTime()
-        //persent,progress reload
-        self.reloadProgressBar()
+      
         self.setDeviceMotion()
-        self.toDoTableView.reloadData()
         
         self.navigationController?.navigationBar.isHidden = false
-        self.navigationController?.navigationBar.barTintColor = .standardColor
+        
+        //네비게이션바 컬러 설정
+        if #available(iOS 15.0, *) {
+            let appearance = UINavigationBarAppearance()
+            appearance.configureWithOpaqueBackground()    // 불투명하게
+            appearance.backgroundColor = .standardColor
+            self.navigationController?.navigationBar.standardAppearance = appearance
+            self.navigationController?.navigationBar.scrollEdgeAppearance = appearance    // 동일하게 만들기
+        }else {
+            self.navigationController?.navigationBar.barTintColor = .standardColor
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
 //        print("viewWillDisappear")
         self.motionManager?.stopDeviceMotionUpdates()
     }
-   
-    
-    func getToday()->String{
-        let today = Date()
-        let calendar = Calendar.current
-        let year = calendar.component(.year, from: Date())
-        let month = calendar.component(.month, from: today) as NSNumber
-        let day = calendar.component(.day, from: today) as NSNumber
-        let formatter = NumberFormatter()
-        formatter.minimumIntegerDigits = 2
-        let monthFormat = formatter.string(from: month)!
-        let dayFormat = formatter.string(from: day)!
-        
-        let result = "\(year). \(monthFormat). \(dayFormat)"
-        
-        return result
-    }
     
     func reloadProgressBar(){
+        let object = realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)
+        self.totalGoalTime = object?.totalGoalTime ?? 0
         self.barView.per =
-            totalGoalTime != 0 ? Float(self.totalTime / totalGoalTime): 0
+            self.totalGoalTime != 0 ? Float(self.totalTime / self.totalGoalTime): 0
         self.barView.progressView.setProgress(self.barView.per, animated: true)
         self.barView.showPersent()
         
@@ -304,6 +297,7 @@ class StopWatchViewController: UIViewController {
         }
         self.circleGraphView = {
             let view = CircleGraphView()
+            view.drawView.saveDate = self.saveDate
             view.translatesAutoresizingMaskIntoConstraints = false
             
             return view
@@ -373,7 +367,7 @@ class StopWatchViewController: UIViewController {
         guard self.editGoalTimeView == nil else { return } // 이미 객체가 생성되었으면 더 못생성되게 막기
         self.editGoalTimeView = EditGoalTimeView()
         
-        self.editGoalTimeView!.frame.size = CGSize(width: self.view.frame.width - 80, height: 240)
+        self.editGoalTimeView!.frame.size = CGSize(width: self.view.frame.width - 40, height: 240)
         self.editGoalTimeView!.center = CGPoint(x: self.view.frame.width / 2, y: self.view.frame.height + 120)
         
         self.view.addSubview(editGoalTimeView!)
@@ -405,8 +399,9 @@ class StopWatchViewController: UIViewController {
                 dailyData!.totalGoalTime =
                     self.editGoalTimeView!.selectedHour + self.editGoalTimeView!.selectedMinute
             }
-            self.reloadProgressBar() //
             self.setGoalTime()
+            self.reloadProgressBar()
+            
             UIView.animate(withDuration: 0.3,animations: {
                 self.editGoalTimeView!.frame.size = CGSize(width: self.view.frame.width - 80, height: 240)
                 self.editGoalTimeView!.center = CGPoint(x: self.view.frame.width / 2, y: self.view.frame.height + 120)
@@ -440,7 +435,6 @@ class StopWatchViewController: UIViewController {
     @objc func barButtonItemMethod(_ button: UIBarButtonItem){
         let settingVC = SettingViewController()
         let categoryVC = CategoryViewController()
-        
         
         switch button.tag {
         case 1:
@@ -480,19 +474,16 @@ class StopWatchViewController: UIViewController {
     }
     
     @objc private func keyboardWillShow(_ notification: Notification) {
+        //키보드 정보 불러오기
         guard let userInfo = notification.userInfo,
               let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
-//        let keyboardViewEndFrame = view.convert(keyboardFrame, from: view.window)
-        let keyboardTopY = keyboardFrame.origin.y
-        let toDoViewY = self.toDoTableView.frame.origin.y + self.navigationController!.navigationBar.frame.height
-        let inset = keyboardTopY - toDoViewY + 10
+        let keyboardHeight = keyboardFrame.height
+        self.view.bounds.origin = CGPoint(x: 0, y: keyboardHeight - (goalTimeView.frame.height)*2 - barView.frame.height + 4)
         
-        guard let cellY = self.cellYPosition else { return }
-        if cellY >= keyboardTopY {
-            self.toDoTableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: inset, right:0)
-        }else{
-            self.toDoTableView.contentInset = .zero
-        }
+    }
+    
+    @objc func keyboardWillHide() {
+        self.view.bounds.origin = .zero
     }
     
     //탭 제스쳐를 감지하여 뷰를 닫는 액션함수
@@ -568,7 +559,7 @@ extension StopWatchViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(proximityChangedMtd(sender:)), name: UIDevice.proximityStateDidChangeNotification, object: nil)
        
     }
-    
+    //타이머 구동 방식
     func setDeviceMotion(){
         self.motionManager = CMMotionManager()
         self.motionManager?.deviceMotionUpdateInterval = 0.1;
@@ -657,7 +648,7 @@ extension StopWatchViewController {
         ])
         
         NSLayoutConstraint.activate([
-            self.toDoListLabel.topAnchor.constraint(equalTo: self.chartViewButton.bottomAnchor, constant: 0),
+            self.toDoListLabel.topAnchor.constraint(equalTo: self.chartViewButton.bottomAnchor, constant: 4),
             self.toDoListLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10)
             
         ])
@@ -687,7 +678,7 @@ extension StopWatchViewController {
        
         
         NSLayoutConstraint.activate([
-            self.toDoTableView.topAnchor.constraint(equalTo: self.toDoListLabel.bottomAnchor, constant: 12),
+            self.toDoTableView.topAnchor.constraint(equalTo: self.toDoListLabel.bottomAnchor, constant: 10),
             self.toDoTableView.bottomAnchor.constraint(equalTo: self.goalTimeView.topAnchor),
             self.toDoTableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20),
             self.toDoTableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20)
@@ -717,9 +708,9 @@ extension StopWatchViewController {
     func addObserverMtd(){
         let notificationCenter = NotificationCenter.default
     
-        notificationCenter.addObserver(self, selector: #selector(self.keyboardWillShow(_:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(self.keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         
-//        notificationCenter.addObserver(self, selector: #selector(self.keyboardWillShow(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(self.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         
     }
 }
@@ -775,11 +766,6 @@ extension StopWatchViewController: UITableViewDelegate,UITableViewDataSource{
         let checkImageIndex = segment[indexPath.section].listCheckImageIndex[indexPath.row]
         
         if text == ""{
-            //테이블뷰에서의 셀 y 좌표 구하기
-            let rectOfCellInTableView = tableView.rectForRow(at: indexPath)
-            let rectOfCellInSuperview = tableView.convert(rectOfCellInTableView, to: view.window)
-            self.cellYPosition = rectOfCellInSuperview.origin.y + rectOfCellInSuperview.height
-            
             cell.getListTextField.isHidden = false
             cell.getListTextField.underLine.backgroundColor = color
             cell.getListTextField.attributedPlaceholder = NSAttributedString(string: "입력", attributes: [.foregroundColor: color])
@@ -801,8 +787,8 @@ extension StopWatchViewController: UITableViewDelegate,UITableViewDataSource{
         
         self.editListView = EditTodoListView()
         if let _editListView = editListView {// 편집창 열기
-            self.view.addSubview(_editListView)
             self.setTapGesture() // 외부 탭 하면 닫히는 제스쳐 추가
+            self.view.addSubview(_editListView)
             // 각 버튼 액션메소드 추가
             _editListView.editButton.button.addTarget(self, action: #selector(self.editListMethod(_:)), for: .touchUpInside)
             _editListView.deleteButton.button.addTarget(self, action: #selector(self.editListMethod(_:)), for: .touchUpInside)
@@ -876,7 +862,7 @@ extension StopWatchViewController {
         if let editView = self.editListView {
             let indexPath = editView.indexPath
             let segment = realm.object(ofType: DailyData.self, forPrimaryKey: saveDate)?.dailySegment
-            var toDoList = segment?[indexPath!.section].toDoList[editView.indexPath!.row] // 이전텍스트 불러오기
+            let toDoList = segment?[indexPath!.section].toDoList[editView.indexPath!.row] // 이전텍스트 불러오기
             
             if sender.tag == 0 { // 수정버튼이면
                 let alert = UIAlertController(title: "무엇으로 변경할까요?", message: nil, preferredStyle: .alert)
@@ -888,9 +874,10 @@ extension StopWatchViewController {
                     
                     try! self.realm.write{
                         segment?[indexPath!.section].toDoList[editView.indexPath!.row] = (alert.textFields?[0].text)!
-                        
                     }
                     self.toDoTableView.reloadData()
+                    self.removeListEditView()
+                    
                 })
                 self.present(alert, animated: false)
             }
@@ -903,13 +890,23 @@ extension StopWatchViewController {
                         segment?[indexPath!.section].toDoList.remove(at: indexPath!.row) // 리스트 삭제
                         segment?[indexPath!.section].listCheckImageIndex.remove(at: indexPath!.row)
                         self.toDoTableView.reloadData()
-                        
+                        self.removeListEditView()
                     }
                 })
                 self.present(alert, animated: false)
             }
             
         }
-      
+    }
+    
+    func removeListEditView(){
+        if let editView = self.editListView {
+            UIView.animate(withDuration: 0.3,animations: {
+                editView.center = CGPoint(x: self.view.frame.width / 2, y: self.view.frame.height + 40)
+            }){ (_) in
+                editView.removeFromSuperview() // 슈퍼뷰에서 제거!
+                self.editListView = nil
+            }
+        }
     }
 }

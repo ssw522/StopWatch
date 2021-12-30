@@ -128,8 +128,8 @@ class CalendarView: UIView,UICollectionViewDelegate,UICollectionViewDataSource {
        
         if row >= dayNumber{
             if row >= getMonthDay(year: self.year, month: self.month) + dayNumber{
-                cell.dateLabel.text = "*" // 미만
                 cell.isUserInteractionEnabled = false
+                cell.dateLabel.text = "*" // 초과
             }else{
                 cell.dateLabel.text = "\(row + 1 - dayNumber)"
                
@@ -140,8 +140,9 @@ class CalendarView: UIView,UICollectionViewDelegate,UICollectionViewDataSource {
                     }
                 }
             }
-        }else { // 초과
+        }else { // 미만
             cell.dateLabel.text = "*"
+            cell.isUserInteractionEnabled = false
         }
     }
     //MARK: addsubview

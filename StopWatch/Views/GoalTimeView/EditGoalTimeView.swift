@@ -132,7 +132,7 @@ extension EditGoalTimeView: UIPickerViewDelegate,UIPickerViewDataSource{
     
     
     func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
-        return 50
+        return 40
     }
     
     func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {

@@ -25,6 +25,17 @@ class ConcentrationTimeViewController: UIViewController{
         return view
     }()
     
+    let label: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "이번 집중 시간은?"
+        label.font = .systemFont(ofSize: 28, weight: .regular)
+        label.textAlignment = .center
+        label.textColor = .black
+        
+        return label
+    }()
+    
     lazy var pickerViewTitle: UILabel = {
         let label = UILabel()
         label.text = "Category"
@@ -46,14 +57,6 @@ class ConcentrationTimeViewController: UIViewController{
         pickerView.backgroundColor = .standardColor
         
         return pickerView
-    }()
-    
-    let imageView:UIImageView = {
-        let image = UIImageView()
-        image.image = UIImage(named: "bear-2.png")
-        image.translatesAutoresizingMaskIntoConstraints = false
-        
-        return image
     }()
     
     lazy var mainLabel: UILabel = {
@@ -137,6 +140,7 @@ class ConcentrationTimeViewController: UIViewController{
         self.saveDate = (UIApplication.shared.delegate as! AppDelegate).saveDate
         self.totalTime = realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)?.totalTime ?? 0
         self.navigationController?.navigationBar.isHidden = true
+        StopWatchDAO().create(date: self.saveDate) // 오늘 데이터 없으면 생성
         //vibrate iphone when the timer starts
      
     }
@@ -177,7 +181,15 @@ class ConcentrationTimeViewController: UIViewController{
             stopWatchVC.concentraionTimerVC = nil
         }
         let segments = realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate) // 오늘 과목
-        segments?.dailySegment[pickCategoryRow].value += self.timeInterval //선택한 과목에 시간 추가
+        try! realm.write{
+            segments?.dailySegment[pickCategoryRow].value += self.timeInterval //선택한 과목에 시간 추가
+            var totalTime: TimeInterval = 0
+            for segValue in segments!.dailySegment {
+                totalTime += segValue.value
+            }
+            segments?.totalTime = totalTime
+        }
+        
         self.cancelModalView()
         
         navigationController?.popViewController(animated: true)
@@ -236,7 +248,7 @@ extension ConcentrationTimeViewController {
     func addSubView(){
         self.view.addSubview(self.frameView)
         
-        self.frameView.addSubview(self.imageView)
+        self.frameView.addSubview(self.label)
     }
     
     //MARK: LayOut
@@ -278,11 +290,9 @@ extension ConcentrationTimeViewController {
         
         //Level 2
         NSLayoutConstraint.activate([
-            self.imageView.topAnchor.constraint(equalTo: self.frameView.topAnchor, constant: 120),
-            self.imageView.centerXAnchor.constraint(equalTo: self.frameView.centerXAnchor),
-            self.imageView.widthAnchor.constraint(equalToConstant: 100),
-            self.imageView.heightAnchor.constraint(equalToConstant: 100)
-        ])
+            self.label.topAnchor.constraint(equalTo: self.frameView.topAnchor, constant: 200),
+            self.label.centerXAnchor.constraint(equalTo: self.frameView.centerXAnchor),
+            ])
         
         NSLayoutConstraint.activate([
             self.subLabel.centerYAnchor.constraint(equalTo: self.mainLabel.centerYAnchor, constant: 3),
@@ -341,13 +351,12 @@ extension ConcentrationTimeViewController: UIPickerViewDelegate,UIPickerViewData
     
 }
 
+//timer가 멈출 때
 extension ConcentrationTimeViewController: TimerTriggreDelegate{
     func timerStop(_ startDate: TimeInterval) {
         self.startDate = startDate
         let result = Date().timeIntervalSince1970 - self.startDate
         self.timeInterval += result
-        print(self.timeInterval)
-        self.totalTime += result
         self.setTimeLabel()
     }
     
