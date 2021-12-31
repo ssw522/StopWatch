@@ -5,12 +5,14 @@
 //  Created by 신상우 on 2021/09/14.
 //
 import UIKit
+import RealmSwift
 
 class EditCategoryViewController: UIViewController {
     let palette = Palette()
     var selectedColorRow: Int?
     var selectedSegmentRow: Int?
     var saveDate:String = ""
+    let realm = try! Realm()
     
     let titleLabel: UILabel = {
         let label = UILabel()
@@ -139,8 +141,8 @@ class EditCategoryViewController: UIViewController {
         if name == ""{
             self.openAlert()
         }else{
-            let segment = realm.objects(Segments.self)
-            try! realm.write{
+            let segment = self.realm.objects(Segments.self)
+            try! self.realm.write{
                 segment[selectedSegmentRow!].name = name
                 segment[selectedSegmentRow!].colorRow = row
                 

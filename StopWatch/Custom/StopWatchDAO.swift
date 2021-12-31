@@ -6,11 +6,13 @@
 //
 
 import UIKit
+import RealmSwift
 
 class StopWatchDAO {
+    let realm = try! Realm()
     
     func create(date: String){ // 오늘의 데이터가 없을 때 오늘 데이터를 생성하는 함수
-        if let _ = realm.object(ofType: DailyData.self, forPrimaryKey: date) {
+        if let _ = self.realm.object(ofType: DailyData.self, forPrimaryKey: date) {
         } else {
             try! realm.write{
                 let day = DailyData() // 오늘 데이터 생성

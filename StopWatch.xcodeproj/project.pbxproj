@@ -31,7 +31,6 @@
 		DB8F533326F316AE0071F911 /* TodoListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8F533226F316AE0071F911 /* TodoListCell.swift */; };
 		DB945B2B272042900033D603 /* EditListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB945B2A2720428F0033D603 /* EditListView.swift */; };
 		DBAD2A4926D3E4370083478E /* BlackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBAD2A4826D3E4370083478E /* BlackViewController.swift */; };
-		DBBD52FC263677C5002F5157 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBD52FB263677C5002F5157 /* SettingViewController.swift */; };
 		DBBD53002636B109002F5157 /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBD52FF2636B109002F5157 /* CategoryViewController.swift */; };
 		DBBD53052636BB78002F5157 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBD53042636BB78002F5157 /* CategoryCell.swift */; };
 		DBBDF7562643DC59003F55FE /* PreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBDF7552643DC59003F55FE /* PreView.swift */; };
@@ -71,7 +70,6 @@
 		DB8F533226F316AE0071F911 /* TodoListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListCell.swift; sourceTree = "<group>"; };
 		DB945B2A2720428F0033D603 /* EditListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditListView.swift; sourceTree = "<group>"; };
 		DBAD2A4826D3E4370083478E /* BlackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlackViewController.swift; sourceTree = "<group>"; };
-		DBBD52FB263677C5002F5157 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		DBBD52FF2636B109002F5157 /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
 		DBBD53042636BB78002F5157 /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
 		DBBDF7552643DC59003F55FE /* PreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreView.swift; sourceTree = "<group>"; };
@@ -97,15 +95,15 @@
 		DB076D5826A696110063D3C6 /* MainView */ = {
 			isa = PBXGroup;
 			children = (
+				DBEC226B276B27740083ECDA /* TitleView.swift */,
 				DB0E89B8262842BE00533009 /* StopButtonTappedModalView.swift */,
 				DB289049261C500800FCC4BC /* CircleGraphView.swift */,
 				DB2890742623074900FCC4BC /* DrawView.swift */,
-				DB945B2A2720428F0033D603 /* EditListView.swift */,
 				DB8F533026F22FBD0071F911 /* TodoListHeaderView.swift */,
+				DB945B2A2720428F0033D603 /* EditListView.swift */,
 				DB8F533226F316AE0071F911 /* TodoListCell.swift */,
-				DBBDF75726527986003F55FE /* drawBarView.swift */,
 				DBEC2267276864380083ECDA /* EditTodoListView.swift */,
-				DBEC226B276B27740083ECDA /* TitleView.swift */,
+				DBBDF75726527986003F55FE /* drawBarView.swift */,
 			);
 			path = MainView;
 			sourceTree = "<group>";
@@ -134,7 +132,6 @@
 				DB8DB18C2611E67900A5814A /* StopWatchViewController.swift */,
 				DB8DB1872611E1C600A5814A /* ConcentrationTimeViewController.swift */,
 				DB8F532426F05C1A0071F911 /* EditCategoryViewController.swift */,
-				DBBD52FB263677C5002F5157 /* SettingViewController.swift */,
 				DBBD52FF2636B109002F5157 /* CategoryViewController.swift */,
 				DBAD2A4826D3E4370083478E /* BlackViewController.swift */,
 			);
@@ -375,7 +372,6 @@
 				DBBD53002636B109002F5157 /* CategoryViewController.swift in Sources */,
 				DB2890752623074A00FCC4BC /* DrawView.swift in Sources */,
 				DB5AE4A8276CB61C00CF737C /* CalendarView.swift in Sources */,
-				DBBD52FC263677C5002F5157 /* SettingViewController.swift in Sources */,
 				DBBDF7562643DC59003F55FE /* PreView.swift in Sources */,
 				DBBDF75826527986003F55FE /* drawBarView.swift in Sources */,
 				DB8DB1882611E1C600A5814A /* ConcentrationTimeViewController.swift in Sources */,

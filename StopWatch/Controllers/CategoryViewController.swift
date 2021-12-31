@@ -6,11 +6,13 @@
 //
 
 import UIKit
+import RealmSwift
 
 class CategoryViewController: UIViewController {
     //MARK: Properties
     let palette = Palette()
     var saveDate = ""
+    let realm = try! Realm()
     
     lazy var tableView: UITableView = {
         let view = UITableView()
@@ -95,18 +97,18 @@ class CategoryViewController: UIViewController {
 //MARK: TableViewDelegate
 extension CategoryViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let segment = realm.objects(Segments.self)
+        let segment = self.realm.objects(Segments.self)
         return segment.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "categoryCell", for: indexPath) as! CategoryCell
        
-        let filter = realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)
+        let filter = self.realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)
         let segment = filter!.dailySegment
-        let value = segment[indexPath.row].value ?? 0
-        let colorRow = segment[indexPath.row].segment?.colorRow ?? realm.objects(Segments.self)[indexPath.row].colorRow
-        let name = segment[indexPath.row].segment?.name ?? realm.objects(Segments.self)[indexPath.row].name
+        let value = segment[indexPath.row].value 
+        let colorRow = segment[indexPath.row].segment?.colorRow ?? self.realm.objects(Segments.self)[indexPath.row].colorRow
+        let name = segment[indexPath.row].segment?.name ?? self.realm.objects(Segments.self)[indexPath.row].name
 
         let (subSecond,second,minute,hour) = self.divideSecond(timeInterval: value )
 
@@ -123,16 +125,16 @@ extension CategoryViewController: UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete{
-            let filter = realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)
+            let filter = self.realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)
             if let todaySegment = filter?.dailySegment[indexPath.row]{
-                try! realm.write{
-                    realm.delete(todaySegment)
+                try! self.realm.write{
+                    self.realm.delete(todaySegment)
                 }
             }
-            let segment = realm.objects(Segments.self)[indexPath.row]
+            let segment = self.realm.objects(Segments.self)[indexPath.row]
             
-            try! realm.write{
-                realm.delete(segment)
+            try! self.realm.write{
+                self.realm.delete(segment)
             }
             tableView.reloadData()
         }
@@ -141,7 +143,7 @@ extension CategoryViewController: UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let editVC = EditCategoryViewController()
-        let segment = realm.objects(Segments.self)
+        let segment = self.realm.objects(Segments.self)
         self.navigationController?.pushViewController(editVC, animated: true)
         editVC.selectedSegmentRow = indexPath.row
 //        editVC.getNameTextField.text = SingleTonSegment.shared.segments[indexPath.row].name

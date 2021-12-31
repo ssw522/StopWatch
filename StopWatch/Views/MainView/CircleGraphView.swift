@@ -8,7 +8,6 @@
 import UIKit
 
 class CircleGraphView: UIView {
-    //MARK: Properties
     
     lazy var drawView: DrawView = {
         let view = DrawView()
@@ -19,27 +18,16 @@ class CircleGraphView: UIView {
         return view
     }()
     
-    //MARK: Init
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.configure()
+        
         self.layOut(frame)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    deinit {
-        
-    }
-    //MARK: Selector
-    
-    //MARK: Configue
-    func configure(){
-        
-    }
-    //MARK: Method
+
     func layOut(_ frame: CGRect){
         NSLayoutConstraint.activate([
             self.drawView.topAnchor.constraint(equalTo: self.topAnchor, constant: 40),

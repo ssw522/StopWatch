@@ -8,8 +8,6 @@
 import UIKit
 import RealmSwift
 
-let realm = try! Realm()
-
 struct checkImage {
     let images: [UIImage?] = [
         nil,

@@ -11,8 +11,8 @@ import RealmSwift
 
 class StopWatchViewController: UIViewController {
     //MARK: Properties
-    let realm = try! Realm()
     let palette = Palette()
+    let realm = try! Realm()
     var saveDate = "" {
         didSet{
             self.setGoalTime() // 목표시간 설정
@@ -27,7 +27,6 @@ class StopWatchViewController: UIViewController {
     var motionManager: CMMotionManager?
     var concentraionTimerVC: ConcentrationTimeViewController?
     var editListView: EditTodoListView?
-    var startDate: TimeInterval?
     var editGoalTimeView: EditGoalTimeView?
     var circleGraphView: CircleGraphView?
     var calendarView: CalendarView?
@@ -201,8 +200,8 @@ class StopWatchViewController: UIViewController {
         super.viewWillAppear(animated)
         // 프로퍼티 값 갱신
         self.saveDate = (UIApplication.shared.delegate as! AppDelegate).saveDate //오늘 날짜!
-        self.totalTime = realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)?.totalTime ?? 0
-        self.totalGoalTime = realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)?.totalGoalTime ?? 0
+        self.totalTime = self.realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)?.totalTime ?? 0
+        self.totalGoalTime = self.realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)?.totalGoalTime ?? 0
       
         self.setDeviceMotion()
         
@@ -226,7 +225,7 @@ class StopWatchViewController: UIViewController {
     }
     
     func reloadProgressBar(){
-        let object = realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)
+        let object = self.realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)
         self.totalGoalTime = object?.totalGoalTime ?? 0
         self.barView.per =
             self.totalGoalTime != 0 ? Float(self.totalTime / self.totalGoalTime): 0
@@ -236,7 +235,7 @@ class StopWatchViewController: UIViewController {
     }
     
     func setTimeLabel(){
-        let dailyData = realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)
+        let dailyData = self.realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)
         let time = dailyData?.totalTime ?? 0 // 오늘의 데이터가 없으면 0
         let (subSecond,second,minute,hour) = self.divideSecond(timeInterval: time)
         self.subTimeLabel.text = subSecond
@@ -244,7 +243,7 @@ class StopWatchViewController: UIViewController {
     }
     
     func setGoalTime(){
-        let dailyData = realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)
+        let dailyData = self.realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)
         let goal = dailyData?.totalGoalTime ?? 0 // 오늘의 데이터가 없으면 0
         let (_,_,minute,hour) = self.divideSecond(timeInterval: goal)
         self.goalTimeLabel.text = " \(hour) : \(minute)"
@@ -281,7 +280,7 @@ class StopWatchViewController: UIViewController {
     }
     
     func openCircleGrpahView(){
-        let filter = realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)
+        let filter = self.realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)
         guard let segment = filter?.dailySegment else {
             self.zeroTimeAlert()
             return
@@ -375,7 +374,7 @@ class StopWatchViewController: UIViewController {
         self.editGoalTimeView!.okButton.addTarget(self, action: #selector(self.didFinishEditingGoalTime(_:)), for: .touchUpInside)
         StopWatchDAO().create(date: self.saveDate) // 오늘 데이터가 없으면 데이터 생성
         
-        let dailyData = realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)!
+        let dailyData = self.realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)!
         let goal = dailyData.totalGoalTime
         let hourIndex = Int(goal / 3600) % 24 // 3600초 (1시간)으로 나눈 몫을 24로 나누면 시간 인덱스와 같다.
         let miniuteIndex = ((Int(goal) % 3600 ) / 60) / 5 // 남은 분을 5로 나누면 5분간격의 분 인덱스와 같다.
@@ -394,8 +393,8 @@ class StopWatchViewController: UIViewController {
     // 목표 시간 설정 뷰 닫기
     @objc func didFinishEditingGoalTime(_ sender: UIButton){
         if sender.tag == 1 {
-            let dailyData = realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)
-            try! realm.write{
+            let dailyData = self.realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)
+            try! self.realm.write{
                 dailyData!.totalGoalTime =
                     self.editGoalTimeView!.selectedHour + self.editGoalTimeView!.selectedMinute
             }
@@ -433,25 +432,15 @@ class StopWatchViewController: UIViewController {
     
     
     @objc func barButtonItemMethod(_ button: UIBarButtonItem){
-        let settingVC = SettingViewController()
         let categoryVC = CategoryViewController()
-        
-        switch button.tag {
-        case 1:
-            self.navigationController?.pushViewController(settingVC, animated: true)
-        case 2:
             self.navigationController?.pushViewController(categoryVC, animated: true)
-        
-        default:
-            break;
-        }
     }
     
     //세션(과목명)을 눌렀을때 호출되는 메소드
     @objc func clickedSection(_ sender: UIButton){
         StopWatchDAO().create(date: self.saveDate) // 오늘 데이터가 없으면 데이터 생성
         
-        let dailyData = realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)!
+        let dailyData = self.realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)!
         let segments = dailyData.dailySegment // 오늘 과목들
         let section = sender.tag //section번째 과목 인덱스
         let toDoList = segments[section].toDoList // section번째 과목의 할 일들
@@ -459,7 +448,7 @@ class StopWatchViewController: UIViewController {
         let row = toDoList.count // section번째 과목의 할 일 번호
         let indexPath = IndexPath(row: row, section: section )
 
-        try! realm.write{
+        try! self.realm.write{
             toDoList.append("")
             segments[section].listCheckImageIndex.append(0)
         }
@@ -574,7 +563,7 @@ extension StopWatchViewController {
                 return }
 
             let radian = abs(attitude.roll * 180.0 / Double.pi) //코어 모션 회전각도!
-            if radian >= 100{ //proxitmiysensor On
+            if radian >= 100{ //proxitmiysensor On 
                 UIDevice.current.isProximityMonitoringEnabled = true
                
                 if radian >= 160 { // timer start
@@ -585,7 +574,6 @@ extension StopWatchViewController {
                             self.concentraionTimerVC = ConcentrationTimeViewController()
                             self.navigationController?.pushViewController(self.concentraionTimerVC!, animated: true)
                         }
-//                        self.concentraionTimerVC!.startDate = Date().timeIntervalSince1970
                         self.motionManager?.stopDeviceMotionUpdates()
                         
                     }
@@ -673,7 +661,6 @@ extension StopWatchViewController {
             self.goalTimeButton.trailingAnchor.constraint(equalTo: self.goalTimeView.trailingAnchor),
             self.goalTimeButton.topAnchor.constraint(equalTo: self.goalTimeView.topAnchor),
             self.goalTimeButton.bottomAnchor.constraint(equalTo: self.goalTimeView.bottomAnchor)
-            
         ])
        
         
@@ -719,17 +706,17 @@ extension StopWatchViewController {
 //MARK:- TabelView delegate datasource
 extension StopWatchViewController: UITableViewDelegate,UITableViewDataSource{
     func numberOfSections(in tableView: UITableView) -> Int {
-        return realm.objects(Segments.self).count // 섹션 수 = 과목 수
+        return self.realm.objects(Segments.self).count // 섹션 수 = 과목 수
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let filter = realm.object(ofType: DailyData.self, forPrimaryKey: saveDate)
+        let filter = self.realm.object(ofType: DailyData.self, forPrimaryKey: saveDate)
         let segment = filter?.dailySegment
         return segment?[section].toDoList.count ?? 0 // 오늘의 리스트가 없으면 0개
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let segment = realm.objects(Segments.self)
+        let segment = self.realm.objects(Segments.self)
         
         let view = TodoListHeaderView()
 //        let colorRow = SingleTonSegment.shared.segments[section].colorRow
@@ -746,7 +733,7 @@ extension StopWatchViewController: UITableViewDelegate,UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let filter = realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)
+        let filter = self.realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)
         let segment = filter!.dailySegment
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! TodoListCell
         cell.saveDate = self.saveDate
@@ -792,7 +779,7 @@ extension StopWatchViewController: UITableViewDelegate,UITableViewDataSource{
             // 각 버튼 액션메소드 추가
             _editListView.editButton.button.addTarget(self, action: #selector(self.editListMethod(_:)), for: .touchUpInside)
             _editListView.deleteButton.button.addTarget(self, action: #selector(self.editListMethod(_:)), for: .touchUpInside)
-            let object = realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)
+            let object = self.realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)
             let title = object?.dailySegment[indexPath.section].toDoList[indexPath.row] // list 불러오기
             
             _editListView.title.text = "' \(title!) '"
@@ -818,21 +805,21 @@ extension StopWatchViewController: UITableViewDelegate,UITableViewDataSource{
 extension StopWatchViewController: UITextFieldDelegate {
     //입력이 끝나면 호출되는 델리게이트메소드
     func textFieldDidEndEditing(_ textField: UITextField, reason: UITextField.DidEndEditingReason) {
-        let filter = realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)
+        let filter = self.realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)
         let segment = filter!.dailySegment
 
         let row = segment[textField.tag].toDoList.count - 1
         
         if textField.text == "" {
 
-            try! realm.write{
+            try! self.realm.write{
                 segment[textField.tag].toDoList.remove(at: row)
                 segment[textField.tag].listCheckImageIndex.remove(at: row)
             }
             
         }else {
 
-            try! realm.write{
+            try! self.realm.write{
                 segment[textField.tag].toDoList[row] = textField.text!
             }
         }
@@ -846,7 +833,7 @@ extension StopWatchViewController: UITextFieldDelegate {
     }
     
     func textFieldDidChangeSelection(_ textField: UITextField) {
-        let filter = realm.object(ofType: DailyData.self, forPrimaryKey: saveDate)
+        let filter = self.realm.object(ofType: DailyData.self, forPrimaryKey: saveDate)
         let segment = filter!.dailySegment
 
         let row = segment[textField.tag].toDoList.count - 1
@@ -861,7 +848,7 @@ extension StopWatchViewController {
     @objc func editListMethod(_ sender: UIButton){
         if let editView = self.editListView {
             let indexPath = editView.indexPath
-            let segment = realm.object(ofType: DailyData.self, forPrimaryKey: saveDate)?.dailySegment
+            let segment = self.realm.object(ofType: DailyData.self, forPrimaryKey: saveDate)?.dailySegment
             let toDoList = segment?[indexPath!.section].toDoList[editView.indexPath!.row] // 이전텍스트 불러오기
             
             if sender.tag == 0 { // 수정버튼이면

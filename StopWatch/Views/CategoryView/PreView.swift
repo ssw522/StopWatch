@@ -6,13 +6,14 @@
 //
 
 import UIKit
+import RealmSwift
 
 class PreView: UIView {
     //MARK: Porperties
     var total: TimeInterval = 0.0
     lazy var radius = min(self.frame.width, self.frame.height) * 0.45
     let palette = Palette()
-    let segment = realm.objects(Segments.self)
+    let segment = try! Realm().objects(Segments.self)
     
     lazy var titleLabel: UILabel = {
         let label = UILabel()

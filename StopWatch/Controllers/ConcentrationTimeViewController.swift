@@ -6,6 +6,7 @@
 //
 //
 import UIKit
+import RealmSwift
 
 private let reuseIdentifier = "Cell"
 
@@ -17,6 +18,8 @@ class ConcentrationTimeViewController: UIViewController{
     var pickCategoryRow = 0
     var blackViewController: BlackViewController?
     var saveDate = ""
+    let realm = try! Realm()
+    
     let frameView:UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -138,7 +141,7 @@ class ConcentrationTimeViewController: UIViewController{
         self.pickerCategory.delegate = self
         self.pickerCategory.dataSource = self
         self.saveDate = (UIApplication.shared.delegate as! AppDelegate).saveDate
-        self.totalTime = realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)?.totalTime ?? 0
+        self.totalTime = self.realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)?.totalTime ?? 0
         self.navigationController?.navigationBar.isHidden = true
         StopWatchDAO().create(date: self.saveDate) // 오늘 데이터 없으면 생성
         //vibrate iphone when the timer starts
@@ -160,7 +163,7 @@ class ConcentrationTimeViewController: UIViewController{
     }
     
     func openStopModalView(){
-        let categoryName = realm.objects(Segments.self)[pickCategoryRow].name
+        let categoryName = self.realm.objects(Segments.self)[pickCategoryRow].name
         self.view.addSubview(blurView)
         self.view.addSubview(modalView)
         self.modalView.alpha = 0
@@ -180,8 +183,8 @@ class ConcentrationTimeViewController: UIViewController{
             stopWatchVC.setTimeLabel()
             stopWatchVC.concentraionTimerVC = nil
         }
-        let segments = realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate) // 오늘 과목
-        try! realm.write{
+        let segments = self.realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate) // 오늘 과목
+        try! self.realm.write{
             segments?.dailySegment[pickCategoryRow].value += self.timeInterval //선택한 과목에 시간 추가
             var totalTime: TimeInterval = 0
             for segValue in segments!.dailySegment {
@@ -329,7 +332,7 @@ extension ConcentrationTimeViewController: UIPickerViewDelegate,UIPickerViewData
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return realm.objects(Segments.self).count // 피커뷰 로우 개수
+        return self.realm.objects(Segments.self).count // 피커뷰 로우 개수
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
@@ -338,7 +341,7 @@ extension ConcentrationTimeViewController: UIPickerViewDelegate,UIPickerViewData
     }
     
     func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
-        let string = realm.objects(Segments.self)[row].name // 피커뷰 카테고리 이름 설정
+        let string = self.realm.objects(Segments.self)[row].name // 피커뷰 카테고리 이름 설정
         return NSAttributedString(string: string, attributes: [NSAttributedString.Key.foregroundColor: UIColor.darkGray])
     }
     

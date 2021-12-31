@@ -6,9 +6,12 @@
 //
 
 import UIKit
+import RealmSwift
 
 class TodoListCell: UITableViewCell {
     var cellNumber = 0
+    let realm = try! Realm()
+    
     var saveDate = ""
 //    let frameView: UIView = {
 //        let view = UIView()
@@ -134,7 +137,7 @@ class TodoListCell: UITableViewCell {
     
     @objc func changeImage(_ sender: UIButton){
         let row = sender.tag
-        let filter = realm.object(ofType: DailyData.self, forPrimaryKey: saveDate)
+        let filter = self.realm.object(ofType: DailyData.self, forPrimaryKey: saveDate)
         let segment = filter!.dailySegment
         
         guard let section = sender.superview?.tag else { return }
@@ -142,7 +145,7 @@ class TodoListCell: UITableViewCell {
 //        var index = SingleTonSegment.shared.segments[section].listCheckImageIndex[row]
         var index = segment[section].listCheckImageIndex[row]
         index += 1
-        try! realm.write{
+        try! self.realm.write{
             segment[section].listCheckImageIndex[row] = index % 4
         }
 //        SingleTonSegment.shared.segments[section].listCheckImageIndex[row] = index % 4

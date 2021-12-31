@@ -6,10 +6,13 @@
 //
 
 import UIKit
+import RealmSwift
+
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    let realm = try! Realm()
     
     var saveDate: String { // 오늘 날짜 반환!
         return self.date()
@@ -17,12 +20,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var totalTime: TimeInterval {
             //DB에서 전체시간 리턴
-            return realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)?.totalTime ?? 0
+        return self.realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)?.totalTime ?? 0
     }
     
     var totalGoalTime: TimeInterval {
             //DB에서 전체시간 리턴
-            return realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)?.totalGoalTime ?? 0
+        return self.realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)?.totalGoalTime ?? 0
     }
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
