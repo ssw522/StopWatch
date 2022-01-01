@@ -185,6 +185,7 @@ class StopWatchViewController: UIViewController {
         self.toDoTableView.dataSource = self
         self.hideKeyboardWhenTapped()
         self.addObserverMtd()
+        self.reloadProgressBar()
         
         self.navigationItem.titleView = self.titleView
         let titleViewTapGesture = UITapGestureRecognizer(target: self, action: #selector(clickCalendar(_:)))
@@ -572,7 +573,7 @@ extension StopWatchViewController {
                             self.concentraionTimerVC!.openBlackView()
                         }else{
                             self.concentraionTimerVC = ConcentrationTimeViewController()
-                            self.navigationController?.pushViewController(self.concentraionTimerVC!, animated: true)
+                            self.navigationController?.pushViewController(self.concentraionTimerVC!, animated: false)
                         }
                         self.motionManager?.stopDeviceMotionUpdates()
                         

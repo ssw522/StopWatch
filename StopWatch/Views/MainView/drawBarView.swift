@@ -25,7 +25,7 @@ class DrawBarView: UIView {
     
     lazy var progressView: UIProgressView = {
         let view = UIProgressView(progressViewStyle: .default)
-        view.progressTintColor = .red
+        view.progressTintColor = .darkGray
         view.translatesAutoresizingMaskIntoConstraints = false
 //        view.layer.position = CGPoint(x: 100, y: 200)
         view.progress = 0.0
