@@ -28,7 +28,7 @@ class StopWatchViewController: UIViewController {
     var concentraionTimerVC: ConcentrationTimeViewController?
     var editListView: EditTodoListView?
     var editGoalTimeView: EditGoalTimeView?
-    var circleGraphView: CircleGraphView?
+    var drawCircleView: DrawView?
     var calendarView: CalendarView?
     var tapGesture: UITapGestureRecognizer?
     var tapView: UIView?
@@ -251,7 +251,7 @@ class StopWatchViewController: UIViewController {
     
     func setSwipeGesture(){
         //차트뷰 아래로 내려서 닫기 제스쳐
-        if let view = self.circleGraphView {
+        if let view = self.drawCircleView {
             let downSwipe = UISwipeGestureRecognizer(target: self, action: #selector(self.respondToSwipeGesture(_:)))
             downSwipe.direction = .down
             view.addGestureRecognizer(downSwipe)
@@ -279,53 +279,53 @@ class StopWatchViewController: UIViewController {
         present(alert, animated: true)
     }
     
-    func openCircleGrpahView(){
+    func openDrawCircleView(){
         let filter = self.realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)
         guard let segment = filter?.dailySegment else {
             self.zeroTimeAlert()
             return
         }
         
-        let total = segment.reduce(0){
+        let total = segment.reduce(0){ // 총 시간 구하기
             (result,segment) in
             return segment.value + result
         }
-        if total == 0 {
+        if total == 0 { // 총 시간이 0 이면 경고 알림창띄우기.
             self.zeroTimeAlert()
             return
         }
-        self.circleGraphView = {
-            let view = CircleGraphView()
-            view.drawView.saveDate = self.saveDate
+        self.drawCircleView = {
+            let view = DrawView()
+            view.saveDate = self.saveDate
             view.translatesAutoresizingMaskIntoConstraints = false
             
             return view
         }()
         
-        self.view.addSubview(self.circleGraphView!)
+        self.view.addSubview(self.drawCircleView!)
         self.setSwipeGesture()
         
         NSLayoutConstraint.activate([
-            self.circleGraphView!.topAnchor.constraint(equalTo: self.frameView.bottomAnchor),
-            self.circleGraphView!.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-            self.circleGraphView!.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-            self.circleGraphView!.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+            self.drawCircleView!.topAnchor.constraint(equalTo: self.chartViewButton.bottomAnchor),
+            self.drawCircleView!.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            self.drawCircleView!.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+            self.drawCircleView!.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
         ])
         
-        self.circleGraphView!.transform = CGAffineTransform(translationX: 0, y: self.view.frame.height)
+        self.drawCircleView!.transform = CGAffineTransform(translationX: 0, y: self.view.frame.height)
         
         UIView.animate(withDuration: 0.3){
-            self.circleGraphView!.transform = .identity
+            self.drawCircleView!.transform = .identity
         }
     }
     
-    func closeCircleGrpahView(){
-        if let modal = self.circleGraphView {
+    func closeDrawCircleView(){
+        if let modal = self.drawCircleView {
             UIView.animate(withDuration: 0.3 ,animations: {
                 modal.transform = CGAffineTransform(translationX: 0, y: self.view.frame.height)
             }) {_ in
                 modal.removeFromSuperview()
-                self.circleGraphView = nil
+                self.drawCircleView = nil
             }
         }
     }
@@ -347,7 +347,7 @@ class StopWatchViewController: UIViewController {
     @objc func respondToSwipeGesture(_ gesture: UISwipeGestureRecognizer){
         switch gesture.direction {
         case .down:
-            self.closeCircleGrpahView()
+            self.closeDrawCircleView()
         default:
             break
         }
@@ -423,10 +423,10 @@ class StopWatchViewController: UIViewController {
     }
     
     @objc func clickToChartButton(){
-        if self.circleGraphView == nil {
-            self.openCircleGrpahView()
+        if self.drawCircleView == nil {
+            self.openDrawCircleView()
         }else {
-            self.closeCircleGrpahView()
+            self.closeDrawCircleView()
         }
     }
     

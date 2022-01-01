@@ -11,7 +11,7 @@ protocol StopModalViewDelegate {
     func closeModalView()
     func cancelModalView()
 }
-
+// ConcentrationViewController에서 확인 버튼 누를 때 나타나는 ModalView
 class StopButtonTappedModalView: UIView {
     //MARK: Properties
     var delegate: StopModalViewDelegate?

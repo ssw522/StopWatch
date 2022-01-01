@@ -19,6 +19,15 @@ class DrawView: UIView {
         return [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14)]
     }()
     
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.backgroundColor = .white
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     func date() -> String{
         let date = DateFormatter()
         date.locale = Locale(identifier: Locale.current.identifier)

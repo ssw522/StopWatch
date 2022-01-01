@@ -11,7 +11,6 @@
 		DB08F0C32765DB88001EBBEE /* StopWatchDAO.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB08F0C22765DB88001EBBEE /* StopWatchDAO.swift */; };
 		DB0E89B9262842BE00533009 /* StopButtonTappedModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0E89B8262842BE00533009 /* StopButtonTappedModalView.swift */; };
 		DB0F172C2614310F007C8448 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0F172B2614310F007C8448 /* Common.swift */; };
-		DB28904A261C500800FCC4BC /* CircleGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB289049261C500800FCC4BC /* CircleGraphView.swift */; };
 		DB2890752623074A00FCC4BC /* DrawView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2890742623074900FCC4BC /* DrawView.swift */; };
 		DB40D1F92609B32C00A4E9FC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB40D1F82609B32C00A4E9FC /* AppDelegate.swift */; };
 		DB40D2002609B32C00A4E9FC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB40D1FE2609B32C00A4E9FC /* Main.storyboard */; };
@@ -48,7 +47,6 @@
 		DB08F0C22765DB88001EBBEE /* StopWatchDAO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopWatchDAO.swift; sourceTree = "<group>"; };
 		DB0E89B8262842BE00533009 /* StopButtonTappedModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopButtonTappedModalView.swift; sourceTree = "<group>"; };
 		DB0F172B2614310F007C8448 /* Common.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
-		DB289049261C500800FCC4BC /* CircleGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleGraphView.swift; sourceTree = "<group>"; };
 		DB2890742623074900FCC4BC /* DrawView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawView.swift; sourceTree = "<group>"; };
 		DB40D1F52609B32C00A4E9FC /* StopWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StopWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB40D1F82609B32C00A4E9FC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -97,7 +95,6 @@
 			children = (
 				DBEC226B276B27740083ECDA /* TitleView.swift */,
 				DB0E89B8262842BE00533009 /* StopButtonTappedModalView.swift */,
-				DB289049261C500800FCC4BC /* CircleGraphView.swift */,
 				DB2890742623074900FCC4BC /* DrawView.swift */,
 				DB8F533026F22FBD0071F911 /* TodoListHeaderView.swift */,
 				DB945B2A2720428F0033D603 /* EditListView.swift */,
@@ -358,7 +355,6 @@
 				DBBD53052636BB78002F5157 /* CategoryCell.swift in Sources */,
 				DBF7E79226AFF438009902BE /* EditGoalTimeView.swift in Sources */,
 				DB5AE4AE276EFBF700CF737C /* GoalTimeView.swift in Sources */,
-				DB28904A261C500800FCC4BC /* CircleGraphView.swift in Sources */,
 				DB5AE4AA276CB6D800CF737C /* CalendarCell.swift in Sources */,
 				DB8DB18D2611E67900A5814A /* StopWatchViewController.swift in Sources */,
 				DB8F532F26F085E60071F911 /* CustomTextField.swift in Sources */,
