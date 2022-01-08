@@ -29,6 +29,7 @@
 		DB8F533126F22FBD0071F911 /* TodoListHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8F533026F22FBD0071F911 /* TodoListHeaderView.swift */; };
 		DB8F533326F316AE0071F911 /* TodoListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8F533226F316AE0071F911 /* TodoListCell.swift */; };
 		DBAD2A4926D3E4370083478E /* BlackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBAD2A4826D3E4370083478E /* BlackViewController.swift */; };
+		DBB33AA52789B93D00537881 /* AddColorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB33AA42789B93C00537881 /* AddColorView.swift */; };
 		DBBD53002636B109002F5157 /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBD52FF2636B109002F5157 /* CategoryViewController.swift */; };
 		DBBD53052636BB78002F5157 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBD53042636BB78002F5157 /* CategoryCell.swift */; };
 		DBBDF7562643DC59003F55FE /* PreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBDF7552643DC59003F55FE /* PreView.swift */; };
@@ -66,6 +67,7 @@
 		DB8F533026F22FBD0071F911 /* TodoListHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListHeaderView.swift; sourceTree = "<group>"; };
 		DB8F533226F316AE0071F911 /* TodoListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListCell.swift; sourceTree = "<group>"; };
 		DBAD2A4826D3E4370083478E /* BlackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlackViewController.swift; sourceTree = "<group>"; };
+		DBB33AA42789B93C00537881 /* AddColorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddColorView.swift; sourceTree = "<group>"; };
 		DBBD52FF2636B109002F5157 /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
 		DBBD53042636BB78002F5157 /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
 		DBBDF7552643DC59003F55FE /* PreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreView.swift; sourceTree = "<group>"; };
@@ -108,6 +110,7 @@
 				DBBD53042636BB78002F5157 /* CategoryCell.swift */,
 				DBBDF7552643DC59003F55FE /* PreView.swift */,
 				DB8F532726F07A3A0071F911 /* PaletteCell.swift */,
+				DBB33AA42789B93C00537881 /* AddColorView.swift */,
 			);
 			path = CategoryView;
 			sourceTree = "<group>";
@@ -357,6 +360,7 @@
 				DB8F532F26F085E60071F911 /* CustomTextField.swift in Sources */,
 				DB8F533126F22FBD0071F911 /* TodoListHeaderView.swift in Sources */,
 				DB8F533326F316AE0071F911 /* TodoListCell.swift in Sources */,
+				DBB33AA52789B93D00537881 /* AddColorView.swift in Sources */,
 				DBEC226C276B27740083ECDA /* TitleView.swift in Sources */,
 				DB5AE4AC276CB72300CF737C /* CalendarHeaderView.swift in Sources */,
 				DB8F532826F07A3A0071F911 /* PaletteCell.swift in Sources */,

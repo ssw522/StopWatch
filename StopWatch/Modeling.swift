@@ -48,6 +48,10 @@ struct Palette {
     
 }
 
+class Palettes: Object {
+    @Persisted var colorCode: Int // 16진수 색상코드 (UIColor는 저장 안되니까 코드로 저장)
+}
+
 class Segments: Object {
     @Persisted(primaryKey: true) var id : String = UUID().uuidString // 과목번호
     @Persisted var name: String // 과목명

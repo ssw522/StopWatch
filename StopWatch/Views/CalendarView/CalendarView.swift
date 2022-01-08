@@ -223,9 +223,6 @@ class CalendarView: UIView,UICollectionViewDelegate,UICollectionViewDataSource {
         let row = indexPath.row
         let dayNumber = self.getFirstDay(year: self.year, month: self.month, day: self.day)
         
-        
-        let formatter = NumberFormatter()
-        formatter.minimumIntegerDigits = 2
         let day = self.returnString(row + 1 - dayNumber)
         let month = self.returnString(self.month)
         let year = self.year

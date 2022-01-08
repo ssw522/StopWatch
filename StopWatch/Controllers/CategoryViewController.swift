@@ -146,8 +146,6 @@ extension CategoryViewController: UITableViewDelegate, UITableViewDataSource{
         let segment = self.realm.objects(Segments.self)
         self.navigationController?.pushViewController(editVC, animated: true)
         editVC.selectedSegmentRow = indexPath.row
-//        editVC.getNameTextField.text = SingleTonSegment.shared.segments[indexPath.row].name
-//        editVC.selectedColorRow = SingleTonSegment.shared.segments[indexPath.row].colorRow
         editVC.getNameTextField.text = segment[indexPath.row].name
         editVC.selectedColorRow = segment[indexPath.row].colorRow
     }

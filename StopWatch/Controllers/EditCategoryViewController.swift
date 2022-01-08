@@ -150,6 +150,16 @@ class EditCategoryViewController: UIViewController {
             self.navigationController?.popViewController(animated: true)
         }
     }
+    
+    // RealmDB에 저장되어 있는 16진수코드를 RGB로 뽑아 UIColor로 변환해주는 메소드
+    func uiColorFromHexCode(_ hex:Int)->UIColor{
+        let red = CGFloat((hex & 0xFF0000) >> 16) / 0xFF
+        let green = CGFloat((hex & 0x00FF00) >> 8) / 0xFF
+        let blue = CGFloat(hex & 0x0000FF) / 0xFF
+        
+        return UIColor(red: red, green: green, blue: blue, alpha: 1.0)
+    }
+
     //MARK: addSubView,AddTarget
     
     func addSubView(){
@@ -182,6 +192,19 @@ class EditCategoryViewController: UIViewController {
             break
         }
     }
+    
+    //MARK: addColorView ActionMethod
+    //색 저장
+    @objc func addColor(_ sender: UIButton) {
+        let realm = try! Realm()
+        try! realm.write{
+            let newColorCode = Palettes()
+            newColorCode.colorCode = sender.tag
+            realm.add(newColorCode)
+        }
+        self.paletteView.reloadData()
+    }
+    
     //MARK: layout
     func layout(){
         NSLayoutConstraint.activate([
@@ -224,17 +247,33 @@ class EditCategoryViewController: UIViewController {
 //MARK:- CollectionView Delegate , datasource
 extension EditCategoryViewController: UICollectionViewDelegate,UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.palette.paints.count
+        return self.realm.objects(Palettes.self).count + 1
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! PaltteCell
-        cell.paintView.backgroundColor = self.palette.paints[indexPath.row]
-        //선택된 셀이면 체크마크!
+        //초기화
+        cell.checkImageView.image = UIImage(systemName: "checkmark")
         cell.checkImageView.isHidden = true
-        if let row = self.selectedColorRow {
-            if indexPath.row == row {
-                cell.checkImageView.isHidden = false
+        let palettes = self.realm.objects(Palettes.self)
+        
+        //색상을 추가하는 마지막 셀 구성
+        if indexPath.row == palettes.count {
+            cell.checkImageView.image = UIImage(systemName: "plus")
+            cell.checkImageView.isHidden = false
+
+            cell.paintView.backgroundColor = .systemGray3
+        }else {
+            //팔레트 색상 구성
+            let colorCode = palettes[indexPath.row].colorCode
+    //        cell.paintView.backgroundColor = self.palette.paints[indexPath.row]
+            cell.paintView.backgroundColor = self.uiColorFromHexCode(colorCode)
+           
+            //선택된 셀이면 체크마크!
+            if let row = self.selectedColorRow {
+                if indexPath.row == row {
+                    cell.checkImageView.isHidden = false
+                }
             }
         }
         
@@ -242,11 +281,28 @@ extension EditCategoryViewController: UICollectionViewDelegate,UICollectionViewD
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        self.selectedColorRow = indexPath.row
-        collectionView.reloadData()
-    }
+        if indexPath.row == self.realm.objects(Palettes.self).count { // 색상 추가!
+            let addColorView = AddColorView()
+            self.view.addSubview(addColorView)
+            addColorView.addButton.addTarget(self, action: #selector(self.addColor(_:)), for: .touchUpInside)
+            
+            addColorView.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                addColorView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 50),
+                addColorView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -50),
+                addColorView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
+                addColorView.heightAnchor.constraint(equalToConstant: 140)
+            ])
 
+            
+        }else { // 색상 골랐을 때
+            self.selectedColorRow = indexPath.row
+            collectionView.reloadData()
+        }
+        
+    }
 }
+
 extension EditCategoryViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
             return CGSize(

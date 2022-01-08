@@ -270,7 +270,6 @@ class StopWatchViewController: UIViewController {
             
             _tapView.addGestureRecognizer(self.tapGesture!)
         }
-        
     }
     
     func zeroTimeAlert(){
@@ -720,10 +719,9 @@ extension StopWatchViewController: UITableViewDelegate,UITableViewDataSource{
         let segment = self.realm.objects(Segments.self)
         
         let view = TodoListHeaderView()
-//        let colorRow = SingleTonSegment.shared.segments[section].colorRow
+
         let colorRow = segment[section].colorRow
         let color = self.palette.paints[colorRow]
-//        view.categoryNameLabel.text = SingleTonSegment.shared.segments[section].name
         view.categoryNameLabel.text = segment[section].name
         view.frameView.backgroundColor = color
     
