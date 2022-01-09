@@ -26,6 +26,7 @@ class AddColorView: UIView {
         let tf = UITextField()
         tf.translatesAutoresizingMaskIntoConstraints = false
         tf.borderStyle = .roundedRect
+        tf.autocapitalizationType = .allCharacters // 대문자만 입력
         
         return tf
     }()
@@ -122,11 +123,27 @@ class AddColorView: UIView {
             self.cancelButton.heightAnchor.constraint(equalToConstant: 20)
             ])
     }
+    
+    //16진수인지 검사하는 메소드
+    func isChar(ascii: UInt8) -> Bool {
+        if ascii >= 65 && ascii <= 70 { return true } // A - F 만 통과
+        if ascii >= 48 && ascii <= 57 { return true } // 숫자만 통과
+        
+        return false
+    }
+    
     //글자 수 제한 메소드
     func checkMaxLength(textField: UITextField!, maxLength: Int) {
         if (textField.text?.count ?? 0 > maxLength) {
             textField.deleteBackward()
+        }else {
+            guard let ascii = textField.text?.last?.asciiValue else { return }
+            guard self.isChar(ascii: ascii) else { // 16진수가 아니면 지우기
+                textField.deleteBackward()
+                return
+            }
         }
+        
     }
     
     // textfield값이 변할때마다 불리는 액션 함수

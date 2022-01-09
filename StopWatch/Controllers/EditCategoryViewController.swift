@@ -203,6 +203,7 @@ class EditCategoryViewController: UIViewController {
             realm.add(newColorCode)
         }
         self.paletteView.reloadData()
+        sender.superview?.removeFromSuperview()
     }
     
     //MARK: layout
