@@ -67,7 +67,19 @@ class CategoryViewController: UIViewController {
         }
     }
     
-    
+    //과목 색상 인덱스 찾는 함수
+    func findRow(_ segmentRow: Int) -> Int? {
+        let objects = self.realm.objects(Palettes.self)
+        let colorCode = self.realm.objects(Segments.self)[segmentRow].colorCode
+        var index = 0
+        for element in objects {
+            if element.colorCode == colorCode {
+                return index
+            }
+            index += 1
+        }
+        return nil
+    }
     
     //MARK: Configure
     func configure(){
@@ -148,6 +160,11 @@ extension CategoryViewController: UITableViewDelegate, UITableViewDataSource{
         editVC.selectedSegmentRow = indexPath.row
         editVC.getNameTextField.text = segment[indexPath.row].name
         editVC.selectedColorCode = segment[indexPath.row].colorCode
+        if let colorRow = findRow(indexPath.row) {
+            editVC.selectedColorRow = colorRow
+            print(colorRow)
+        }
+        
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

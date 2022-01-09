@@ -54,7 +54,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         try! realm.write{
             if realm.objects(Segments.self).count == 0 {
                 let data = Segments()
-                data.colorCode = 0xE6D5C3
+                data.colorCode = 0xECE7E0
                 data.name = "기타"
                 
                 realm.add(data)
