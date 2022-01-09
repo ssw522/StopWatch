@@ -51,8 +51,8 @@ class DrawView: UIView {
             var startAngle: CGFloat = ((-.pi) / 2)
             
             segment.forEach(){(segment) in //각 카테고리별로 그래프 그리기!
-                let colorRow = segment.segment?.colorRow
-                let color = Palette().paints[colorRow!]
+                let colorCode = segment.segment!.colorCode
+                let color = uiColorFromHexCode(colorCode)
                 
                 let ratioTime = CGFloat(segment.value / self.total)
                 endAngle = startAngle + (ratioTime * (.pi * 2))
@@ -86,7 +86,7 @@ class DrawView: UIView {
                     var renderTimeRect = CGRect(origin: .zero, size: timeString.size(withAttributes: self.textAttributes))
                     
                     //카테고리 색의 RGB평균을 구하여 0.7보다 크면 검은색, 작으면 흰색 글씨로 표시
-                    if let RGB = Palette().paints[colorRow!].cgColor.components{
+                    if let RGB = color.cgColor.components {
                         var averageRGB: CGFloat = 0
                         
                         if color.cgColor.numberOfComponents == 2{
@@ -94,8 +94,7 @@ class DrawView: UIView {
                         }else{
                             averageRGB = (RGB[0] + RGB[1] + RGB [2]) / 3
                         }
-                    self.textAttributes[NSAttributedString.Key.foregroundColor] = (averageRGB > 0.7) ? UIColor.black : UIColor.white
-                        
+                        self.textAttributes[NSAttributedString.Key.foregroundColor] = (averageRGB > 0.7) ? UIColor.black : UIColor.white
                     }
                     
                     // center the origin of the rect

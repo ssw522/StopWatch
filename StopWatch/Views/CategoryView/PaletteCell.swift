@@ -8,6 +8,7 @@
 import UIKit
 
 class PaltteCell: UICollectionViewCell {
+    
     let paintView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -30,7 +31,6 @@ class PaltteCell: UICollectionViewCell {
         super.init(frame: frame)
         self.addSubView()
         self.layout()
-        
     }
     
     required init?(coder: NSCoder) {

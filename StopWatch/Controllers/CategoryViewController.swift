@@ -107,14 +107,14 @@ extension CategoryViewController: UITableViewDelegate, UITableViewDataSource{
         let filter = self.realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)
         let segment = filter!.dailySegment
         let value = segment[indexPath.row].value 
-        let colorRow = segment[indexPath.row].segment?.colorRow ?? self.realm.objects(Segments.self)[indexPath.row].colorRow
+        let colorCode = self.realm.objects(Segments.self)[indexPath.row].colorCode
         let name = segment[indexPath.row].segment?.name ?? self.realm.objects(Segments.self)[indexPath.row].name
 
         let (subSecond,second,minute,hour) = self.divideSecond(timeInterval: value )
 
         
         cell.nameLabel.text = name
-        cell.colorView.backgroundColor = self.palette.paints[colorRow]
+        cell.colorView.backgroundColor = self.uiColorFromHexCode(colorCode)
         cell.subValueLabel.text = subSecond
         cell.valueLabel.text = "\(hour) : \(minute) :  \(second)"
         
@@ -147,7 +147,7 @@ extension CategoryViewController: UITableViewDelegate, UITableViewDataSource{
         self.navigationController?.pushViewController(editVC, animated: true)
         editVC.selectedSegmentRow = indexPath.row
         editVC.getNameTextField.text = segment[indexPath.row].name
-        editVC.selectedColorRow = segment[indexPath.row].colorRow
+        editVC.selectedColorCode = segment[indexPath.row].colorCode
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

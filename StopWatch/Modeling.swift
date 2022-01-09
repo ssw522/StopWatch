@@ -55,7 +55,7 @@ class Palettes: Object {
 class Segments: Object {
     @Persisted(primaryKey: true) var id : String = UUID().uuidString // 과목번호
     @Persisted var name: String // 과목명
-    @Persisted var colorRow: Int // 과목색상번호
+    @Persisted var colorCode: Int // 과목색상코드
 }
 
 class SegmentData: Object {

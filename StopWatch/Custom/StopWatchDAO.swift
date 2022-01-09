@@ -42,7 +42,7 @@ class StopWatchDAO {
        
         try! realm.write{
             let segment = Segments() // 과목리스트 추가
-            segment.colorRow = row
+            segment.colorCode = row
             segment.name = name
             
             realm.add(segment)

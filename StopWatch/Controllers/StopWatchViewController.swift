@@ -11,7 +11,6 @@ import RealmSwift
 
 class StopWatchViewController: UIViewController {
     //MARK: Properties
-    let palette = Palette()
     let realm = try! Realm()
     var saveDate = "" {
         didSet{
@@ -720,8 +719,8 @@ extension StopWatchViewController: UITableViewDelegate,UITableViewDataSource{
         
         let view = TodoListHeaderView()
 
-        let colorRow = segment[section].colorRow
-        let color = self.palette.paints[colorRow]
+        let colorCode = segment[section].colorCode
+        let color = self.uiColorFromHexCode(colorCode)
         view.categoryNameLabel.text = segment[section].name
         view.frameView.backgroundColor = color
     
@@ -746,8 +745,8 @@ extension StopWatchViewController: UITableViewDelegate,UITableViewDataSource{
         cell.checkImageView.image = nil
         cell.checkImageView.isHidden = true
 
-        let colorRow = segment[indexPath.section].segment?.colorRow
-        let color = self.palette.paints[colorRow!]
+        let colorCode = segment[indexPath.section].segment!.colorCode
+        let color = self.uiColorFromHexCode(colorCode)
         let text = segment[indexPath.section].toDoList[indexPath.row]
         let checkImageIndex = segment[indexPath.section].listCheckImageIndex[indexPath.row]
         

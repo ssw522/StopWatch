@@ -1,5 +1,5 @@
 //
-//  AddColorView.swift
+//  EditColorView.swift
 //  StopWatch
 //
 //  Created by 신상우 on 2022/01/08.
@@ -8,8 +8,9 @@
 import UIKit
 import RealmSwift
 
-class AddColorView: UIView {
+class EditColorView: UIView {
     var hexCode = 0
+    var palettes: Palettes?
     
     let guideLabel: UILabel = {
         let label = UILabel()
@@ -63,6 +64,15 @@ class AddColorView: UIView {
         return button
     }()
     
+    let deleteColrButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(UIImage(systemName: "trash.fill"), for: .normal)
+        button.tintColor = .darkGray
+        
+        return button
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.addsubView()
@@ -73,6 +83,7 @@ class AddColorView: UIView {
         self.layer.cornerRadius = 4
         self.layer.borderColor = UIColor.darkGray.cgColor
         self.layer.borderWidth = 1
+        self.deleteColrButton.isHidden = true
     }
     
     required init?(coder: NSCoder) {
@@ -89,13 +100,12 @@ class AddColorView: UIView {
         self.addSubview(self.colorPreView)
         self.addSubview(self.addButton)
         self.addSubview(self.cancelButton)
+        self.addSubview(self.deleteColrButton)
     }
     
     func addTarget(){
         //글자 수를 제한하기 textfield에 액션 추가.
         self.getColorCodeTextfield.addTarget(self, action: #selector(self.didEditingChanged(_:)), for: .editingChanged)
-        //닫기
-        self.cancelButton.addTarget(self, action: #selector(self.closeView(_:)), for: .touchUpInside)
     }
     
     func layout() {
@@ -122,6 +132,13 @@ class AddColorView: UIView {
             self.cancelButton.widthAnchor.constraint(equalToConstant: 20),
             self.cancelButton.heightAnchor.constraint(equalToConstant: 20)
             ])
+        
+        NSLayoutConstraint.activate([
+            self.deleteColrButton.leadingAnchor.constraint(equalTo: self.colorPreView.trailingAnchor, constant: 10),
+            self.deleteColrButton.centerYAnchor.constraint(equalTo: self.colorPreView.centerYAnchor, constant: -1),
+            self.deleteColrButton.widthAnchor.constraint(equalToConstant: 24),
+            self.deleteColrButton.heightAnchor.constraint(equalToConstant: 24)
+        ])
     }
     
     //16진수인지 검사하는 메소드
@@ -154,27 +171,10 @@ class AddColorView: UIView {
         //색 미리보기
         if let hexCode = Int(tf.text ?? "", radix: 16) {
             self.addButton.tag = hexCode
-            let preViewColor = uiColorFromHexCode(hexCode)
+            let preViewColor = self.uiColorFromHexCode(hexCode)
             self.colorPreView.backgroundColor = preViewColor
         }
     }
-    
-    // RealmDB에 저장되어 있는 16진수코드를 RGB로 뽑아 UIColor로 변환해주는 메소드
-    func uiColorFromHexCode(_ hex:Int)->UIColor{
-        let red = CGFloat((hex & 0xFF0000) >> 16) / 0xFF
-        let green = CGFloat((hex & 0x00FF00) >> 8) / 0xFF
-        let blue = CGFloat(hex & 0x0000FF) / 0xFF
-        
-        return UIColor(red: red, green: green, blue: blue, alpha: 1.0)
-    }
-    
-    //닫기
-    @objc func closeView(_ sender: Any){
-        self.removeFromSuperview()
-    }
-    
-   
-
 }
  
  

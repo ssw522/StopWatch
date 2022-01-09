@@ -33,10 +33,17 @@ extension UIViewController {
 
     @objc func dismissKeyboard(){
         self.view.endEditing(true)
-}
-
-    
     }
+    
+    func uiColorFromHexCode(_ hex:Int)->UIColor{
+        let red = CGFloat((hex & 0xFF0000) >> 16) / 0xFF
+        let green = CGFloat((hex & 0x00FF00) >> 8) / 0xFF
+        let blue = CGFloat(hex & 0x0000FF) / 0xFF
+        
+        return UIColor(red: red, green: green, blue: blue, alpha: 1.0)
+    }
+    
+}
 
 extension UIView {
  
@@ -96,6 +103,14 @@ extension UIView {
         }
     }
 
+    //색상코드를 UIColor로 바꿔주는 메소드
+    func uiColorFromHexCode(_ hex:Int)->UIColor{
+        let red = CGFloat((hex & 0xFF0000) >> 16) / 0xFF
+        let green = CGFloat((hex & 0x00FF00) >> 8) / 0xFF
+        let blue = CGFloat(hex & 0x0000FF) / 0xFF
+        
+        return UIColor(red: red, green: green, blue: blue, alpha: 1.0)
+    }
     
 }
 

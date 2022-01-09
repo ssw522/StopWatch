@@ -67,7 +67,7 @@ class PreView: UIView {
                 path.move(to: center)
                 path.addArc(withCenter: center, radius: self.radius, startAngle: startAngle, endAngle: endAngle, clockwise: true)
                 
-                self.palette.paints[segment.colorRow].setFill()
+                uiColorFromHexCode(segment.colorCode).setFill()
                 path.fill()
                 // divide line stroke
                 UIColor.white.setStroke()
