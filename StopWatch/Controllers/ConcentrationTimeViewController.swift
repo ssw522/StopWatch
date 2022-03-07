@@ -97,10 +97,10 @@ class ConcentrationTimeViewController: UIViewController{
         let button = UIButton()
         button.setTitle(" 확 인 ", for: .normal)
         button.layer.cornerRadius = 10
-        button.layer.shadowColor = UIColor.black.cgColor
-//        button.layer.borderWidth = 1
-        button.layer.shadowOpacity = 0.3
-        button.layer.shadowOffset = .zero
+//        button.layer.shadowColor = UIColor.black.cgColor
+////        button.layer.borderWidth = 1
+//        button.layer.shadowOpacity = 0.3
+//        button.layer.shadowOffset = .zero
         button.titleLabel?.font = UIFont.systemFont(ofSize: 22, weight: .medium)
         button.setTitleColor(.darkGray, for: .normal)
         button.layer.backgroundColor = UIColor.white.cgColor
@@ -157,7 +157,7 @@ class ConcentrationTimeViewController: UIViewController{
     }
     
     func setTimeLabel(){
-        let (subSecond,second,minute,hour) = self.divideSecond(timeInterval: self.timeInterval )
+        let (subSecond,second,minute,hour) = self.view.divideSecond(timeInterval: self.timeInterval )
         self.subLabel.text = subSecond
         self.mainLabel.text = "\(hour) : \(minute) : \(second)"
     }

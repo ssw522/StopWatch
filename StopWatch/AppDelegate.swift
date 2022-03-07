@@ -44,7 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: Locale.current.identifier)
         formatter.timeZone = TimeZone(identifier: TimeZone.current.identifier)
-        formatter.dateFormat = "yyyy. MM. dd"
+        formatter.dateFormat = "yyyy.MM.dd"
         formatter.locale = Locale(identifier: "ko_KR")
         return formatter.string(from: Date())
     }

@@ -18,7 +18,7 @@ class CategoryCell: UITableViewCell {
         view.layer.shadowOpacity = 0.3
         view.layer.shadowColor = UIColor.black.cgColor
         view.layer.shadowOffset = .zero
-        
+    
         return view
     }()
     
@@ -64,10 +64,12 @@ class CategoryCell: UITableViewCell {
         self.configure()
         self.addSubView()
         self.layOut()
+
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+        
     }
     
     //MARK: Method

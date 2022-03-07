@@ -10,20 +10,12 @@ import UIKit
 class CalendarView: UIView,UICollectionViewDelegate,UICollectionViewDataSource {
     
     var calendarInfo: CalendarViewInfo = CalendarViewInfo()
+    let dayArray = ["S","M","T","W","T","F","S"]
     var year = 0
     var month = 0
     var day = 0
-    var seletedCell:Int?
-    var calendarViewHeightConstraint: NSLayoutConstraint?
+
     var delegate: StopWatchViewController?
-    
-    let titleView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .white
-        
-        return view
-    }()
     
     let titleLabel: UILabel = {
         let label = UILabel()
@@ -34,56 +26,52 @@ class CalendarView: UIView,UICollectionViewDelegate,UICollectionViewDataSource {
         
         return label
     }()
-    
-    let nextMonthButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle(">", for: .normal)
-        button.setTitleColor(.black, for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 16, weight: .thin)
+   
+    let collectionHeaderView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.isScrollEnabled = false
+        view.register(CalendarCell.self, forCellWithReuseIdentifier: "cell")
+        view.backgroundColor = .standardColor
         
-        return button
-    }()
-    
-    let previousMonthButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("<", for: .normal)
-        button.setTitleColor(.black, for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 16, weight: .thin)
-        
-        return button
+        return view
     }()
     
     let calendarView: UICollectionView = {
-        let view = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.register(CalendarCell.self, forCellWithReuseIdentifier: "cell")
-        view.register(CalendarHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "headerView")
-        view.backgroundColor = .white
-        view.showsVerticalScrollIndicator = false
+        view.backgroundColor = .standardColor
+        view.showsHorizontalScrollIndicator = false
+        view.isPagingEnabled = true // 페이징 스크롤 처리
         
+        return view
+    }()
+    
+    let underLineView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .darkGray
+        view.alpha = 0
         return view
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        self.backgroundColor = .white
         self.modelingInit()
         self.addSubView()
         self.layout()
-        self.addTaget()
+        self.collectionHeaderView.delegate = self
+        self.collectionHeaderView.dataSource = self
         self.calendarView.delegate = self
         self.calendarView.dataSource = self
-        self.setGesture()
-        self.getToday()
-//        self.titleLabel.text = (UIApplication.shared.delegate as! AppDelegate).saveDate
-        
+//        self.getToday()
+        self.backgroundColor = .standardColor
         self.layer.cornerRadius = 10
-        self.layer.shadowColor = UIColor.black.cgColor
-        self.layer.shadowOpacity = 0.4
-        self.layer.shadowOffset = .zero
     }
     
     required init?(coder: NSCoder) {
@@ -92,7 +80,7 @@ class CalendarView: UIView,UICollectionViewDelegate,UICollectionViewDataSource {
     
     //MARK: Method
     func modelingInit(){
-        self.calendarInfo.cellSize = 44
+        self.calendarInfo.cellSize = SingleTon.shared.cellSize! / 7
         self.calendarInfo.heightNumberOfCell = 6
     }
     
@@ -106,203 +94,173 @@ class CalendarView: UIView,UICollectionViewDelegate,UICollectionViewDataSource {
         self.titleLabel.text = "\(year)년 \(month)월"
     }
     
-    func getNumberOfCell() -> Int{
-        let startDay = getFirstDay(year: self.year, month: self.month, day: self.day)
-        let day = getMonthDay(year: self.year, month: self.month)
+    // CalendarMethod
+    
+    func isLeapYear(year: Int) -> Bool {
+        if (year%4 == 0 && year%100 != 0) || year%400 == 0{
+            return true //4로 떨어지고 100으로 안떨어지거나 400으로 떨어지면 윤년
+        }else{ return false } //아니면 평년
+    }
+
+    func getFirstDay(year: Int, month: Int, day: Int) -> Int {
+        let first = (year-1) / 400 // 400으로 떨어진건 무조건 윤년.
+        let second = (year-1) / 100 - first //100으로 나눈 수는 평년 그러나 400으로 나눈건 윤년이니까 빼준다.
+        let leapYear =  (year-1) / 4 - second // 4로 떨어진 수에 100으로 떨어진 수를 빼면 윤년
+        var days = (year - 1) * 365 + leapYear + 1 // 1년 1월 1일 기준 월요일로 잡고 월요일값 1에 일 수 만큼 더한 후 7로 나누어 그 해 첫 요일 값을 구한다.
         
-        if startDay + day <= calendarInfo.numberOfItem{
+        var monthDay = 0
+        
+        for i in 1..<month {
+            monthDay += getMonthDay(year: year, month: i)
+        }
+        days += monthDay
+
+        return days % 7
+    }
+
+    func getMonthDay(year: Int, month: Int) -> Int {
+        switch month {
+        case 4 : fallthrough
+        case 6 : fallthrough
+        case 9 : fallthrough
+        case 11 : return 30
+            
+        case 2 :
+            if isLeapYear(year: year) {
+                return 29
+            }else { return 28 }
+            
+        default:
+            return 31
+        }
+    }
+    
+    // 전체 셀 개수 구하기.
+    func getNumberOfCell() -> Int{
+        let startDay = self.getFirstDay(year: self.year, month: self.month, day: self.day)
+        let day = self.getMonthDay(year: self.year, month: self.month)
+        
+        if startDay + day <= self.calendarInfo.numberOfItem{
             self.calendarInfo.heightNumberOfCell = 6
         }else {
             self.calendarInfo.heightNumberOfCell = 7
         }
-//        self.calendarViewHeightConstraint?.isActive = false
-//        self.calendarViewHeightConstraint = self.calendarView.heightAnchor.constraint(equalToConstant: self.calendarInfo.getCalendarViewHeight)
-//        self.calendarViewHeightConstraint?.isActive = true
-//        
+
         return self.calendarInfo.numberOfItem
     }
     
+    //월마다 일 수 계산하여 날짜 표시하는 함수
     func presentCalendar(row: Int, cell:UICollectionViewCell){
         let cell = cell as! CalendarCell
-        let dayNumber = getFirstDay(year: self.year, month: self.month, day: self.day)
-       
+        cell.frameView.backgroundColor = .standardColor // 셀 배경 초기화
+        
+        let dayNumber = self.getFirstDay(year: self.year, month: self.month, day: self.day)
+        let day = dayNumber + self.day
+        // 해당 달의 첫 날짜(1일)에 해당하는 요일에 맞춰 달력 나타내기.
         if row >= dayNumber{
-            if row >= getMonthDay(year: self.year, month: self.month) + dayNumber{
+            if row >= self.getMonthDay(year: self.year, month: self.month) + dayNumber{
                 cell.isUserInteractionEnabled = false
-                cell.dateLabel.text = "*" // 초과
+                cell.dateLabel.text = " " // 초과
             }else{
                 cell.dateLabel.text = "\(row + 1 - dayNumber)"
                
                 //선택된 셀 배경 바꾸기
-                if let selectedRow = seletedCell {
-                    if selectedRow == row{
-                        cell.frameView.backgroundColor = UIColor(red: 100/255, green: 150/255, blue: 255/255, alpha: 1.0)
-                    }
+                if day == (row + 1) {
+                    cell.frameView.backgroundColor = .customPurpleColor
                 }
             }
-        }else { // 미만
-            cell.dateLabel.text = "*"
+        }else {
+            cell.dateLabel.text = " "  // 미만
             cell.isUserInteractionEnabled = false
         }
     }
+    
+    //MARK: - setGesture
+    
+    //MARK: Selector
+    
     //MARK: addsubview
     func addSubView(){
-        self.addSubview(self.titleView)
+        self.addSubview(self.collectionHeaderView)
         self.addSubview(self.calendarView)
-        
-        self.titleView.addSubview(self.titleLabel)
-        self.titleView.addSubview(self.nextMonthButton)
-        self.titleView.addSubview((self.previousMonthButton))
+        self.addSubview(self.underLineView)
     }
     //MARK: addtarget
-    func addTaget(){
-        self.previousMonthButton.addTarget(self, action: #selector(self.respondToButton(_:)), for: .touchUpInside)
-        self.nextMonthButton.addTarget(self, action: #selector(self.respondToButton(_:)), for: .touchUpInside)
-    }
+    
     //MARK: layout
     func layout(){
         NSLayoutConstraint.activate([
-            self.titleView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
-            self.titleView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            self.titleView.widthAnchor.constraint(equalToConstant: self.calendarInfo.getCalendarViewWidth),
-            self.titleView.heightAnchor.constraint(equalToConstant: self.calendarInfo.cellSize!),
+            self.collectionHeaderView.topAnchor.constraint(equalTo: self.topAnchor),
+            self.collectionHeaderView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            self.collectionHeaderView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            self.collectionHeaderView.heightAnchor.constraint(equalToConstant: 34)
         ])
         
         NSLayoutConstraint.activate([
-            self.calendarView.topAnchor.constraint(equalTo: self.titleView.bottomAnchor),
-            self.calendarView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            self.calendarView.widthAnchor.constraint(equalToConstant: self.calendarInfo.getCalendarViewWidth),
+            self.calendarView.topAnchor.constraint(equalTo: self.collectionHeaderView.bottomAnchor),
+            self.calendarView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            self.calendarView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             self.calendarView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
         
         NSLayoutConstraint.activate([
-            self.titleLabel.centerXAnchor.constraint(equalTo: self.titleView.centerXAnchor),
-            self.titleLabel.centerYAnchor.constraint(equalTo: self.titleView.centerYAnchor)
-        ])
-        
-        NSLayoutConstraint.activate([
-            self.previousMonthButton.trailingAnchor.constraint(equalTo: self.titleLabel.leadingAnchor, constant: -10),
-            self.previousMonthButton.centerYAnchor.constraint(equalTo: self.titleView.centerYAnchor),
-            self.previousMonthButton.widthAnchor.constraint(equalToConstant: 40),
-            self.previousMonthButton.heightAnchor.constraint(equalToConstant: 40)
-        ])
-        
-        NSLayoutConstraint.activate([
-            self.nextMonthButton.leadingAnchor.constraint(equalTo: self.titleLabel.trailingAnchor, constant: 10),
-            self.nextMonthButton.centerYAnchor.constraint(equalTo: self.titleView.centerYAnchor),
-            self.nextMonthButton.widthAnchor.constraint(equalToConstant: 40),
-            self.nextMonthButton.heightAnchor.constraint(equalToConstant: 40)
+            self.underLineView.topAnchor.constraint(equalTo: self.calendarView.bottomAnchor, constant: 4),
+            self.underLineView.leadingAnchor.constraint(equalTo: self.calendarView.leadingAnchor, constant: 14),
+            self.underLineView.trailingAnchor.constraint(equalTo: self.calendarView.trailingAnchor, constant: -14),
+            self.underLineView.heightAnchor.constraint(equalToConstant: 1)
         ])
     }
 
-    //MARK:- CollectionView Delegate,DataSource
+    //MARK: - CollectionView Delegate,DataSource
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return getNumberOfCell()
+        if collectionView == self.calendarView {
+            return self.getNumberOfCell()
+        } else {
+            return self.dayArray.count
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for:indexPath) as! CalendarCell
-        cell.frameView.backgroundColor = .white
-        cell.isUserInteractionEnabled = true
-        cell.dateLabel.font = .systemFont(ofSize: 16, weight: .thin)
-        
-        self.presentCalendar(row: indexPath.row, cell: cell)
-        
-        return cell
-    }
     
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "headerView", for: indexPath) as! CalendarHeaderView
-        
-        return headerView
+        if collectionView == self.calendarView {
+            cell.isUserInteractionEnabled = true
+            self.presentCalendar(row: indexPath.row, cell: cell)
+            
+            return cell
+        }else {
+            cell.isUserInteractionEnabled = false
+            cell.dateLabel.textColor = .darkGray
+            cell.dateLabel.text = self.dayArray[indexPath.row]
+            if indexPath.row == 0 { cell.dateLabel.textColor = .red }
+            if indexPath.row == 6 { cell.dateLabel.textColor = .blue }
+            
+            return cell
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        self.seletedCell = indexPath.row
-        let row = indexPath.row
-        let dayNumber = self.getFirstDay(year: self.year, month: self.month, day: self.day)
-        
-        let day = self.returnString(row + 1 - dayNumber)
-        let month = self.returnString(self.month)
-        let year = self.year
-        let string = "\(year). \(month). \(day)"
-        
-        self.delegate?.clickDay(saveDate: string)
-        collectionView.reloadData()
-        
-    }
-    
-    //MARK:- setGesture
-    func setGesture(){
-        let rightSwipe = UISwipeGestureRecognizer(target: self, action: #selector(self.respondToGesture(_:)))
-        let leftSwipe = UISwipeGestureRecognizer(target: self, action: #selector(self.respondToGesture(_:)))
-        rightSwipe.direction = .right
-        leftSwipe.direction = .left
-        
-        self.calendarView.addGestureRecognizer(rightSwipe)
-        self.calendarView.addGestureRecognizer(leftSwipe)
-    }
-    
-    //MARK: Selector
-    @objc func respondToGesture(_ gesture: UISwipeGestureRecognizer){
-        switch gesture.direction{
-        case .right:
-            if month == 1 {
-                self.year -= 1
-                self.month = 12
-            }else{
-            self.month -= 1
-            }
-            break
-        case .left:
-            if self.month == 12 {
-                self.year += 1
-                self.month = 1
-            }else{
-                self.month += 1
-            }
-            break
-        default:
-            return
+        if collectionView == self.calendarView {
+            let row = indexPath.row
+            let dayNumber = self.getFirstDay(year: self.year, month: self.month, day: self.day)
+            
+            let day = self.returnString(row + 1 - dayNumber)
+            let month = self.returnString(self.month)
+            let year = self.year
+            let string = "\(year).\(month).\(day)"
+            
+            self.delegate?.clickDay(saveDate: string)
         }
-        self.seletedCell = nil
-        self.titleLabel.text = "\(year)년 \(month)월"
-        self.calendarView.reloadData()
     }
-    
-    @objc func respondToButton(_ button:UIButton){
-        switch button {
-        case self.previousMonthButton:
-            if month == 1 {
-                self.year -= 1
-                self.month = 12
-            }else{
-            self.month -= 1
-            }
-            break
-        case self.nextMonthButton:
-            if self.month == 12 {
-                self.year += 1
-                self.month = 1
-            }else{
-                self.month += 1
-            }
-            break
-        default:
-            return
-        }
-        self.titleLabel.text = "\(year)년 \(month)월"
-        self.calendarView.reloadData()
-    }
-    
 }
+
 extension CalendarView: UICollectionViewDelegateFlowLayout {
     //뷰 크기 리턴
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
             return CGSize(
                 width: self.calendarInfo.cellSize!,
-                height: self.calendarInfo.cellSize!
+                height: 34
                 )
     }
     
@@ -312,12 +270,6 @@ extension CalendarView: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 0
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(
-            width: self.calendarInfo.getCalendarViewWidth,
-            height: self.calendarInfo.cellSize!)
     }
 
 }

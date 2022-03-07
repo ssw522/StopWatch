@@ -13,7 +13,7 @@ class TodoListHeaderView: UIView {
         let view = UIStackView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = 6
-        view.layer.shadowOpacity = 0.3
+        view.layer.shadowOpacity = 0.4
         view.layer.shadowColor = UIColor.black.cgColor
         view.layer.shadowOffset = .zero
         view.backgroundColor = .white

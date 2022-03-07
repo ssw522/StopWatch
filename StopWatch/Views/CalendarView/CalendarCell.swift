@@ -12,7 +12,7 @@ class CalendarCell: UICollectionViewCell {
     let frameView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.cornerRadius = 20
+        view.layer.cornerRadius = 16
         
         return view
     }()
@@ -20,17 +20,18 @@ class CalendarCell: UICollectionViewCell {
     let dateLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .black
+        label.font = UIFont(name: "Chalkboard SE", size: 16)
         
         return label
     }()
+    
     //MARK: Init
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = .white
         self.addSubView()
         self.layout()
-        
+        self.layer.cornerRadius = 10
+        self.backgroundColor = .standardColor
     }
     
     required init?(coder: NSCoder) {
@@ -54,7 +55,7 @@ class CalendarCell: UICollectionViewCell {
         
         NSLayoutConstraint.activate([
             self.dateLabel.centerXAnchor.constraint(equalTo: self.frameView.centerXAnchor),
-            self.dateLabel.centerYAnchor.constraint(equalTo: self.frameView.centerYAnchor)
+            self.dateLabel.centerYAnchor.constraint(equalTo: self.frameView.centerYAnchor),
         ])
     }
     

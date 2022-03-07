@@ -32,7 +32,7 @@ class DrawView: UIView {
         let date = DateFormatter()
         date.locale = Locale(identifier: Locale.current.identifier)
         date.timeZone = TimeZone(identifier: TimeZone.current.identifier)
-        date.dateFormat = "YYYY. MM. dd"
+        date.dateFormat = "YYYY.MM.dd"
         
         return date.string(from: Date())
     }

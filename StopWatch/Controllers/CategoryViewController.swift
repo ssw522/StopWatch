@@ -122,7 +122,7 @@ extension CategoryViewController: UITableViewDelegate, UITableViewDataSource{
         let colorCode = self.realm.objects(Segments.self)[indexPath.row].colorCode
         let name = segment[indexPath.row].segment?.name ?? self.realm.objects(Segments.self)[indexPath.row].name
 
-        let (subSecond,second,minute,hour) = self.divideSecond(timeInterval: value )
+        let (subSecond,second,minute,hour) = self.view.divideSecond(timeInterval: value )
 
         
         cell.nameLabel.text = name

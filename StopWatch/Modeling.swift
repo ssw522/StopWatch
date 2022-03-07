@@ -55,7 +55,7 @@ class Palettes: Object {
 class Segments: Object {
     @Persisted(primaryKey: true) var id : String = UUID().uuidString // 과목번호
     @Persisted var name: String // 과목명
-    @Persisted var colorCode: Int // 과목색상코드
+    @Persisted var colorCode: Int //과목색상코드
 }
 
 class SegmentData: Object {
@@ -90,4 +90,10 @@ struct CalendarViewInfo{
         return widthNumberOfCell * (heightNumberOfCell! - 1) // - 1은 요일 표기하는 헤더 셀 크기 빼주기.
     }
     var dayArray = ["일","월","화","수","목","금","토"]
+}
+
+class SingleTon {
+    static let shared = SingleTon()
+    
+    var cellSize: CGFloat?
 }

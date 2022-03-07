@@ -125,9 +125,9 @@ class GoalTimeView: UIView {
         self.frameView.addSubview(self.titleLabel)
         
         self.backgroundColor = .white
-        self.layer.shadowColor = UIColor.black.cgColor
-        self.layer.shadowOpacity = 0.6
-        self.layer.shadowOffset = .zero
+//        self.layer.shadowColor = UIColor.black.cgColor
+//        self.layer.shadowOpacity = 0.6
+//        self.layer.shadowOffset = .zero
         self.layer.cornerRadius = 4
         self.layout()
     }

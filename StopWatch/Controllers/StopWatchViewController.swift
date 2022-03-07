@@ -13,12 +13,13 @@ class StopWatchViewController: UIViewController {
     //MARK: Properties
     let realm = try! Realm()
     var saveDate = "" {
-        didSet{
-            self.setGoalTime() // 목표시간 설정
+        didSet{ // 날짜가 바뀔 때마다
+            self.setGoalTime() // 목표시간 Label 재설정
             self.reloadProgressBar() // 진행바 재로딩
-            self.setTimeLabel() // 시간 다시 표시
-            self.titleView.label.text = self.saveDate // 타이틀 날짜 다시표시
+            self.setTimeLabel() // 현재시간 Label 재설정
+            self.titleView.label.text = self.convertDate() // 타이틀 날짜 다시표시
             self.toDoTableView.reloadData()
+            print(saveDate)
         }
     }
     var totalTime: TimeInterval = 0
@@ -45,7 +46,7 @@ class StopWatchViewController: UIViewController {
 
         return view
     }()
-//
+
     lazy var goalTimeTitle: UIImageView = {
         let view = UIImageView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -94,6 +95,8 @@ class StopWatchViewController: UIViewController {
         return view
     }()
     
+    
+    
     let mainTimeLabel: UILabel = {
         let label = UILabel()
         label.text = "00 : 00 : 00"
@@ -137,11 +140,10 @@ class StopWatchViewController: UIViewController {
         button.setTitle("chart", for: .normal)
         button.titleLabel?.textAlignment = .center
         button.layer.cornerRadius = 35
-        button.setTitleShadowColor(.black, for: .normal)
         button.layer.shadowOpacity = 0.5
         button.layer.shadowRadius = 2
-        button.layer.shadowColor = UIColor.gray.cgColor
         button.layer.shadowOffset = .zero
+        button.layer.shadowColor = UIColor.gray.cgColor
         
         return button
     }()
@@ -175,19 +177,18 @@ class StopWatchViewController: UIViewController {
     //MARK: Method
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.configured()
-        self.addSubView()
-        self.layOut()
+        self.configured()   // 뷰 초기 설정 메소드
+        self.addSubView()   // 서브뷰 추가 메소드
+        self.layOut()       // 레이이웃 메소드
         self.addTarget()
-        self.setNotificationCenter()
         self.toDoTableView.delegate = self
         self.toDoTableView.dataSource = self
-        self.hideKeyboardWhenTapped()
-        self.addObserverMtd()
+        self.hideKeyboardWhenTapped() //
+        self.setNavigationItem()
+        self.addObserverMtd() // 옵저버 추가
         self.reloadProgressBar()
-        
-        self.navigationItem.titleView = self.titleView
-        let titleViewTapGesture = UITapGestureRecognizer(target: self, action: #selector(clickCalendar(_:)))
+       
+        let titleViewTapGesture = UITapGestureRecognizer(target: self, action: #selector(self.openCalendar(_:)))
         self.titleView.isUserInteractionEnabled = true
         self.titleView.addGestureRecognizer(titleViewTapGesture)
         
@@ -203,11 +204,13 @@ class StopWatchViewController: UIViewController {
         self.totalTime = self.realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)?.totalTime ?? 0
         self.totalGoalTime = self.realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)?.totalGoalTime ?? 0
       
-        self.setDeviceMotion()
-        
-        self.navigationController?.navigationBar.isHidden = false
-        
-        //네비게이션바 컬러 설정
+        self.setDeviceMotion()   // coremotion 시작
+        self.reloadProgressBar() // 진행바 재로딩
+        self.setNavigationBar()  // 네비게이션바 설정
+    }
+    
+    func setNavigationBar() {
+        // Set navigationbar Color ( iOS15기준 버전별로 분기 )
         if #available(iOS 15.0, *) {
             let appearance = UINavigationBarAppearance()
             appearance.configureWithOpaqueBackground()    // 불투명하게
@@ -217,10 +220,15 @@ class StopWatchViewController: UIViewController {
         }else {
             self.navigationController?.navigationBar.barTintColor = .standardColor
         }
+        // 네비게이션바 숨기지않기.
+        self.navigationController?.navigationBar.isHidden = false
+        
+        self.navigationController?.navigationBar.setBackgroundImage(nil, for:.default)
+        self.navigationController?.navigationBar.clipsToBounds = true
+
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-//        print("viewWillDisappear")
         self.motionManager?.stopDeviceMotionUpdates()
     }
     
@@ -237,7 +245,7 @@ class StopWatchViewController: UIViewController {
     func setTimeLabel(){
         let dailyData = self.realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)
         let time = dailyData?.totalTime ?? 0 // 오늘의 데이터가 없으면 0
-        let (subSecond,second,minute,hour) = self.divideSecond(timeInterval: time)
+        let (subSecond,second,minute,hour) = self.view.divideSecond(timeInterval: time)
         self.subTimeLabel.text = subSecond
         self.mainTimeLabel.text = "\(hour) : \(minute) :  \(second)"
     }
@@ -245,10 +253,11 @@ class StopWatchViewController: UIViewController {
     func setGoalTime(){
         let dailyData = self.realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)
         let goal = dailyData?.totalGoalTime ?? 0 // 오늘의 데이터가 없으면 0
-        let (_,_,minute,hour) = self.divideSecond(timeInterval: goal)
+        let (_,_,minute,hour) = self.view.divideSecond(timeInterval: goal)
         self.goalTimeLabel.text = " \(hour) : \(minute)"
     }
     
+    // gestrue method
     func setSwipeGesture(){
         //차트뷰 아래로 내려서 닫기 제스쳐
         if let view = self.drawCircleView {
@@ -278,7 +287,9 @@ class StopWatchViewController: UIViewController {
         present(alert, animated: true)
     }
     
+    // subview open method
     func openDrawCircleView(){
+        // DB불러오기
         let filter = self.realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)
         guard let segment = filter?.dailySegment else {
             self.zeroTimeAlert()
@@ -318,6 +329,9 @@ class StopWatchViewController: UIViewController {
         }
     }
     
+    
+    // subview close method
+    // 차트 뷰 닫는 함수
     func closeDrawCircleView(){
         if let modal = self.drawCircleView {
             UIView.animate(withDuration: 0.3 ,animations: {
@@ -326,6 +340,16 @@ class StopWatchViewController: UIViewController {
                 modal.removeFromSuperview()
                 self.drawCircleView = nil
             }
+        }
+    }
+    
+    //캘린더 뷰 닫는 함수
+    func closeCalendarView(){
+        if let calendar = self.calendarView {
+            calendar.delegate = nil
+            self.calendarView = nil
+            self.titleView.label.text = self.convertDate()
+            calendar.removeFromSuperview()
         }
     }
     
@@ -338,8 +362,27 @@ class StopWatchViewController: UIViewController {
             
             return button
         }()
-
-        self.navigationItem.leftBarButtonItems =  [categoryEditBarButtonItem]
+        
+        let previousMonthButton: UIBarButtonItem = {
+            let button = UIBarButtonItem(title: "<", style: .plain, target: self, action: #selector(self.respondToBarButton(_:)))
+            button.tag = 0
+            button.tintColor = .darkGray
+            
+            return button
+        }()
+        
+        
+        let nextMonthButton: UIBarButtonItem = {
+            let button = UIBarButtonItem(title: ">", style: .plain, target: self, action: #selector(self.respondToBarButton(_:)))
+            button.tag = 1
+            button.tintColor = .darkGray
+            return button
+        }()
+    
+        let titleView = UIBarButtonItem.init(customView: self.titleView)
+        self.navigationItem.rightBarButtonItems =  [categoryEditBarButtonItem]
+        
+        self.navigationItem.leftBarButtonItems = [titleView,previousMonthButton,nextMonthButton]
     }
     
     //MARK: Selector
@@ -351,6 +394,43 @@ class StopWatchViewController: UIViewController {
             break
         }
     }
+    
+    @objc func respondToBarButton(_ button:UIButton){
+        var year =  Int(self.splitDate().0)!
+        var month = Int(self.splitDate().1)!
+        let day = Int(self.splitDate().2)!
+        
+        // 다음 달, 이전 달 버튼 클릭시마다 분기하여 동작
+        switch button.tag {
+        case 0: // previous button
+            if month == 1 {
+                year -= 1
+                month = 12
+            }else{
+                month -= 1
+            }
+            break
+        case 1: // next button
+            if month == 12 {
+                year += 1
+                month = 1
+            }else{
+                month += 1
+            }
+            break
+        default:
+            return
+        }
+        
+        self.saveDate = String(year) + "." + self.view.returnString(month) + "." + self.view.returnString(day)
+        
+        // 바뀐 값 캘린더뷰로 전달하고 컬렉션뷰 리로드
+        self.calendarView?.day = day
+        self.calendarView?.month = month
+        self.calendarView?.year = year
+        self.calendarView?.calendarView.reloadData()
+    }
+
     
     @objc func proximityChangedMtd(sender: Notification){
         let isTrue = UIDevice.current.isProximityMonitoringEnabled
@@ -377,8 +457,7 @@ class StopWatchViewController: UIViewController {
         let goal = dailyData.totalGoalTime
         let hourIndex = Int(goal / 3600) % 24 // 3600초 (1시간)으로 나눈 몫을 24로 나누면 시간 인덱스와 같다.
         let miniuteIndex = ((Int(goal) % 3600 ) / 60) / 5 // 남은 분을 5로 나누면 5분간격의 분 인덱스와 같다.
-        print("hourIndex : \(hourIndex)")
-        print("miniuteIndex : \(miniuteIndex)")
+        
         self.editGoalTimeView!.timePicker.selectRow(hourIndex, inComponent: 0, animated: false) //시간초기값
         self.editGoalTimeView!.timePicker.selectRow(miniuteIndex, inComponent: 1, animated: false)//분초기값
         self.editGoalTimeView!.selectedMinute = TimeInterval(Int(goal) % 3600)
@@ -389,6 +468,7 @@ class StopWatchViewController: UIViewController {
             self.editGoalTimeView!.center = CGPoint(x: self.view.frame.width / 2, y: self.view.frame.height - 130)
         }
     }
+    
     // 목표 시간 설정 뷰 닫기
     @objc func didFinishEditingGoalTime(_ sender: UIButton){
         if sender.tag == 1 {
@@ -477,56 +557,95 @@ class StopWatchViewController: UIViewController {
     //탭 제스쳐를 감지하여 뷰를 닫는 액션함수
     @objc func respondToTapGesture(_ sender: Any){
         guard let _tapGesture = self.tapGesture else { return } // nil이면 그냥 종료
-        self.view.removeGestureRecognizer(_tapGesture) // 제스쳐 제거
         //편집 뷰가 열려 있으면 편집 뷰 닫기
-        if let editView = self.editListView {
-            UIView.animate(withDuration: 0.3,animations: {
-                editView.center = CGPoint(x: self.view.frame.width / 2, y: self.view.frame.height + 40)
-            }){ (_) in
-                editView.removeFromSuperview() // 슈퍼뷰에서 제거!
-                self.editListView = nil
-            }
-        }
+        self.closeListEditView()
+        
         // 캘린더가 열려있으면 캘린더 닫기
-        if let calendar = self.calendarView {
-            calendar.delegate = nil
-            self.calendarView = nil
-            self.titleView.label.text = self.saveDate
-            calendar.removeFromSuperview()
-        }
+        self.closeCalendarView()
+        
+        // 탭 제스쳐 제거
         self.tapGesture = nil
+        self.view.removeGestureRecognizer(_tapGesture)
+        // 탭뷰 제거
         self.tapView?.removeFromSuperview()
         self.tapView = nil
     }
     
     //MARK: CalendarView method
     //캘린더 뷰 여는 메소드!
-    @objc func clickCalendar(_ sender: Any){
-        guard self.calendarView == nil else { return }
-        self.calendarView = CalendarView()
+    @objc func openCalendar(_ sender: Any){
+        guard self.calendarView == nil else {
+            self.closeCalendarView()
+            return
+            
+        }
+        //tap 제스쳐 추가
         self.setTapGesture()
         
-        if let calendar = self.calendarView {
-            calendar.translatesAutoresizingMaskIntoConstraints = false
-            calendar.delegate = self
-            self.view.addSubview(calendar)
-            calendar.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-            calendar.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: -100).isActive = true
-            calendar.widthAnchor.constraint(equalToConstant: self.view.frame.width - 60).isActive = true
-            calendar.heightAnchor.constraint(equalToConstant: 280).isActive = true
-        }
+        // calendarView 인스턴스 생성
+        self.calendarView = {
+            SingleTon.shared.cellSize = self.view.frame.width - 20
+            let view = CalendarView()
+            view.delegate = self
+            let (year,month,day) = splitDate()
+            view.year = Int(year)!
+            view.month = Int(month)!
+            view.day = Int(day)!
+            self.view.addSubview(view)
+            view.translatesAutoresizingMaskIntoConstraints = false
+            
+            NSLayoutConstraint.activate([
+                view.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+                view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
+                view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10),
+                view.heightAnchor.constraint(equalToConstant: 69)
+            ])
+            
+            return view
+        }()
+        
     }
     
     func clickDay(saveDate: String) {
         self.saveDate = saveDate
         self.toDoTableView.reloadData()
+        self.closeCalendarView()
+    }
+    
+    func splitDate() -> (String,String,String) {
+        let split = self.saveDate.split(separator: ".")
+        let year = String(split[0])
+        let month = String(split[1])
+        let day = String(split[2])
         
-        if let calendar = self.calendarView {
-            calendar.delegate = nil
-            self.calendarView = nil
-            self.titleView.label.text = self.saveDate
-            calendar.removeFromSuperview()
+        return (year,month,day)
+    }
+    
+    //요일 변화 메소드
+    func convertDate()-> String{
+        var (year,month,day) = self.splitDate()
+        var monthWord = ""
+        year.removeFirst()
+        year.removeFirst()
+        
+        switch month {
+        case "01": monthWord = "January"
+        case "02": monthWord = "February"
+        case "03": monthWord = "March"
+        case "04": monthWord = "April"
+        case "05": monthWord = "May"
+        case "06": monthWord = "June"
+        case "07": monthWord = "July"
+        case "08": monthWord = "August"
+        case "09": monthWord = "September"
+        case "10": monthWord = "October"
+        case "11": monthWord = "November"
+        case "12": monthWord = "December"
+        default:
+            print(self.saveDate)
         }
+        
+        return year + " " + monthWord
     }
 }
 
@@ -536,17 +655,8 @@ extension StopWatchViewController {
     //MARK: Configured
     func configured() {
         self.view.backgroundColor = .white
-        self.navigationController?.navigationBar.isHidden = false
-        self.navigationController?.navigationBar.isTranslucent = false
-        self.setNavigationItem()
-       
     }
     
-    //MARK: NotificationCenter
-    func setNotificationCenter() {
-        NotificationCenter.default.addObserver(self, selector: #selector(proximityChangedMtd(sender:)), name: UIDevice.proximityStateDidChangeNotification, object: nil)
-       
-    }
     //타이머 구동 방식
     func setDeviceMotion(){
         self.motionManager = CMMotionManager()
@@ -610,7 +720,7 @@ extension StopWatchViewController {
             self.frameView.topAnchor.constraint(equalTo: self.view.topAnchor),
             self.frameView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
             self.frameView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-            self.frameView.heightAnchor.constraint(equalToConstant: 250)
+            self.frameView.heightAnchor.constraint(equalToConstant: 340)
         ])
         
         NSLayoutConstraint.activate([
@@ -672,7 +782,7 @@ extension StopWatchViewController {
         
         //Level 2
         NSLayoutConstraint.activate([
-            self.mainTimeLabel.centerYAnchor.constraint(equalTo: self.frameView.centerYAnchor),
+            self.mainTimeLabel.bottomAnchor.constraint(equalTo: self.frameView.bottomAnchor, constant: -80),
             self.mainTimeLabel.centerXAnchor.constraint(equalTo: self.frameView.centerXAnchor),
             self.mainTimeLabel.leadingAnchor.constraint(equalTo: self.frameView.leadingAnchor, constant: 15),
             self.mainTimeLabel.trailingAnchor.constraint(equalTo: self.frameView.trailingAnchor, constant: -15),
@@ -693,11 +803,13 @@ extension StopWatchViewController {
     //MARK: AddObserver
     func addObserverMtd(){
         let notificationCenter = NotificationCenter.default
-    
+        // 키보드 나오고 들어갈때 호출되는 메소드 추가!
         notificationCenter.addObserver(self, selector: #selector(self.keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         
         notificationCenter.addObserver(self, selector: #selector(self.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         
+        // 근접센서가 작동할때 호출되는 메소드 추가 !
+        notificationCenter.addObserver(self, selector: #selector(proximityChangedMtd(sender:)), name: UIDevice.proximityStateDidChangeNotification, object: nil)
     }
 }
 
@@ -709,7 +821,7 @@ extension StopWatchViewController: UITableViewDelegate,UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let filter = self.realm.object(ofType: DailyData.self, forPrimaryKey: saveDate)
+        let filter = self.realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)
         let segment = filter?.dailySegment
         return segment?[section].toDoList.count ?? 0 // 오늘의 리스트가 없으면 0개
     }
@@ -831,7 +943,7 @@ extension StopWatchViewController: UITextFieldDelegate {
     }
     
     func textFieldDidChangeSelection(_ textField: UITextField) {
-        let filter = self.realm.object(ofType: DailyData.self, forPrimaryKey: saveDate)
+        let filter = self.realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)
         let segment = filter!.dailySegment
 
         let row = segment[textField.tag].toDoList.count - 1
@@ -846,7 +958,7 @@ extension StopWatchViewController {
     @objc func editListMethod(_ sender: UIButton){
         if let editView = self.editListView {
             let indexPath = editView.indexPath
-            let segment = self.realm.object(ofType: DailyData.self, forPrimaryKey: saveDate)?.dailySegment
+            let segment = self.realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)?.dailySegment
             let toDoList = segment?[indexPath!.section].toDoList[editView.indexPath!.row] // 이전텍스트 불러오기
             
             if sender.tag == 0 { // 수정버튼이면
@@ -861,7 +973,7 @@ extension StopWatchViewController {
                         segment?[indexPath!.section].toDoList[editView.indexPath!.row] = (alert.textFields?[0].text)!
                     }
                     self.toDoTableView.reloadData()
-                    self.removeListEditView()
+                    self.closeListEditView()
                     
                 })
                 self.present(alert, animated: false)
@@ -875,7 +987,7 @@ extension StopWatchViewController {
                         segment?[indexPath!.section].toDoList.remove(at: indexPath!.row) // 리스트 삭제
                         segment?[indexPath!.section].listCheckImageIndex.remove(at: indexPath!.row)
                         self.toDoTableView.reloadData()
-                        self.removeListEditView()
+                        self.closeListEditView()
                     }
                 })
                 self.present(alert, animated: false)
@@ -884,7 +996,7 @@ extension StopWatchViewController {
         }
     }
     
-    func removeListEditView(){
+    func closeListEditView(){
         if let editView = self.editListView {
             UIView.animate(withDuration: 0.3,animations: {
                 editView.center = CGPoint(x: self.view.frame.width / 2, y: self.view.frame.height + 40)

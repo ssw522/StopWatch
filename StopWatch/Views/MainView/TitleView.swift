@@ -4,11 +4,20 @@
 //
 //  Created by 신상우 on 2021/12/16.
 //
-//StopWatchViewController의 NavigationBar CustomTitleView ( 날짜 + 달력 이미지 )
+// StopWatchViewController의 NavigationBar CustomTitleView ( 날짜 )
 import UIKit
 
 class TitleView: UIView {
-    let view: UIView = {
+    let stackView: UIStackView = {
+        let view = UIStackView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.distribution = .fill
+        view.alignment = .fill
+        
+        return view
+    }()
+    
+    let frameView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         
@@ -19,24 +28,16 @@ class TitleView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .black
-        label.font = .systemFont(ofSize: 16, weight: .semibold)
+        label.font = UIFont(name: "Arial Rounded MT Bold", size: 24)
         label.textAlignment = .center
         
         return label
     }()
     
-    let imageView: UIImageView = {
-        let view = UIImageView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.image = UIImage(systemName: "calendar")
-        view.tintColor = .black
-        
-        return view
-    }()
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.configure()
+        
     }
     
     required init?(coder: NSCoder) {
@@ -44,30 +45,30 @@ class TitleView: UIView {
     }
     
     func configure() {
-        self.addSubview(self.view)
-        self.view.addSubview(self.label)
-        self.view.addSubview(self.imageView)
-
+        self.addSubview(self.stackView)
+        self.stackView.addSubview(self.label)
+        self.stackView.addSubview(self.frameView)
+        
         NSLayoutConstraint.activate([
-            self.view.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            self.view.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            self.view.topAnchor.constraint(equalTo: self.topAnchor),
-            self.view.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-            self.view.widthAnchor.constraint(equalToConstant: 150),
-            self.view.heightAnchor.constraint(equalToConstant: 40)
+            self.stackView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            self.stackView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            self.stackView.topAnchor.constraint(equalTo: self.topAnchor),
+            self.stackView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            self.stackView.heightAnchor.constraint(equalToConstant: 40)
         ])
         
         NSLayoutConstraint.activate([
-            self.label.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-            self.label.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
+            self.label.leadingAnchor.constraint(equalTo: self.stackView.leadingAnchor,constant: 10),
+            self.label.centerYAnchor.constraint(equalTo: self.stackView.centerYAnchor)
         ])
         
-        
+        //스택뷰 최소골격?뷰
         NSLayoutConstraint.activate([
-            self.imageView.leadingAnchor.constraint(equalTo: self.label.trailingAnchor, constant: 8),   
-            self.imageView.widthAnchor.constraint(equalToConstant: 20),
-            self.imageView.heightAnchor.constraint(equalToConstant: 20),
-            self.imageView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
+            self.frameView.leadingAnchor.constraint(equalTo: self.label.trailingAnchor),
+            self.frameView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            self.frameView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            self.frameView.widthAnchor.constraint(equalToConstant: 10),
+            self.frameView.heightAnchor.constraint(equalToConstant: 10)
         ])
     }
 }
