@@ -28,7 +28,7 @@ class TitleView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .black
-        label.font = UIFont(name: "Arial Rounded MT Bold", size: 24)
+        label.font = UIFont(name: "Zapf Dingbats", size: 24)
         label.textAlignment = .center
         
         return label
@@ -54,7 +54,6 @@ class TitleView: UIView {
             self.stackView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             self.stackView.topAnchor.constraint(equalTo: self.topAnchor),
             self.stackView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-            self.stackView.heightAnchor.constraint(equalToConstant: 40)
         ])
         
         NSLayoutConstraint.activate([
@@ -68,7 +67,7 @@ class TitleView: UIView {
             self.frameView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             self.frameView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             self.frameView.widthAnchor.constraint(equalToConstant: 10),
-            self.frameView.heightAnchor.constraint(equalToConstant: 10)
+            self.frameView.heightAnchor.constraint(equalToConstant: 30)
         ])
     }
 }

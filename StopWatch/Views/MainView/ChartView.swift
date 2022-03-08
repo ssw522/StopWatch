@@ -1,5 +1,5 @@
 //
-//  DrawView.swift
+//  ChartView.swift
 //  StopWatch
 //
 //  Created by 신상우 on 2021/04/11.
@@ -8,7 +8,7 @@
 import UIKit
 import RealmSwift
 
-class DrawView: UIView {
+class ChartView: UIView {
     //MARK: properties
     var saveDate = ""
     var total: TimeInterval = 0.0

@@ -34,7 +34,7 @@ class CalendarView: UIView,UICollectionViewDelegate,UICollectionViewDataSource {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.isScrollEnabled = false
         view.register(CalendarCell.self, forCellWithReuseIdentifier: "cell")
-        view.backgroundColor = .standardColor
+        view.backgroundColor = .white
         
         return view
     }()
@@ -45,7 +45,7 @@ class CalendarView: UIView,UICollectionViewDelegate,UICollectionViewDataSource {
         let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.register(CalendarCell.self, forCellWithReuseIdentifier: "cell")
-        view.backgroundColor = .standardColor
+        view.backgroundColor = .white
         view.showsHorizontalScrollIndicator = false
         view.isPagingEnabled = true // 페이징 스크롤 처리
         
@@ -69,8 +69,8 @@ class CalendarView: UIView,UICollectionViewDelegate,UICollectionViewDataSource {
         self.collectionHeaderView.dataSource = self
         self.calendarView.delegate = self
         self.calendarView.dataSource = self
-//        self.getToday()
-        self.backgroundColor = .standardColor
+        self.getToday()
+        self.backgroundColor = .white
         self.layer.cornerRadius = 10
     }
     
@@ -80,7 +80,10 @@ class CalendarView: UIView,UICollectionViewDelegate,UICollectionViewDataSource {
     
     //MARK: Method
     func modelingInit(){
-        self.calendarInfo.cellSize = SingleTon.shared.cellSize! / 7
+        let bounds = UIScreen.main.bounds
+        let width = bounds.size.width - 20 //화면 너비
+        
+        self.calendarInfo.cellSize = width / 7
         self.calendarInfo.heightNumberOfCell = 6
     }
     
@@ -152,7 +155,7 @@ class CalendarView: UIView,UICollectionViewDelegate,UICollectionViewDataSource {
     //월마다 일 수 계산하여 날짜 표시하는 함수
     func presentCalendar(row: Int, cell:UICollectionViewCell){
         let cell = cell as! CalendarCell
-        cell.frameView.backgroundColor = .standardColor // 셀 배경 초기화
+        cell.frameView.backgroundColor = .white // 셀 배경 초기화
         
         let dayNumber = self.getFirstDay(year: self.year, month: self.month, day: self.day)
         let day = dayNumber + self.day
@@ -166,7 +169,7 @@ class CalendarView: UIView,UICollectionViewDelegate,UICollectionViewDataSource {
                
                 //선택된 셀 배경 바꾸기
                 if day == (row + 1) {
-                    cell.frameView.backgroundColor = .customPurpleColor
+                    cell.frameView.backgroundColor = .standardColor
                 }
             }
         }else {
@@ -249,7 +252,8 @@ class CalendarView: UIView,UICollectionViewDelegate,UICollectionViewDataSource {
             let month = self.returnString(self.month)
             let year = self.year
             let string = "\(year).\(month).\(day)"
-            
+            self.day = Int(day)!
+            self.calendarView.reloadData()
             self.delegate?.clickDay(saveDate: string)
         }
     }

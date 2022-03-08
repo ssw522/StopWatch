@@ -93,14 +93,14 @@ class TodoListCell: UITableViewCell {
 //        ])
         
         NSLayoutConstraint.activate([
-            self.listLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant:  10),
+            self.listLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant:  20),
             self.listLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -10),
             self.listLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor),
             self.listLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor,constant: -4)
         ])
         
         NSLayoutConstraint.activate([
-            self.getListTextField.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 10),
+            self.getListTextField.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 20),
             self.getListTextField.topAnchor.constraint(equalTo: self.contentView.topAnchor),
             self.getListTextField.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -10),
             self.getListTextField.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -4)

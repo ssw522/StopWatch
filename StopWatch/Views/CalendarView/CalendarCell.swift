@@ -31,7 +31,7 @@ class CalendarCell: UICollectionViewCell {
         self.addSubView()
         self.layout()
         self.layer.cornerRadius = 10
-        self.backgroundColor = .standardColor
+        self.backgroundColor = .white
     }
     
     required init?(coder: NSCoder) {

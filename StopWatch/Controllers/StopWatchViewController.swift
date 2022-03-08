@@ -22,22 +22,57 @@ class StopWatchViewController: UIViewController {
             print(saveDate)
         }
     }
+    
     var totalTime: TimeInterval = 0
     var totalGoalTime: TimeInterval = 0
     var motionManager: CMMotionManager?
     var concentraionTimerVC: ConcentrationTimeViewController?
     var editListView: EditTodoListView?
     var editGoalTimeView: EditGoalTimeView?
-    var drawCircleView: DrawView?
-    var calendarView: CalendarView?
+    var chartView: ChartView?
+    
     var tapGesture: UITapGestureRecognizer?
     var tapView: UIView?
     
     let titleView: TitleView = {
         let view = TitleView()
-        view.label.text = (UIApplication.shared.delegate as! AppDelegate).saveDate
+        view.translatesAutoresizingMaskIntoConstraints = false
         
         return view
+    }()
+    
+    lazy var calendarView: CalendarView = {
+        let view = CalendarView()
+        view.delegate = self
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return view
+    }()
+    
+    let previousMonthButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("<", for: .normal)
+        button.tag = 0
+        button.setTitleColor(.darkGray, for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 18, weight: .semibold)
+        button.backgroundColor = .systemGray6
+        button.layer.cornerRadius = 8
+        
+        return button
+    }()
+    
+    let nextMonthButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle(">", for: .normal)
+        button.tag = 1
+        button.setTitleColor(.darkGray, for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 18, weight: .semibold)
+        button.backgroundColor = .systemGray6
+        button.layer.cornerRadius = 8
+        
+        return button
     }()
 
     let goalTimeView: UIView = {
@@ -82,9 +117,10 @@ class StopWatchViewController: UIViewController {
     
     let frameView: UIView = {
         let view = UIView()
-        view.backgroundColor = .standardColor
+        view.backgroundColor = .white
         view.translatesAutoresizingMaskIntoConstraints = false
-
+        view.layer.cornerRadius = 50
+        
         return view
     }()
     
@@ -94,8 +130,6 @@ class StopWatchViewController: UIViewController {
         
         return view
     }()
-    
-    
     
     let mainTimeLabel: UILabel = {
         let label = UILabel()
@@ -135,26 +169,21 @@ class StopWatchViewController: UIViewController {
     let chartViewButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .customPurpleColor
-        button.setTitleColor(.white, for: .normal)
-        button.setTitle("chart", for: .normal)
-        button.titleLabel?.textAlignment = .center
-        button.layer.cornerRadius = 35
-        button.layer.shadowOpacity = 0.5
-        button.layer.shadowRadius = 2
-        button.layer.shadowOffset = .zero
-        button.layer.shadowColor = UIColor.gray.cgColor
-        
+        button.backgroundColor = .systemGray6
+        button.setImage(UIImage(systemName: "chart.pie.fill"), for: .normal)
+        button.tintColor = .darkGray
+        button.layer.cornerRadius = 10
+    
         return button
     }()
     
-    let toDoListLabel: UILabel = {
+    let dDayLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 16, weight: .semibold)
-        label.font = UIFont(name: "Bradley Hand", size: 20)
+        
+        label.font = UIFont(name: "Times New Roman", size: 14)
         label.textColor = .darkGray
-        label.text = " To do List"
+        label.text = "-days left"
         
         return label
     }()
@@ -174,6 +203,18 @@ class StopWatchViewController: UIViewController {
         return view
     }()
     
+    let categoryEditButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(UIImage(systemName: "list.bullet"), for: .normal)
+        button.tintColor = .darkGray
+        button.tag = 2
+        button.backgroundColor = .systemGray6
+        button.layer.cornerRadius = 10
+        
+        return button
+    }()
+    
     //MARK: Method
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -187,14 +228,8 @@ class StopWatchViewController: UIViewController {
         self.setNavigationItem()
         self.addObserverMtd() // 옵저버 추가
         self.reloadProgressBar()
-       
-        let titleViewTapGesture = UITapGestureRecognizer(target: self, action: #selector(self.openCalendar(_:)))
-        self.titleView.isUserInteractionEnabled = true
-        self.titleView.addGestureRecognizer(titleViewTapGesture)
         
-        print("path =  \(Realm.Configuration.defaultConfiguration.fileURL!)")
-        
-        // Do any additional setup after loading the view.
+//        print("path =  \(Realm.Configuration.defaultConfiguration.fileURL!)")
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -210,21 +245,20 @@ class StopWatchViewController: UIViewController {
     }
     
     func setNavigationBar() {
-        // Set navigationbar Color ( iOS15기준 버전별로 분기 )
-        if #available(iOS 15.0, *) {
-            let appearance = UINavigationBarAppearance()
-            appearance.configureWithOpaqueBackground()    // 불투명하게
-            appearance.backgroundColor = .standardColor
-            self.navigationController?.navigationBar.standardAppearance = appearance
-            self.navigationController?.navigationBar.scrollEdgeAppearance = appearance    // 동일하게 만들기
-        }else {
-            self.navigationController?.navigationBar.barTintColor = .standardColor
-        }
-        // 네비게이션바 숨기지않기.
-        self.navigationController?.navigationBar.isHidden = false
-        
-        self.navigationController?.navigationBar.setBackgroundImage(nil, for:.default)
-        self.navigationController?.navigationBar.clipsToBounds = true
+        // Set navigationbar Color ( ios15 기준 버전별로 분기 )
+//        if #available(iOS 15.0, *) {
+//            let appearance = UINavigationBarAppearance()
+//            appearance.configureWithOpaqueBackground()    // 불투명하게
+//            appearance.backgroundColor = .standardColor
+//            self.navigationController?.navigationBar.standardAppearance = appearance
+//            self.navigationController?.navigationBar.scrollEdgeAppearance = appearance    // 동일하게 만들기
+//        }else {
+//            self.navigationController?.navigationBar.barTintColor = .standardColor
+//        }
+        // 네비게이션바 숨기기
+        self.navigationController?.navigationBar.isHidden = true
+//        self.navigationController?.navigationBar.setBackgroundImage(nil, for:.default)
+//        self.navigationController?.navigationBar.clipsToBounds = true
 
     }
     
@@ -259,8 +293,8 @@ class StopWatchViewController: UIViewController {
     
     // gestrue method
     func setSwipeGesture(){
-        //차트뷰 아래로 내려서 닫기 제스쳐
-        if let view = self.drawCircleView {
+        //차트뷰 아래로 내려서 닫기 제스쳐 추가
+        if let view = self.chartView {
             let downSwipe = UISwipeGestureRecognizer(target: self, action: #selector(self.respondToSwipeGesture(_:)))
             downSwipe.direction = .down
             view.addGestureRecognizer(downSwipe)
@@ -288,114 +322,80 @@ class StopWatchViewController: UIViewController {
     }
     
     // subview open method
-    func openDrawCircleView(){
-        // DB불러오기
+    func openChartView(){
+        // DB불러오기 및 데이터 유무 확인
         let filter = self.realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)
         guard let segment = filter?.dailySegment else {
             self.zeroTimeAlert()
             return
         }
         
-        let total = segment.reduce(0){ // 총 시간 구하기
+        // 총 시간 구하기
+        let total = segment.reduce(0){
             (result,segment) in
             return segment.value + result
         }
-        if total == 0 { // 총 시간이 0 이면 경고 알림창띄우기.
+        
+        // 총 시간이 0 이면 경고 알림창띄우기.
+        if total == 0 {
             self.zeroTimeAlert()
             return
         }
-        self.drawCircleView = {
-            let view = DrawView()
+        
+        // 차트뷰 중복생성 방지
+        if self.chartView != nil { return }
+
+        self.chartView = {
+            let view = ChartView()
             view.saveDate = self.saveDate
             view.translatesAutoresizingMaskIntoConstraints = false
+            self.view.addSubview(self.chartView!)
+            
+            NSLayoutConstraint.activate([
+                view.topAnchor.constraint(equalTo: self.calendarView.bottomAnchor),
+                view.leadingAnchor.constraint(equalTo: self.frameView.leadingAnchor),
+                view.trailingAnchor.constraint(equalTo: self.frameView.trailingAnchor),
+                view.bottomAnchor.constraint(equalTo: self.frameView.bottomAnchor)
+            ])
             
             return view
         }()
         
-        self.view.addSubview(self.drawCircleView!)
         self.setSwipeGesture()
-        
-        NSLayoutConstraint.activate([
-            self.drawCircleView!.topAnchor.constraint(equalTo: self.chartViewButton.bottomAnchor),
-            self.drawCircleView!.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-            self.drawCircleView!.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-            self.drawCircleView!.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
-        ])
-        
-        self.drawCircleView!.transform = CGAffineTransform(translationX: 0, y: self.view.frame.height)
-        
+        self.chartView!.transform = CGAffineTransform(translationX: 0, y: self.view.frame.height)
         UIView.animate(withDuration: 0.3){
-            self.drawCircleView!.transform = .identity
+            self.chartView!.transform = .identity
         }
     }
     
-    
-    // subview close method
     // 차트 뷰 닫는 함수
-    func closeDrawCircleView(){
-        if let modal = self.drawCircleView {
+    func closeChartView(){
+        if let modal = self.chartView {
             UIView.animate(withDuration: 0.3 ,animations: {
                 modal.transform = CGAffineTransform(translationX: 0, y: self.view.frame.height)
             }) {_ in
                 modal.removeFromSuperview()
-                self.drawCircleView = nil
+                self.chartView = nil
             }
-        }
-    }
-    
-    //캘린더 뷰 닫는 함수
-    func closeCalendarView(){
-        if let calendar = self.calendarView {
-            calendar.delegate = nil
-            self.calendarView = nil
-            self.titleView.label.text = self.convertDate()
-            calendar.removeFromSuperview()
         }
     }
     
     //SetNavigationItem
     func setNavigationItem() {
-        let categoryEditBarButtonItem: UIBarButtonItem = {
-            let button = UIBarButtonItem(image: UIImage(systemName: "list.star"), style: .plain, target: self, action: #selector(barButtonItemMethod(_:)))
-            button.tintColor = .lightGray
-            button.tag = 2
-            
-            return button
-        }()
-        
-        let previousMonthButton: UIBarButtonItem = {
-            let button = UIBarButtonItem(title: "<", style: .plain, target: self, action: #selector(self.respondToBarButton(_:)))
-            button.tag = 0
-            button.tintColor = .darkGray
-            
-            return button
-        }()
-        
-        
-        let nextMonthButton: UIBarButtonItem = {
-            let button = UIBarButtonItem(title: ">", style: .plain, target: self, action: #selector(self.respondToBarButton(_:)))
-            button.tag = 1
-            button.tintColor = .darkGray
-            return button
-        }()
-    
-        let titleView = UIBarButtonItem.init(customView: self.titleView)
-        self.navigationItem.rightBarButtonItems =  [categoryEditBarButtonItem]
-        
-        self.navigationItem.leftBarButtonItems = [titleView,previousMonthButton,nextMonthButton]
+     
     }
     
     //MARK: Selector
     @objc func respondToSwipeGesture(_ gesture: UISwipeGestureRecognizer){
         switch gesture.direction {
         case .down:
-            self.closeDrawCircleView()
+            self.closeChartView()
         default:
             break
         }
     }
     
-    @objc func respondToBarButton(_ button:UIButton){
+    @objc func respondToButton(_ button:UIButton){
         var year =  Int(self.splitDate().0)!
         var month = Int(self.splitDate().1)!
         let day = Int(self.splitDate().2)!
@@ -425,10 +425,10 @@ class StopWatchViewController: UIViewController {
         self.saveDate = String(year) + "." + self.view.returnString(month) + "." + self.view.returnString(day)
         
         // 바뀐 값 캘린더뷰로 전달하고 컬렉션뷰 리로드
-        self.calendarView?.day = day
-        self.calendarView?.month = month
-        self.calendarView?.year = year
-        self.calendarView?.calendarView.reloadData()
+        self.calendarView.day = day
+        self.calendarView.month = month
+        self.calendarView.year = year
+        self.calendarView.calendarView.reloadData()
     }
 
     
@@ -502,15 +502,14 @@ class StopWatchViewController: UIViewController {
     }
     
     @objc func clickToChartButton(){
-        if self.drawCircleView == nil {
-            self.openDrawCircleView()
+        if self.chartView == nil {
+            self.openChartView()
         }else {
-            self.closeDrawCircleView()
+            self.closeChartView()
         }
     }
     
-    
-    @objc func barButtonItemMethod(_ button: UIBarButtonItem){
+    @objc func pushCategoryVC(_ button: UIBarButtonItem){
         let categoryVC = CategoryViewController()
             self.navigationController?.pushViewController(categoryVC, animated: true)
     }
@@ -560,9 +559,6 @@ class StopWatchViewController: UIViewController {
         //편집 뷰가 열려 있으면 편집 뷰 닫기
         self.closeListEditView()
         
-        // 캘린더가 열려있으면 캘린더 닫기
-        self.closeCalendarView()
-        
         // 탭 제스쳐 제거
         self.tapGesture = nil
         self.view.removeGestureRecognizer(_tapGesture)
@@ -572,46 +568,13 @@ class StopWatchViewController: UIViewController {
     }
     
     //MARK: CalendarView method
-    //캘린더 뷰 여는 메소드!
-    @objc func openCalendar(_ sender: Any){
-        guard self.calendarView == nil else {
-            self.closeCalendarView()
-            return
-            
-        }
-        //tap 제스쳐 추가
-        self.setTapGesture()
-        
-        // calendarView 인스턴스 생성
-        self.calendarView = {
-            SingleTon.shared.cellSize = self.view.frame.width - 20
-            let view = CalendarView()
-            view.delegate = self
-            let (year,month,day) = splitDate()
-            view.year = Int(year)!
-            view.month = Int(month)!
-            view.day = Int(day)!
-            self.view.addSubview(view)
-            view.translatesAutoresizingMaskIntoConstraints = false
-            
-            NSLayoutConstraint.activate([
-                view.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
-                view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
-                view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10),
-                view.heightAnchor.constraint(equalToConstant: 69)
-            ])
-            
-            return view
-        }()
-        
-    }
     
     func clickDay(saveDate: String) {
         self.saveDate = saveDate
         self.toDoTableView.reloadData()
-        self.closeCalendarView()
     }
     
+    // 날짜 년,월,일로 쪼개서 반환
     func splitDate() -> (String,String,String) {
         let split = self.saveDate.split(separator: ".")
         let year = String(split[0])
@@ -623,7 +586,7 @@ class StopWatchViewController: UIViewController {
     
     //요일 변화 메소드
     func convertDate()-> String{
-        var (year,month,day) = self.splitDate()
+        var (year,month,_) = self.splitDate()
         var monthWord = ""
         year.removeFirst()
         year.removeFirst()
@@ -654,7 +617,7 @@ extension StopWatchViewController {
     
     //MARK: Configured
     func configured() {
-        self.view.backgroundColor = .white
+        self.view.backgroundColor = .standardColor
     }
     
     //타이머 구동 방식
@@ -700,15 +663,18 @@ extension StopWatchViewController {
     //MARK: AddSubView
     func addSubView(){
         self.view.addSubview(self.frameView)
-        self.view.addSubview(self.barView)
-        self.view.addSubview(self.titleLabel)
-        self.view.addSubview(self.chartViewButton)
-        self.view.addSubview(self.toDoListLabel)
-        self.view.addSubview(self.goalTimeView)
-        self.view.addSubview(self.toDoTableView)
+        self.view.addSubview(self.mainTimeLabel)
+        self.view.addSubview(self.dDayLabel)
         
-        
-        self.frameView.addSubview(self.mainTimeLabel)
+        self.frameView.addSubview(self.titleView)
+        self.frameView.addSubview(self.calendarView)
+        self.frameView.addSubview(self.previousMonthButton)
+        self.frameView.addSubview(self.nextMonthButton)
+        self.frameView.addSubview(self.barView)
+        self.frameView.addSubview(self.toDoTableView)
+        self.frameView.addSubview(self.goalTimeView)
+        self.frameView.addSubview(self.chartViewButton)
+        self.frameView.addSubview(self.categoryEditButton)
         
         self.mainTimeLabel.addSubview(self.subTimeLabel)
     }
@@ -717,37 +683,22 @@ extension StopWatchViewController {
     func layOut(){
         //Level 1
         NSLayoutConstraint.activate([
-            self.frameView.topAnchor.constraint(equalTo: self.view.topAnchor),
+            self.mainTimeLabel.bottomAnchor.constraint(equalTo: self.frameView.topAnchor),
+            self.mainTimeLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            self.mainTimeLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+            self.mainTimeLabel.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor)
+        ])
+        
+        NSLayoutConstraint.activate([
+            self.frameView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 200),
             self.frameView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
             self.frameView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-            self.frameView.heightAnchor.constraint(equalToConstant: 340)
+            self.frameView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
         ])
         
         NSLayoutConstraint.activate([
-            self.titleLabel.leadingAnchor.constraint(equalTo: self.frameView.leadingAnchor, constant: 15),
-            self.titleLabel.topAnchor.constraint(equalTo: self.frameView.topAnchor, constant: 10),
-            self.titleLabel.widthAnchor.constraint(equalToConstant: self.view.frame.width * 0.5),
-            self.titleLabel.heightAnchor.constraint(equalToConstant: 40)
-        ])
-        
-        NSLayoutConstraint.activate([
-            self.chartViewButton.centerYAnchor.constraint(equalTo: self.frameView.bottomAnchor),
-            self.chartViewButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-            self.chartViewButton.widthAnchor.constraint(equalToConstant: 70),
-            self.chartViewButton.heightAnchor.constraint(equalToConstant: 70)
-        ])
-        
-        NSLayoutConstraint.activate([
-            self.barView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -30),
-            self.barView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-            self.barView.heightAnchor.constraint(equalToConstant: 40),
-            self.barView.widthAnchor.constraint(equalToConstant: 300),
-        ])
-        
-        NSLayoutConstraint.activate([
-            self.toDoListLabel.topAnchor.constraint(equalTo: self.chartViewButton.bottomAnchor, constant: 4),
-            self.toDoListLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10)
-            
+            self.dDayLabel.bottomAnchor.constraint(equalTo: self.frameView.topAnchor, constant: -10),
+            self.dDayLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
         ])
         
         NSLayoutConstraint.activate([
@@ -771,33 +722,77 @@ extension StopWatchViewController {
             self.goalTimeButton.topAnchor.constraint(equalTo: self.goalTimeView.topAnchor),
             self.goalTimeButton.bottomAnchor.constraint(equalTo: self.goalTimeView.bottomAnchor)
         ])
-       
+        
+        //Level 2
+        NSLayoutConstraint.activate([
+            self.titleView.leadingAnchor.constraint(equalTo: self.frameView.leadingAnchor, constant: 20),
+            self.titleView.topAnchor.constraint(equalTo: self.frameView.topAnchor, constant: 30),
+            self.titleView.heightAnchor.constraint(equalToConstant: 30)
+        ])
         
         NSLayoutConstraint.activate([
-            self.toDoTableView.topAnchor.constraint(equalTo: self.toDoListLabel.bottomAnchor, constant: 10),
+            self.previousMonthButton.leadingAnchor.constraint(equalTo: self.titleView.trailingAnchor),
+            self.previousMonthButton.heightAnchor.constraint(equalToConstant: 24),
+            self.previousMonthButton.widthAnchor.constraint(equalToConstant: 24),
+            self.previousMonthButton.centerYAnchor.constraint(equalTo: self.titleView.centerYAnchor)
+        ])
+        
+        NSLayoutConstraint.activate([
+            self.nextMonthButton.leadingAnchor.constraint(equalTo: self.previousMonthButton.trailingAnchor, constant: 4),
+            self.nextMonthButton.widthAnchor.constraint(equalToConstant: 24),
+            self.nextMonthButton.heightAnchor.constraint(equalToConstant: 24),
+            self.nextMonthButton.centerYAnchor.constraint(equalTo: self.titleView.centerYAnchor)
+        ])
+        
+        NSLayoutConstraint.activate([
+            self.calendarView.topAnchor.constraint(equalTo: self.titleView.bottomAnchor, constant: 16),
+            self.calendarView.leadingAnchor.constraint(equalTo: self.frameView.leadingAnchor, constant: 10),
+            self.calendarView.trailingAnchor.constraint(equalTo: self.frameView.trailingAnchor, constant: -10),
+            self.calendarView.heightAnchor.constraint(equalToConstant: 68)
+        ])
+        
+        NSLayoutConstraint.activate([
+            self.toDoTableView.topAnchor.constraint(equalTo: self.calendarView.bottomAnchor, constant: 20),
             self.toDoTableView.bottomAnchor.constraint(equalTo: self.goalTimeView.topAnchor),
             self.toDoTableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20),
             self.toDoTableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20)
         ])
         
-        //Level 2
         NSLayoutConstraint.activate([
-            self.mainTimeLabel.bottomAnchor.constraint(equalTo: self.frameView.bottomAnchor, constant: -80),
-            self.mainTimeLabel.centerXAnchor.constraint(equalTo: self.frameView.centerXAnchor),
-            self.mainTimeLabel.leadingAnchor.constraint(equalTo: self.frameView.leadingAnchor, constant: 15),
-            self.mainTimeLabel.trailingAnchor.constraint(equalTo: self.frameView.trailingAnchor, constant: -15),
-            self.mainTimeLabel.heightAnchor.constraint(equalToConstant: 80)
+            self.barView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -30),
+            self.barView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+            self.barView.heightAnchor.constraint(equalToConstant: 40),
+            self.barView.widthAnchor.constraint(equalToConstant: 300),
         ])
         
-        //Level 3
+        NSLayoutConstraint.activate([
+            self.categoryEditButton.leadingAnchor.constraint(equalTo: self.barView.trailingAnchor, constant: 10),
+            self.categoryEditButton.widthAnchor.constraint(equalToConstant: 30),
+            self.categoryEditButton.heightAnchor.constraint(equalToConstant: 30),
+            self.categoryEditButton.centerYAnchor.constraint(equalTo: self.barView.centerYAnchor, constant: -4)
+        ])
+        
+        NSLayoutConstraint.activate([
+            self.chartViewButton.centerYAnchor.constraint(equalTo: self.barView.centerYAnchor,constant: -4),
+            self.chartViewButton.trailingAnchor.constraint(equalTo: self.barView.leadingAnchor, constant: -10),
+            self.chartViewButton.widthAnchor.constraint(equalToConstant: 30),
+            self.chartViewButton.heightAnchor.constraint(equalToConstant: 30)
+        ])
+        
         NSLayoutConstraint.activate([
             self.subTimeLabel.centerYAnchor.constraint(equalTo: self.mainTimeLabel.centerYAnchor, constant: 3),
             self.subTimeLabel.leadingAnchor.constraint(equalTo: self.mainTimeLabel.centerXAnchor, constant: 135)
         ])
+        
+        //Level 3
+       
     }
     //MARK: AddTarget
     func addTarget(){
         self.chartViewButton.addTarget(self, action: #selector(self.clickToChartButton), for: .touchUpInside)
+        self.previousMonthButton.addTarget(self, action: #selector(self.respondToButton(_:)), for: .touchUpInside)
+        self.nextMonthButton.addTarget(self, action: #selector(self.respondToButton(_:)), for: .touchUpInside)
+        self.categoryEditButton.addTarget(self, action: #selector(self.pushCategoryVC(_:)), for: .touchUpInside)
     }
     
     //MARK: AddObserver
