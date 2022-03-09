@@ -30,7 +30,6 @@ class StopWatchViewController: UIViewController {
     var editListView: EditTodoListView?
     var editGoalTimeView: EditGoalTimeView?
     var chartView: ChartView?
-    
     var tapGesture: UITapGestureRecognizer?
     var tapView: UIView?
     
@@ -131,12 +130,19 @@ class StopWatchViewController: UIViewController {
         return view
     }()
     
+    let itemBoxView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return view
+    }()
+    
     let mainTimeLabel: UILabel = {
         let label = UILabel()
         label.text = "00 : 00 : 00"
         label.textAlignment = .center
         label.layer.masksToBounds = true
-        label.textColor = .black
+        label.textColor = .darkGray
         label.font = .systemFont(ofSize: 50, weight: .regular)
         label.translatesAutoresizingMaskIntoConstraints = false
         
@@ -180,8 +186,7 @@ class StopWatchViewController: UIViewController {
     let dDayLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        
-        label.font = UIFont(name: "Times New Roman", size: 14)
+        label.font = UIFont(name: "Times New Roman", size: 16)
         label.textColor = .darkGray
         label.text = "-days left"
         
@@ -229,6 +234,7 @@ class StopWatchViewController: UIViewController {
         self.addObserverMtd() // 옵저버 추가
         self.reloadProgressBar()
         
+        StopWatchDAO().deleteSegment()
 //        print("path =  \(Realm.Configuration.defaultConfiguration.fileURL!)")
     }
 
@@ -257,6 +263,7 @@ class StopWatchViewController: UIViewController {
 //        }
         // 네비게이션바 숨기기
         self.navigationController?.navigationBar.isHidden = true
+        self.navigationController?.navigationBar.tintColor = .darkGray
 //        self.navigationController?.navigationBar.setBackgroundImage(nil, for:.default)
 //        self.navigationController?.navigationBar.clipsToBounds = true
 
@@ -279,8 +286,8 @@ class StopWatchViewController: UIViewController {
     func setTimeLabel(){
         let dailyData = self.realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)
         let time = dailyData?.totalTime ?? 0 // 오늘의 데이터가 없으면 0
-        let (subSecond,second,minute,hour) = self.view.divideSecond(timeInterval: time)
-        self.subTimeLabel.text = subSecond
+        let (_,second,minute,hour) = self.view.divideSecond(timeInterval: time)
+//        self.subTimeLabel.text = subSecond
         self.mainTimeLabel.text = "\(hour) : \(minute) :  \(second)"
     }
     
@@ -349,7 +356,7 @@ class StopWatchViewController: UIViewController {
             let view = ChartView()
             view.saveDate = self.saveDate
             view.translatesAutoresizingMaskIntoConstraints = false
-            self.view.addSubview(self.chartView!)
+            self.frameView.addSubview(view)
             
             NSLayoutConstraint.activate([
                 view.topAnchor.constraint(equalTo: self.calendarView.bottomAnchor),
@@ -673,10 +680,12 @@ extension StopWatchViewController {
         self.frameView.addSubview(self.barView)
         self.frameView.addSubview(self.toDoTableView)
         self.frameView.addSubview(self.goalTimeView)
-        self.frameView.addSubview(self.chartViewButton)
-        self.frameView.addSubview(self.categoryEditButton)
+        self.frameView.addSubview(self.itemBoxView)
         
-        self.mainTimeLabel.addSubview(self.subTimeLabel)
+        self.itemBoxView.addSubview(self.chartViewButton)
+        self.itemBoxView.addSubview(self.categoryEditButton)
+        
+//        self.mainTimeLabel.addSubview(self.subTimeLabel)
     }
     
     //MARK: SetLayOut
@@ -760,29 +769,36 @@ extension StopWatchViewController {
         
         NSLayoutConstraint.activate([
             self.barView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -30),
-            self.barView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+            self.barView.leadingAnchor.constraint(equalTo: self.frameView.leadingAnchor, constant: 30),
             self.barView.heightAnchor.constraint(equalToConstant: 40),
-            self.barView.widthAnchor.constraint(equalToConstant: 300),
+            self.barView.widthAnchor.constraint(equalToConstant: 240),
         ])
         
         NSLayoutConstraint.activate([
-            self.categoryEditButton.leadingAnchor.constraint(equalTo: self.barView.trailingAnchor, constant: 10),
+            self.categoryEditButton.trailingAnchor.constraint(equalTo: self.itemBoxView.trailingAnchor),
             self.categoryEditButton.widthAnchor.constraint(equalToConstant: 30),
-            self.categoryEditButton.heightAnchor.constraint(equalToConstant: 30),
-            self.categoryEditButton.centerYAnchor.constraint(equalTo: self.barView.centerYAnchor, constant: -4)
+            self.categoryEditButton.topAnchor.constraint(equalTo: self.itemBoxView.topAnchor),
+            self.categoryEditButton.bottomAnchor.constraint(equalTo: self.itemBoxView.bottomAnchor)
         ])
         
         NSLayoutConstraint.activate([
-            self.chartViewButton.centerYAnchor.constraint(equalTo: self.barView.centerYAnchor,constant: -4),
-            self.chartViewButton.trailingAnchor.constraint(equalTo: self.barView.leadingAnchor, constant: -10),
+            self.chartViewButton.topAnchor.constraint(equalTo: self.itemBoxView.topAnchor),
+            self.chartViewButton.bottomAnchor.constraint(equalTo: self.itemBoxView.bottomAnchor),
+            self.chartViewButton.trailingAnchor.constraint(equalTo:  self.categoryEditButton.leadingAnchor, constant: -10),
             self.chartViewButton.widthAnchor.constraint(equalToConstant: 30),
-            self.chartViewButton.heightAnchor.constraint(equalToConstant: 30)
         ])
         
         NSLayoutConstraint.activate([
-            self.subTimeLabel.centerYAnchor.constraint(equalTo: self.mainTimeLabel.centerYAnchor, constant: 3),
-            self.subTimeLabel.leadingAnchor.constraint(equalTo: self.mainTimeLabel.centerXAnchor, constant: 135)
+            self.itemBoxView.leadingAnchor.constraint(equalTo: self.barView.trailingAnchor),
+            self.itemBoxView.heightAnchor.constraint(equalToConstant: 30),
+            self.itemBoxView.trailingAnchor.constraint(equalTo: self.frameView.trailingAnchor, constant: -20),
+            self.itemBoxView.centerYAnchor.constraint(equalTo: self.barView.centerYAnchor, constant: -4)
         ])
+        
+//        NSLayoutConstraint.activate([
+//            self.subTimeLabel.centerYAnchor.constraint(equalTo: self.mainTimeLabel.centerYAnchor, constant: 3),
+//            self.subTimeLabel.leadingAnchor.constraint(equalTo: self.mainTimeLabel.centerXAnchor, constant: 135)
+//        ])
         
         //Level 3
        
@@ -985,6 +1001,7 @@ extension StopWatchViewController {
                         self.closeListEditView()
                     }
                 })
+
                 self.present(alert, animated: false)
             }
             

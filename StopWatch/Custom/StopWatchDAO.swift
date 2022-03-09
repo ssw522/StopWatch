@@ -61,7 +61,7 @@ class StopWatchDAO {
         }
     }
 
-    func getSegment(date: String) {
+    func deleteSegment(){
         
     }
     

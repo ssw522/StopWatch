@@ -70,7 +70,6 @@ class DrawBarView: UIView {
         ])
         
         NSLayoutConstraint.activate([
-//            self.persentLabel.topAnchor.constraint(equalTo: self.progressView.bottomAnchor, constant: 6),
             self.persentLabel.centerYAnchor.constraint(equalTo: self.progressView.centerYAnchor),
             self.persentLabel.centerXAnchor.constraint(equalTo: self.progressView.centerXAnchor)
         ])

@@ -17,6 +17,15 @@ class CalendarCell: UICollectionViewCell {
         return view
     }()
     
+    let dataCheckView: UIImageView = {
+        let view = UIImageView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.tintColor = .darkGray
+        view.image = UIImage(systemName: "checkmark")
+        
+        return view
+    }()
+    
     let dateLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -42,6 +51,7 @@ class CalendarCell: UICollectionViewCell {
     func addSubView(){
         self.addSubview(self.frameView)
         
+        self.frameView.addSubview(self.dataCheckView)
         self.frameView.addSubview(self.dateLabel)
     }
     
@@ -54,9 +64,17 @@ class CalendarCell: UICollectionViewCell {
         ])
         
         NSLayoutConstraint.activate([
+            self.dataCheckView.centerXAnchor.constraint(equalTo: self.frameView.centerXAnchor),
+            self.dataCheckView.widthAnchor.constraint(equalToConstant: 10),
+            self.dataCheckView.heightAnchor.constraint(equalToConstant: 10),
+            self.dataCheckView.bottomAnchor.constraint(equalTo: self.dateLabel.topAnchor, constant: 0)
+        ])
+        
+        NSLayoutConstraint.activate([
             self.dateLabel.centerXAnchor.constraint(equalTo: self.frameView.centerXAnchor),
             self.dateLabel.centerYAnchor.constraint(equalTo: self.frameView.centerYAnchor),
         ])
+        
     }
     
 }

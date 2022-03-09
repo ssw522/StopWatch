@@ -16,16 +16,6 @@ class CalendarView: UIView,UICollectionViewDelegate,UICollectionViewDataSource {
     var day = 0
 
     var delegate: StopWatchViewController?
-    
-    let titleLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .black
-        label.font = .systemFont(ofSize: 18, weight: .thin)
-        label.textAlignment = .center
-        
-        return label
-    }()
    
     let collectionHeaderView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -94,7 +84,6 @@ class CalendarView: UIView,UICollectionViewDelegate,UICollectionViewDataSource {
         self.year = calendar.component(.year, from: today)
         self.month = calendar.component(.month, from: today)
         self.day = calendar.component(.day, from: today)
-        self.titleLabel.text = "\(year)년 \(month)월"
     }
     
     // CalendarMethod
@@ -164,6 +153,7 @@ class CalendarView: UIView,UICollectionViewDelegate,UICollectionViewDataSource {
             if row >= self.getMonthDay(year: self.year, month: self.month) + dayNumber{
                 cell.isUserInteractionEnabled = false
                 cell.dateLabel.text = " " // 초과
+                cell.dataCheckView.isHidden = true
             }else{
                 cell.dateLabel.text = "\(row + 1 - dayNumber)"
                
@@ -174,6 +164,7 @@ class CalendarView: UIView,UICollectionViewDelegate,UICollectionViewDataSource {
             }
         }else {
             cell.dateLabel.text = " "  // 미만
+            cell.dataCheckView.isHidden = true
             cell.isUserInteractionEnabled = false
         }
     }
@@ -229,6 +220,7 @@ class CalendarView: UIView,UICollectionViewDelegate,UICollectionViewDataSource {
     
         if collectionView == self.calendarView {
             cell.isUserInteractionEnabled = true
+            cell.dataCheckView.isHidden = false
             self.presentCalendar(row: indexPath.row, cell: cell)
             
             return cell
@@ -236,6 +228,7 @@ class CalendarView: UIView,UICollectionViewDelegate,UICollectionViewDataSource {
             cell.isUserInteractionEnabled = false
             cell.dateLabel.textColor = .darkGray
             cell.dateLabel.text = self.dayArray[indexPath.row]
+            cell.dataCheckView.isHidden = true
             if indexPath.row == 0 { cell.dateLabel.textColor = .red }
             if indexPath.row == 6 { cell.dateLabel.textColor = .blue }
             
