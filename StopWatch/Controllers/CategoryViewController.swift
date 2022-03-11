@@ -120,7 +120,7 @@ extension CategoryViewController: UITableViewDelegate, UITableViewDataSource{
         let segment = filter!.dailySegment
         let value = segment[indexPath.row].value 
         let colorCode = self.realm.objects(Segments.self)[indexPath.row].colorCode
-        let name = segment[indexPath.row].segment?.name ?? self.realm.objects(Segments.self)[indexPath.row].name
+        let name = self.realm.objects(Segments.self)[indexPath.row].name
 
         let (subSecond,second,minute,hour) = self.view.divideSecond(timeInterval: value )
 

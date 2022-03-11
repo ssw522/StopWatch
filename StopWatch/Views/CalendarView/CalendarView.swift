@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RealmSwift
 
 class CalendarView: UIView,UICollectionViewDelegate,UICollectionViewDataSource {
     
@@ -145,7 +146,7 @@ class CalendarView: UIView,UICollectionViewDelegate,UICollectionViewDataSource {
     func presentCalendar(row: Int, cell:UICollectionViewCell){
         let cell = cell as! CalendarCell
         cell.frameView.backgroundColor = .white // 셀 배경 초기화
-        
+        cell.dataCheckView.isHidden = true
         let dayNumber = self.getFirstDay(year: self.year, month: self.month, day: self.day)
         let day = dayNumber + self.day
         // 해당 달의 첫 날짜(1일)에 해당하는 요일에 맞춰 달력 나타내기.
@@ -156,7 +157,12 @@ class CalendarView: UIView,UICollectionViewDelegate,UICollectionViewDataSource {
                 cell.dataCheckView.isHidden = true
             }else{
                 cell.dateLabel.text = "\(row + 1 - dayNumber)"
-               
+                // 데이터 있는 날짜 표시
+                let realm = try! Realm()
+                let date = String(year) + "." + self.returnString(month) + "." + self.returnString(row + 1 - dayNumber)
+                if let _ = realm.object(ofType: DailyData.self, forPrimaryKey: date) {
+                    cell.dataCheckView.isHidden = false
+                }
                 //선택된 셀 배경 바꾸기
                 if day == (row + 1) {
                     cell.frameView.backgroundColor = .standardColor
@@ -231,7 +237,7 @@ class CalendarView: UIView,UICollectionViewDelegate,UICollectionViewDataSource {
             cell.dataCheckView.isHidden = true
             if indexPath.row == 0 { cell.dateLabel.textColor = .red }
             if indexPath.row == 6 { cell.dateLabel.textColor = .blue }
-            
+        
             return cell
         }
     }

@@ -233,8 +233,6 @@ class StopWatchViewController: UIViewController {
         self.setNavigationItem()
         self.addObserverMtd() // 옵저버 추가
         self.reloadProgressBar()
-        
-        StopWatchDAO().deleteSegment()
 //        print("path =  \(Realm.Configuration.defaultConfiguration.fileURL!)")
     }
 
@@ -450,14 +448,30 @@ class StopWatchViewController: UIViewController {
     //목표 시간 설정 뷰 열기
     @objc func openGoalTimeEditVC(_ sender: UIButton) {
         guard self.editGoalTimeView == nil else { return } // 이미 객체가 생성되었으면 더 못생성되게 막기
-        self.editGoalTimeView = EditGoalTimeView()
-        
-        self.editGoalTimeView!.frame.size = CGSize(width: self.view.frame.width - 40, height: 240)
-        self.editGoalTimeView!.center = CGPoint(x: self.view.frame.width / 2, y: self.view.frame.height + 120)
-        
-        self.view.addSubview(editGoalTimeView!)
-        self.editGoalTimeView!.cancelButton.addTarget(self, action: #selector(self.didFinishEditingGoalTime(_:)), for: .touchUpInside)
-        self.editGoalTimeView!.okButton.addTarget(self, action: #selector(self.didFinishEditingGoalTime(_:)), for: .touchUpInside)
+        self.editGoalTimeView = {
+            let view = EditGoalTimeView()
+            view.translatesAutoresizingMaskIntoConstraints = false
+            self.view.addSubview(view)
+            view.layer.shadowOpacity = 0.7
+            view.layer.shadowOffset = .zero
+            view.layer.shadowColor = UIColor.darkGray.cgColor
+            
+            view.cancelButton.addTarget(self, action: #selector(self.didFinishEditingGoalTime(_:)), for: .touchUpInside)
+            view.okButton.addTarget(self, action: #selector(self.didFinishEditingGoalTime(_:)), for: .touchUpInside)
+            
+            NSLayoutConstraint.activate([
+                view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 30),
+                view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -20),
+                view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -30),
+                view.heightAnchor.constraint(equalToConstant: 200)
+            ])
+            
+            return view
+        }()
+        self.editGoalTimeView!.transform = CGAffineTransform(translationX: 0, y: self.view.frame.height)
+        UIView.animate(withDuration: 0.3){
+            self.editGoalTimeView!.transform = .identity
+        }
         StopWatchDAO().create(date: self.saveDate) // 오늘 데이터가 없으면 데이터 생성
         
         let dailyData = self.realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)!
@@ -469,11 +483,6 @@ class StopWatchViewController: UIViewController {
         self.editGoalTimeView!.timePicker.selectRow(miniuteIndex, inComponent: 1, animated: false)//분초기값
         self.editGoalTimeView!.selectedMinute = TimeInterval(Int(goal) % 3600)
         self.editGoalTimeView!.selectedHour = goal - self.editGoalTimeView!.selectedMinute
-        
-        
-        UIView.animate(withDuration: 0.3){
-            self.editGoalTimeView!.center = CGPoint(x: self.view.frame.width / 2, y: self.view.frame.height - 130)
-        }
     }
     
     // 목표 시간 설정 뷰 닫기
@@ -487,9 +496,8 @@ class StopWatchViewController: UIViewController {
             self.setGoalTime()
             self.reloadProgressBar()
             
-            UIView.animate(withDuration: 0.3,animations: {
-                self.editGoalTimeView!.frame.size = CGSize(width: self.view.frame.width - 80, height: 240)
-                self.editGoalTimeView!.center = CGPoint(x: self.view.frame.width / 2, y: self.view.frame.height + 120)
+            UIView.animate(withDuration: 0.5,animations: {
+                self.editGoalTimeView!.transform = CGAffineTransform(translationX: 0, y: self.view.frame.height)
             }){_ in
                 self.editGoalTimeView!.removeFromSuperview()
                 self.editGoalTimeView = nil
@@ -498,9 +506,8 @@ class StopWatchViewController: UIViewController {
         }
         
         if sender.tag == 2 {
-            UIView.animate(withDuration: 0.3,animations: {
-                self.editGoalTimeView!.frame.size = CGSize(width: self.view.frame.width - 80, height: 240)
-                self.editGoalTimeView!.center = CGPoint(x: self.view.frame.width / 2, y: self.view.frame.height + 120)
+            UIView.animate(withDuration: 0.5, animations: {
+                self.editGoalTimeView!.transform = CGAffineTransform(translationX: 0, y: self.view.frame.height)
             }){_ in
                 self.editGoalTimeView!.removeFromSuperview()
                 self.editGoalTimeView = nil
@@ -540,6 +547,7 @@ class StopWatchViewController: UIViewController {
 
         self.toDoTableView.reloadData()
         self.toDoTableView.scrollToRow(at: indexPath, at: .bottom, animated: false)
+        self.calendarView.calendarView.reloadData()
         
         let cell = self.toDoTableView.cellForRow(at:indexPath) as? TodoListCell
         
@@ -854,9 +862,10 @@ extension StopWatchViewController: UITableViewDelegate,UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! TodoListCell
         let filter = self.realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)
         let segment = filter!.dailySegment
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! TodoListCell
+        
         cell.saveDate = self.saveDate
         cell.getListTextField.tag = indexPath.section // 섹션구분 태그 이용
         cell.contentView.tag = indexPath.section
@@ -868,7 +877,7 @@ extension StopWatchViewController: UITableViewDelegate,UITableViewDataSource{
         cell.checkImageView.image = nil
         cell.checkImageView.isHidden = true
 
-        let colorCode = segment[indexPath.section].segment!.colorCode
+        let colorCode = self.realm.objects(Segments.self)[indexPath.section].colorCode
         let color = self.uiColorFromHexCode(colorCode)
         let text = segment[indexPath.section].toDoList[indexPath.row]
         let checkImageIndex = segment[indexPath.section].listCheckImageIndex[indexPath.row]
@@ -937,6 +946,7 @@ extension StopWatchViewController: UITextFieldDelegate {
                 segment[textField.tag].toDoList.remove(at: row)
                 segment[textField.tag].listCheckImageIndex.remove(at: row)
             }
+            StopWatchDAO().deleteSegment(date: self.saveDate)
             
         }else {
 
@@ -945,7 +955,7 @@ extension StopWatchViewController: UITextFieldDelegate {
             }
         }
         self.toDoTableView.reloadData()
-       
+        self.calendarView.calendarView.reloadData()
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -997,9 +1007,11 @@ extension StopWatchViewController {
                     try! self.realm.write{
                         segment?[indexPath!.section].toDoList.remove(at: indexPath!.row) // 리스트 삭제
                         segment?[indexPath!.section].listCheckImageIndex.remove(at: indexPath!.row)
-                        self.toDoTableView.reloadData()
-                        self.closeListEditView()
                     }
+                    StopWatchDAO().deleteSegment(date: self.saveDate) // 데이터베이스에서 삭제
+                    self.toDoTableView.reloadData()
+                    self.calendarView.calendarView.reloadData()
+                    self.closeListEditView()
                 })
 
                 self.present(alert, animated: false)

@@ -45,9 +45,9 @@ class EditTodoListView: UIView{
         super.init(frame: frame)
         self.backgroundColor = .white
         self.layer.cornerRadius = 14
-//        self.layer.shadowOpacity = 0.7
-//        self.layer.shadowOffset = .zero
-//        self.layer.shadowColor = UIColor.darkGray.cgColor
+        self.layer.shadowOpacity = 0.7
+        self.layer.shadowOffset = .zero
+        self.layer.shadowColor = UIColor.darkGray.cgColor
         
         self.addSubview(self.title)
         self.addSubview(self.editButton)

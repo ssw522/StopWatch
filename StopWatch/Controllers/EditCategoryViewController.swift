@@ -290,13 +290,16 @@ class EditCategoryViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             self.okButton.topAnchor.constraint(equalTo: self.paletteView.bottomAnchor, constant: 14),
-            self.okButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: -34),
-            self.okButton.widthAnchor.constraint(equalToConstant: 60)
+            self.okButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: -46),
+            self.okButton.widthAnchor.constraint(equalToConstant: 80),
+            self.okButton.heightAnchor.constraint(equalToConstant: 40)
         ])
         
         NSLayoutConstraint.activate([
             self.cancelButton.topAnchor.constraint(equalTo: self.paletteView.bottomAnchor, constant: 14),
-            self.cancelButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 34)
+            self.cancelButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 46),
+            self.cancelButton.widthAnchor.constraint(equalToConstant: 80),
+            self.cancelButton.heightAnchor.constraint(equalToConstant: 40)
         ])
     
     }

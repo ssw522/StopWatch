@@ -21,7 +21,7 @@ class StopButtonTappedModalView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "알   림"
         label.font = .systemFont(ofSize: 22, weight: .semibold)
-        label.textColor = .customPurpleColor
+        label.textColor = .darkGray
         label.textAlignment = .center
         self.addSubview(label)
         
@@ -34,7 +34,7 @@ class StopButtonTappedModalView: UIView {
         label.font = .systemFont(ofSize: 16, weight: .medium)
         label.textAlignment = .center
         label.textColor = .darkGray
-        label.backgroundColor = .systemGray5
+        label.backgroundColor = .systemGray6
         label.layer.cornerRadius = 10
         label.layer.masksToBounds = true
         self.addSubview(label)
@@ -46,7 +46,7 @@ class StopButtonTappedModalView: UIView {
        let button = UIButton()
         button.setTitle("확인", for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 16)
-        button.backgroundColor = .customPurpleColor
+        button.backgroundColor = .darkGray
         button.layer.cornerRadius = 10
         button.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(button)
@@ -58,7 +58,7 @@ class StopButtonTappedModalView: UIView {
        let button = UIButton()
         button.setTitle("취소", for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 16)
-        button.backgroundColor = .customPurpleColor
+        button.backgroundColor = .darkGray
         button.layer.cornerRadius = 10
         button.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(button)
@@ -105,15 +105,15 @@ class StopButtonTappedModalView: UIView {
         
         NSLayoutConstraint.activate([
             self.aceptButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10),
-            self.aceptButton.centerXAnchor.constraint(equalTo: self.centerXAnchor,constant: -30),
-            self.aceptButton.widthAnchor.constraint(equalToConstant: 50),
+            self.aceptButton.centerXAnchor.constraint(equalTo: self.centerXAnchor,constant: -36),
+            self.aceptButton.widthAnchor.constraint(equalToConstant: 60),
             self.aceptButton.heightAnchor.constraint(equalToConstant: 36)
         ])
         
         NSLayoutConstraint.activate([
             self.cancelButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10),
-            self.cancelButton.centerXAnchor.constraint(equalTo: self.centerXAnchor,constant: 30),
-            self.cancelButton.widthAnchor.constraint(equalToConstant: 50),
+            self.cancelButton.centerXAnchor.constraint(equalTo: self.centerXAnchor,constant: 36),
+            self.cancelButton.widthAnchor.constraint(equalToConstant: 60),
             self.cancelButton.heightAnchor.constraint(equalToConstant: 36)
         ])
     }

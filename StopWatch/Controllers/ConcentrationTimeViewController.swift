@@ -24,17 +24,17 @@ class ConcentrationTimeViewController: UIViewController{
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .standardColor
-        
+        view.layer.cornerRadius = 20
         return view
     }()
     
     let label: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "이번 집중 시간은?"
-        label.font = .systemFont(ofSize: 28, weight: .regular)
+        label.text = "Focus Time"
+        label.font = UIFont(name: "Zapf Dingbats", size: 30)
         label.textAlignment = .center
-        label.textColor = .black
+        label.textColor = .darkGray
         
         return label
     }()
@@ -57,24 +57,25 @@ class ConcentrationTimeViewController: UIViewController{
         pickerView.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(pickerView)
         pickerView.layer.cornerRadius = 10
-        pickerView.backgroundColor = .standardColor
+        pickerView.backgroundColor = .systemGray6
         
         return pickerView
     }()
     
     lazy var mainLabel: UILabel = {
         let label = UILabel()
-        label.layer.borderColor = UIColor.standardColor.cgColor
-        label.layer.borderWidth = 2
+        
+//        label.layer.borderWidth = 2
         label.text = "00 : 00 : 00"
         label.textAlignment = .center
         label.layer.masksToBounds = true
         label.layer.cornerRadius = 20
-        label.backgroundColor = .customPurpleColor
-        label.textColor = .white
-//        label.shadowColor = .black
-//        label.shadowOffset = .zero
-        label.font = .systemFont(ofSize: 40, weight:.regular)
+        label.backgroundColor = .white
+        label.textColor = .darkGray
+        label.layer.shadowColor = UIColor.black.cgColor
+        label.layer.shadowOffset = .zero
+        label.layer.shadowOpacity = 0.3
+        label.font = .systemFont(ofSize: 50, weight:.regular)
         self.view.addSubview(label)
         label.translatesAutoresizingMaskIntoConstraints = false
         
@@ -87,7 +88,7 @@ class ConcentrationTimeViewController: UIViewController{
         label.textAlignment = .center
         label.textColor = .white
         label.font = .boldSystemFont(ofSize: 20)
-        self.mainLabel.addSubview(label)
+//        self.mainLabel.addSubview(label)
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
@@ -97,10 +98,10 @@ class ConcentrationTimeViewController: UIViewController{
         let button = UIButton()
         button.setTitle(" 확 인 ", for: .normal)
         button.layer.cornerRadius = 10
-//        button.layer.shadowColor = UIColor.black.cgColor
-////        button.layer.borderWidth = 1
-//        button.layer.shadowOpacity = 0.3
-//        button.layer.shadowOffset = .zero
+        button.layer.shadowColor = UIColor.black.cgColor
+//        button.layer.borderWidth = 1
+        button.layer.shadowOpacity = 0.3
+        button.layer.shadowOffset = .zero
         button.titleLabel?.font = UIFont.systemFont(ofSize: 22, weight: .medium)
         button.setTitleColor(.darkGray, for: .normal)
         button.layer.backgroundColor = UIColor.white.cgColor
@@ -124,6 +125,40 @@ class ConcentrationTimeViewController: UIViewController{
         return effectView
     }()
     
+    lazy var bottomview: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(view)
+        view.backgroundColor = .darkGray
+        view.alpha = 0.7
+        
+        NSLayoutConstraint.activate([
+            view.bottomAnchor.constraint(equalTo: self.mainLabel.bottomAnchor),
+            view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 30),
+            view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -30),
+            view.heightAnchor.constraint(equalToConstant: 2)
+        ])
+        
+        return view
+    }()
+    
+    lazy var topView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(view)
+        view.backgroundColor = .darkGray
+        view.alpha = 0.7
+        
+        NSLayoutConstraint.activate([
+            view.topAnchor.constraint(equalTo: self.mainLabel.topAnchor),
+            view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 30),
+            view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -30),
+            view.heightAnchor.constraint(equalToConstant: 2)
+        ])
+        
+        return view
+    }()
+    
     //MARK: Method
     
     deinit {
@@ -145,6 +180,7 @@ class ConcentrationTimeViewController: UIViewController{
         self.navigationController?.navigationBar.isHidden = true
         StopWatchDAO().create(date: self.saveDate) // 오늘 데이터 없으면 생성
         //vibrate iphone when the timer starts
+        self.changeUI(row: 0)
      
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -164,8 +200,8 @@ class ConcentrationTimeViewController: UIViewController{
     
     func openStopModalView(){
         let categoryName = self.realm.objects(Segments.self)[pickCategoryRow].name
-        self.view.addSubview(blurView)
-        self.view.addSubview(modalView)
+        self.view.addSubview(self.blurView)
+        self.view.addSubview(self.modalView)
         self.modalView.alpha = 0
         self.blurView.alpha = 0
         self.modalLayout()
@@ -176,6 +212,16 @@ class ConcentrationTimeViewController: UIViewController{
             self.blurView.alpha = 1
             self.modalView.alpha = 1
         }
+    }
+    
+    func changeUI(row: Int) {
+        let segment = self.realm.objects(Segments.self)
+        self.label.text = segment[row].name
+        self.label.textColor = .white
+        self.frameView.backgroundColor = self.uiColorFromHexCode(segment[row].colorCode)
+        self.topView.backgroundColor = self.uiColorFromHexCode(segment[row].colorCode)
+        self.bottomview.backgroundColor = self.uiColorFromHexCode(segment[row].colorCode)
+        self.mainLabel.textColor = self.uiColorFromHexCode(segment[row].colorCode)
     }
     
     func closeStopModalView(){
@@ -258,15 +304,15 @@ extension ConcentrationTimeViewController {
     func layOut(){
         //Level 1
         NSLayoutConstraint.activate([
-            self.frameView.topAnchor.constraint(equalTo: self.view.topAnchor),
-            self.frameView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-            self.frameView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-            self.frameView.heightAnchor.constraint(equalToConstant: 320)
+            self.frameView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 140),
+            self.frameView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 60),
+            self.frameView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -60),
+            self.frameView.heightAnchor.constraint(equalToConstant: 100)
         ])
         
         NSLayoutConstraint.activate([
             self.mainLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-            self.mainLabel.centerYAnchor.constraint(equalTo: self.frameView.bottomAnchor),
+            self.mainLabel.topAnchor.constraint(equalTo: self.frameView.bottomAnchor, constant: 80),
             self.mainLabel.widthAnchor.constraint(equalToConstant: self.view.frame.width - 80),
             self.mainLabel.heightAnchor.constraint(equalToConstant: 80)
         ])
@@ -274,8 +320,8 @@ extension ConcentrationTimeViewController {
         NSLayoutConstraint.activate([
             self.aceptButton.topAnchor.constraint(equalTo: self.mainLabel.bottomAnchor, constant: 60),
             self.aceptButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-            self.aceptButton.widthAnchor.constraint(equalToConstant: 80),
-            self.aceptButton.heightAnchor.constraint(equalToConstant: 60)
+            self.aceptButton.widthAnchor.constraint(equalToConstant: 160),
+            self.aceptButton.heightAnchor.constraint(equalToConstant: 50)
         ])
         
         NSLayoutConstraint.activate([
@@ -293,15 +339,14 @@ extension ConcentrationTimeViewController {
         
         //Level 2
         NSLayoutConstraint.activate([
-            self.label.topAnchor.constraint(equalTo: self.frameView.topAnchor, constant: 200),
+            self.label.centerYAnchor.constraint(equalTo: self.frameView.centerYAnchor),
             self.label.centerXAnchor.constraint(equalTo: self.frameView.centerXAnchor),
             ])
-        
-        NSLayoutConstraint.activate([
-            self.subLabel.centerYAnchor.constraint(equalTo: self.mainLabel.centerYAnchor, constant: 3),
-            self.subLabel.trailingAnchor.constraint(equalTo: self.mainLabel.trailingAnchor, constant: -16),
-            
-        ])
+//
+//        NSLayoutConstraint.activate([
+//            self.subLabel.centerYAnchor.constraint(equalTo: self.mainLabel.centerYAnchor, constant: 3),
+//            self.subLabel.trailingAnchor.constraint(equalTo: self.mainLabel.trailingAnchor, constant: -16),
+//        ])
     }
     func modalLayout(){
         
@@ -337,7 +382,8 @@ extension ConcentrationTimeViewController: UIPickerViewDelegate,UIPickerViewData
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         self.pickCategoryRow = row // 카테고리 선택했을때 호출
-        
+        self.changeUI(row: row
+        )
     }
     
     func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {

@@ -24,8 +24,13 @@ class EditGoalTimeView: UIView {
     lazy var timePicker:UIPickerView = {
         let picker = UIPickerView()
         picker.translatesAutoresizingMaskIntoConstraints = false
+        picker.backgroundColor = .white
+//        picker.layer.borderColor = UIColor.systemGray6.cgColor
+//        picker.layer.borderWidth = 1
+//        picker.layer.cornerRadius = 10
+//        picker.setValue(UIColor.white, forKey: "textColor")
+        
         self.addSubview(picker)
-        picker.setValue(UIColor.white, forKey: "textColor")
         
         return picker
     }()
@@ -35,8 +40,8 @@ class EditGoalTimeView: UIView {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("OK", for: .normal)
         button.layer.cornerRadius = 10
-        button.backgroundColor = .darkGray
-        button.titleLabel?.textColor = .white
+        button.backgroundColor = .systemGray6
+        button.setTitleColor(.darkGray, for: .normal)
         button.layer.masksToBounds = true
         button.titleLabel?.textAlignment = .center
         self.addSubview(button)
@@ -50,8 +55,8 @@ class EditGoalTimeView: UIView {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Cancel", for: .normal)
         button.layer.cornerRadius = 10
-        button.backgroundColor = .darkGray
-        button.titleLabel?.textColor = .white
+        button.backgroundColor = .systemGray6
+        button.setTitleColor(.darkGray, for: .normal)
         button.layer.masksToBounds = true
         button.titleLabel?.textAlignment = .center
         self.addSubview(button)
@@ -73,6 +78,7 @@ class EditGoalTimeView: UIView {
     //MARK:Configure
     func configure(){
         self.backgroundColor = .white
+        self.layer.cornerRadius = 10
         self.timePicker.delegate = self
         self.timePicker.dataSource = self
     }
@@ -90,18 +96,19 @@ class EditGoalTimeView: UIView {
     //MARK:layOut
     func layout(){
         NSLayoutConstraint.activate([
-            self.timePicker.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            self.timePicker.topAnchor.constraint(equalTo: self.topAnchor),
+            self.timePicker.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            self.timePicker.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            self.timePicker.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
             self.timePicker.bottomAnchor.constraint(equalTo: self.bottomAnchor,constant: -50),
         
-            self.okButton.widthAnchor.constraint(equalToConstant: 65),
+            self.okButton.leadingAnchor.constraint(equalTo: self.timePicker.leadingAnchor, constant: 20),
             self.okButton.heightAnchor.constraint(equalToConstant: 40),
-            self.okButton.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: -40),
+            self.okButton.trailingAnchor.constraint(equalTo: self.centerXAnchor, constant: -10),
             self.okButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -5),
             
-            self.cancelButton.widthAnchor.constraint(equalToConstant: 65),
+            self.cancelButton.leadingAnchor.constraint(equalTo: self.centerXAnchor, constant: 10),
             self.cancelButton.heightAnchor.constraint(equalToConstant: 40),
-            self.cancelButton.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 40),
+            self.cancelButton.trailingAnchor.constraint(equalTo: self.timePicker.trailingAnchor, constant: -20),
             self.cancelButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -5),
         ])
         
