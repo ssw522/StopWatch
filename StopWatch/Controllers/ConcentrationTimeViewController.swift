@@ -23,7 +23,7 @@ class ConcentrationTimeViewController: UIViewController{
     let frameView:UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .standardColor
+        view.backgroundColor = .white
         view.layer.cornerRadius = 20
         return view
     }()
@@ -36,19 +36,20 @@ class ConcentrationTimeViewController: UIViewController{
         label.textAlignment = .center
         label.textColor = .darkGray
         
+        
         return label
     }()
     
-    lazy var pickerViewTitle: UILabel = {
+    let guideLabel: UILabel = {
         let label = UILabel()
-        label.text = "Category"
-        label.textColor = .darkGray
-        label.textAlignment = .center
-        label.font = .boldSystemFont(ofSize: 30)
-        self.view.addSubview(label)
-        label.layer.masksToBounds = true
-        label.layer.cornerRadius = 10
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "다시 시작하시려면 핸드폰을 뒤집어주세요."
+        label.textColor = .systemGray4
+        label.textAlignment = .center
+        label.font = .systemFont(ofSize: 16)
+        label.layer.cornerRadius = 10
+        label.numberOfLines = 2
+        
         return label
     }()
     
@@ -58,6 +59,7 @@ class ConcentrationTimeViewController: UIViewController{
         self.view.addSubview(pickerView)
         pickerView.layer.cornerRadius = 10
         pickerView.backgroundColor = .systemGray6
+        
         
         return pickerView
     }()
@@ -133,7 +135,7 @@ class ConcentrationTimeViewController: UIViewController{
         view.alpha = 0.7
         
         NSLayoutConstraint.activate([
-            view.bottomAnchor.constraint(equalTo: self.mainLabel.bottomAnchor),
+            view.bottomAnchor.constraint(equalTo: self.mainLabel.bottomAnchor, constant: 10),
             view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 30),
             view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -30),
             view.heightAnchor.constraint(equalToConstant: 2)
@@ -150,7 +152,7 @@ class ConcentrationTimeViewController: UIViewController{
         view.alpha = 0.7
         
         NSLayoutConstraint.activate([
-            view.topAnchor.constraint(equalTo: self.mainLabel.topAnchor),
+            view.topAnchor.constraint(equalTo: self.mainLabel.topAnchor, constant: -10),
             view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 30),
             view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -30),
             view.heightAnchor.constraint(equalToConstant: 2)
@@ -217,11 +219,12 @@ class ConcentrationTimeViewController: UIViewController{
     func changeUI(row: Int) {
         let segment = self.realm.objects(Segments.self)
         self.label.text = segment[row].name
-        self.label.textColor = .white
-        self.frameView.backgroundColor = self.uiColorFromHexCode(segment[row].colorCode)
+//        self.label.textColor = .white
+//        self.frameView.backgroundColor = self.uiColorFromHexCode(segment[row].colorCode)
         self.topView.backgroundColor = self.uiColorFromHexCode(segment[row].colorCode)
         self.bottomview.backgroundColor = self.uiColorFromHexCode(segment[row].colorCode)
-        self.mainLabel.textColor = self.uiColorFromHexCode(segment[row].colorCode)
+//        self.mainLabel.textColor = self.uiColorFromHexCode(segment[row].colorCode)
+        self.pickerCategory.backgroundColor = self.uiColorFromHexCode(segment[row].colorCode)
     }
     
     func closeStopModalView(){
@@ -296,6 +299,7 @@ extension ConcentrationTimeViewController {
     //MARK: AddSubView
     func addSubView(){
         self.view.addSubview(self.frameView)
+        self.view.addSubview(self.guideLabel)
         
         self.frameView.addSubview(self.label)
     }
@@ -325,16 +329,16 @@ extension ConcentrationTimeViewController {
         ])
         
         NSLayoutConstraint.activate([
-            self.pickerCategory.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -40),
+            self.pickerCategory.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 160),
             self.pickerCategory.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-            self.pickerCategory.heightAnchor.constraint(equalToConstant: 100)
+            self.pickerCategory.heightAnchor.constraint(equalToConstant: 80)
         ])
         
         NSLayoutConstraint.activate([
-            self.pickerViewTitle.bottomAnchor.constraint(equalTo: self.pickerCategory.topAnchor),
-            self.pickerViewTitle.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-            self.pickerViewTitle.widthAnchor.constraint(equalToConstant: self.view.frame.width - 60),
-            self.pickerViewTitle.heightAnchor.constraint(equalToConstant: 40)
+            self.guideLabel.topAnchor.constraint(equalTo: self.aceptButton.bottomAnchor, constant: 20),
+            self.guideLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+            self.guideLabel.widthAnchor.constraint(equalToConstant: self.view.frame.width - 120),
+            self.guideLabel.heightAnchor.constraint(equalToConstant: 60)
         ])
         
         //Level 2
@@ -408,6 +412,4 @@ extension ConcentrationTimeViewController: TimerTriggreDelegate{
         self.timeInterval += result
         self.setTimeLabel()
     }
-    
-    
 }
