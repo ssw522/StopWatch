@@ -28,6 +28,11 @@
 		DB8F532F26F085E60071F911 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8F532E26F085E60071F911 /* CustomTextField.swift */; };
 		DB8F533126F22FBD0071F911 /* TodoListHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8F533026F22FBD0071F911 /* TodoListHeaderView.swift */; };
 		DB8F533326F316AE0071F911 /* TodoListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8F533226F316AE0071F911 /* TodoListCell.swift */; };
+		DBA7ED5327DDAC39004B0D0E /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA7ED5227DDAC39004B0D0E /* ContainerViewController.swift */; };
+		DBA7ED5527DDAC49004B0D0E /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA7ED5427DDAC49004B0D0E /* MenuViewController.swift */; };
+		DBA7ED5727DDAF89004B0D0E /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA7ED5627DDAF89004B0D0E /* Protocols.swift */; };
+		DBA7ED5927DDAFF4004B0D0E /* MenuOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA7ED5827DDAFF4004B0D0E /* MenuOption.swift */; };
+		DBA7ED5C27DDB790004B0D0E /* MenuOptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA7ED5B27DDB790004B0D0E /* MenuOptionCell.swift */; };
 		DBAD2A4926D3E4370083478E /* BlackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBAD2A4826D3E4370083478E /* BlackViewController.swift */; };
 		DBB33AA52789B93D00537881 /* EditColorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB33AA42789B93C00537881 /* EditColorView.swift */; };
 		DBBD53002636B109002F5157 /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBD52FF2636B109002F5157 /* CategoryViewController.swift */; };
@@ -54,7 +59,7 @@
 		DB40D2012609B32E00A4E9FC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DB40D2042609B32E00A4E9FC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DB40D2062609B32E00A4E9FC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		DB4FE82326BF80F100B1DF3E /* Modeling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Modeling.swift; path = StopWatch/Modeling.swift; sourceTree = SOURCE_ROOT; };
+		DB4FE82326BF80F100B1DF3E /* Modeling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Modeling.swift; path = StopWatch/Models/Modeling.swift; sourceTree = SOURCE_ROOT; };
 		DB5AE4A7276CB61C00CF737C /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		DB5AE4A9276CB6D800CF737C /* CalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCell.swift; sourceTree = "<group>"; };
 		DB5AE4AB276CB72300CF737C /* CalendarHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarHeaderView.swift; sourceTree = "<group>"; };
@@ -66,6 +71,11 @@
 		DB8F532E26F085E60071F911 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		DB8F533026F22FBD0071F911 /* TodoListHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListHeaderView.swift; sourceTree = "<group>"; };
 		DB8F533226F316AE0071F911 /* TodoListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListCell.swift; sourceTree = "<group>"; };
+		DBA7ED5227DDAC39004B0D0E /* ContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
+		DBA7ED5427DDAC49004B0D0E /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
+		DBA7ED5627DDAF89004B0D0E /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
+		DBA7ED5827DDAFF4004B0D0E /* MenuOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuOption.swift; sourceTree = "<group>"; };
+		DBA7ED5B27DDB790004B0D0E /* MenuOptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuOptionCell.swift; sourceTree = "<group>"; };
 		DBAD2A4826D3E4370083478E /* BlackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlackViewController.swift; sourceTree = "<group>"; };
 		DBB33AA42789B93C00537881 /* EditColorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditColorView.swift; sourceTree = "<group>"; };
 		DBBD52FF2636B109002F5157 /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
@@ -100,6 +110,7 @@
 				DB8F533226F316AE0071F911 /* TodoListCell.swift */,
 				DBEC2267276864380083ECDA /* EditTodoListView.swift */,
 				DBBDF75726527986003F55FE /* drawBarView.swift */,
+				DBA7ED5B27DDB790004B0D0E /* MenuOptionCell.swift */,
 			);
 			path = MainView;
 			sourceTree = "<group>";
@@ -115,22 +126,25 @@
 			path = CategoryView;
 			sourceTree = "<group>";
 		};
-		DB0F172A261430F7007C8448 /* extension */ = {
+		DB0F172A261430F7007C8448 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
 				DB0F172B2614310F007C8448 /* Utils.swift */,
+				DBA7ED5627DDAF89004B0D0E /* Protocols.swift */,
 			);
-			path = extension;
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		DB289046261C4F6600FCC4BC /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				DBA7ED5227DDAC39004B0D0E /* ContainerViewController.swift */,
 				DB8DB18C2611E67900A5814A /* StopWatchViewController.swift */,
 				DB8DB1872611E1C600A5814A /* ConcentrationTimeViewController.swift */,
 				DB8F532426F05C1A0071F911 /* EditCategoryViewController.swift */,
 				DBBD52FF2636B109002F5157 /* CategoryViewController.swift */,
 				DBAD2A4826D3E4370083478E /* BlackViewController.swift */,
+				DBA7ED5427DDAC49004B0D0E /* MenuViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -175,11 +189,11 @@
 		DB40D1F72609B32C00A4E9FC /* StopWatch */ = {
 			isa = PBXGroup;
 			children = (
+				DBA7ED5A27DDAFFF004B0D0E /* Models */,
 				DB8F532D26F085D50071F911 /* Custom */,
 				DB40D1F82609B32C00A4E9FC /* AppDelegate.swift */,
-				DB4FE82326BF80F100B1DF3E /* Modeling.swift */,
 				DB289048261C4FF500FCC4BC /* Views */,
-				DB0F172A261430F7007C8448 /* extension */,
+				DB0F172A261430F7007C8448 /* Utils */,
 				DB289046261C4F6600FCC4BC /* Controllers */,
 				DB289047261C4F8000FCC4BC /* images */,
 				DB40D1FE2609B32C00A4E9FC /* Main.storyboard */,
@@ -224,6 +238,15 @@
 				DBEC2269276864380083ECDA /* CustomListEditView.swift */,
 			);
 			path = Custom;
+			sourceTree = "<group>";
+		};
+		DBA7ED5A27DDAFFF004B0D0E /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				DBA7ED5827DDAFF4004B0D0E /* MenuOption.swift */,
+				DB4FE82326BF80F100B1DF3E /* Modeling.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		F95DBA0BF70FC8275FA2BE45 /* Pods */ = {
@@ -351,12 +374,14 @@
 			files = (
 				DB08F0C32765DB88001EBBEE /* StopWatchDAO.swift in Sources */,
 				DB8F532526F05C1A0071F911 /* EditCategoryViewController.swift in Sources */,
+				DBA7ED5327DDAC39004B0D0E /* ContainerViewController.swift in Sources */,
 				DBAD2A4926D3E4370083478E /* BlackViewController.swift in Sources */,
 				DBBD53052636BB78002F5157 /* CategoryCell.swift in Sources */,
 				DBF7E79226AFF438009902BE /* EditGoalTimeView.swift in Sources */,
 				DB5AE4AE276EFBF700CF737C /* GoalTimeView.swift in Sources */,
 				DB5AE4AA276CB6D800CF737C /* CalendarCell.swift in Sources */,
 				DB8DB18D2611E67900A5814A /* StopWatchViewController.swift in Sources */,
+				DBA7ED5527DDAC49004B0D0E /* MenuViewController.swift in Sources */,
 				DB8F532F26F085E60071F911 /* CustomTextField.swift in Sources */,
 				DB8F533126F22FBD0071F911 /* TodoListHeaderView.swift in Sources */,
 				DB8F533326F316AE0071F911 /* TodoListCell.swift in Sources */,
@@ -371,11 +396,14 @@
 				DBBDF7562643DC59003F55FE /* PreView.swift in Sources */,
 				DBBDF75826527986003F55FE /* drawBarView.swift in Sources */,
 				DB8DB1882611E1C600A5814A /* ConcentrationTimeViewController.swift in Sources */,
+				DBA7ED5927DDAFF4004B0D0E /* MenuOption.swift in Sources */,
 				DBEC226A276864380083ECDA /* CustomListEditView.swift in Sources */,
 				DB0F172C2614310F007C8448 /* Utils.swift in Sources */,
 				DB40D1F92609B32C00A4E9FC /* AppDelegate.swift in Sources */,
 				DB4FE82426BF80F100B1DF3E /* Modeling.swift in Sources */,
+				DBA7ED5C27DDB790004B0D0E /* MenuOptionCell.swift in Sources */,
 				DBEC2268276864380083ECDA /* EditTodoListView.swift in Sources */,
+				DBA7ED5727DDAF89004B0D0E /* Protocols.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

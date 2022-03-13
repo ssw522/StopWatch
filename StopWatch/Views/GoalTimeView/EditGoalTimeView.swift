@@ -9,6 +9,8 @@ import UIKit
 
 class EditGoalTimeView: UIView {
     //MARK:Properties
+    
+    
     let hourArray = ["0시간","1시간","2시간","3시간","4시간","5시간","6시간","7시간","8시간",
                      "9시간","10시간","11시간","12시간","13시간","14시간","15시간","16시간"
                      ,"17시간","18시간","19시간","20시간","21시간","22시간","23시간"]
@@ -21,45 +23,47 @@ class EditGoalTimeView: UIView {
     var goal: TimeInterval = 0 // 현재 목표시간 받아올 변수
     var dailyData: DailyData?
     
-    lazy var timePicker:UIPickerView = {
+    let guideLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "' 목표시간 설정 '"
+        label.textColor = .darkGray
+        label.font = .systemFont(ofSize: 20)
+        
+        return label
+    }()
+    
+    let timePicker:UIPickerView = {
         let picker = UIPickerView()
         picker.translatesAutoresizingMaskIntoConstraints = false
         picker.backgroundColor = .white
-//        picker.layer.borderColor = UIColor.systemGray6.cgColor
-//        picker.layer.borderWidth = 1
-//        picker.layer.cornerRadius = 10
-//        picker.setValue(UIColor.white, forKey: "textColor")
-        
-        self.addSubview(picker)
         
         return picker
     }()
     
-    lazy var okButton:UIButton = {
+    let okButton:UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("OK", for: .normal)
-        button.layer.cornerRadius = 10
         button.backgroundColor = .systemGray6
-        button.setTitleColor(.darkGray, for: .normal)
+        button.layer.cornerRadius = 10
         button.layer.masksToBounds = true
+        button.setTitle("OK", for: .normal)
+        button.setTitleColor(.darkGray, for: .normal)
         button.titleLabel?.textAlignment = .center
-        self.addSubview(button)
         button.tag = 1
         
         return button
     }()
     
-    lazy var cancelButton:UIButton = {
+    let cancelButton:UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Cancel", for: .normal)
-        button.layer.cornerRadius = 10
         button.backgroundColor = .systemGray6
-        button.setTitleColor(.darkGray, for: .normal)
         button.layer.masksToBounds = true
+        button.layer.cornerRadius = 10
+        button.setTitle("Cancel", for: .normal)
+        button.setTitleColor(.darkGray, for: .normal)
         button.titleLabel?.textAlignment = .center
-        self.addSubview(button)
         button.tag = 2
         
         return button
@@ -69,13 +73,14 @@ class EditGoalTimeView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.configure()
+        self.addsubview()
         self.layout()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    //MARK:Configure
+    //MARK: - Configure
     func configure(){
         self.backgroundColor = .white
         self.layer.cornerRadius = 10
@@ -83,7 +88,7 @@ class EditGoalTimeView: UIView {
         self.timePicker.dataSource = self
     }
     
-    //MARK:Method
+    //MARK: - Method
     func getTimeinterval(text:String) -> TimeInterval {
         let newstring = text.filter { "0"..."9" ~= $0 }
         print(newstring)
@@ -91,16 +96,27 @@ class EditGoalTimeView: UIView {
         return TimeInterval(newstring)!
     }
     
-    //MARK:Selector
+    //MARK: - Selector
     
-    //MARK:layOut
+    //MARK: - AddSubView
+    func addsubview() {
+        self.addSubview(self.guideLabel)
+        self.addSubview(self.timePicker)
+        self.addSubview(self.okButton)
+        self.addSubview(self.cancelButton)
+    }
+    
+    //MARK: - layOut
     func layout(){
         NSLayoutConstraint.activate([
+            self.guideLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
+            self.guideLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            
             self.timePicker.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             self.timePicker.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            self.timePicker.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
-            self.timePicker.bottomAnchor.constraint(equalTo: self.bottomAnchor,constant: -50),
-        
+            self.timePicker.topAnchor.constraint(equalTo: self.guideLabel.bottomAnchor, constant: 10),
+            self.timePicker.heightAnchor.constraint(equalToConstant: 100),
+            
             self.okButton.leadingAnchor.constraint(equalTo: self.timePicker.leadingAnchor, constant: 20),
             self.okButton.heightAnchor.constraint(equalToConstant: 40),
             self.okButton.trailingAnchor.constraint(equalTo: self.centerXAnchor, constant: -10),
@@ -139,7 +155,7 @@ extension EditGoalTimeView: UIPickerViewDelegate,UIPickerViewDataSource{
     
     
     func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
-        return 40
+        return 30
     }
     
     func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
@@ -148,10 +164,6 @@ extension EditGoalTimeView: UIPickerViewDelegate,UIPickerViewDataSource{
         }else {
             return NSAttributedString(string: minuteArray[row], attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray])
         }
-    }
-    
-    func initSelectedRow(){
-        
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {

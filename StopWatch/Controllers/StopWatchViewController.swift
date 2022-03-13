@@ -10,7 +10,7 @@ import CoreMotion
 import RealmSwift
 
 class StopWatchViewController: UIViewController {
-    //MARK: Properties
+    //MARK: - Properties
     let realm = try! Realm()
     var saveDate = "" {
         didSet{ // 날짜가 바뀔 때마다
@@ -32,6 +32,7 @@ class StopWatchViewController: UIViewController {
     var chartView: ChartView?
     var tapGesture: UITapGestureRecognizer?
     var tapView: UIView?
+    var delegate: StopWatchVCDelegate?
     
     let titleView: TitleView = {
         let view = TitleView()
@@ -103,15 +104,6 @@ class StopWatchViewController: UIViewController {
         self.goalTimeView.addSubview(label)
 
         return label
-    }()
-    
-    lazy var goalTimeButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        self.goalTimeView.addSubview(button)
-        button.addTarget(self, action: #selector(self.openGoalTimeEditVC(_:)), for: .touchUpInside)
-        
-        return button
     }()
     
     let frameView: UIView = {
@@ -446,7 +438,7 @@ class StopWatchViewController: UIViewController {
     }
     
     //목표 시간 설정 뷰 열기
-    @objc func openGoalTimeEditVC(_ sender: UIButton) {
+    func openGoalTimeEditVC() {
         guard self.editGoalTimeView == nil else { return } // 이미 객체가 생성되었으면 더 못생성되게 막기
         self.editGoalTimeView = {
             let view = EditGoalTimeView()
@@ -524,8 +516,7 @@ class StopWatchViewController: UIViewController {
     }
     
     @objc func pushCategoryVC(_ button: UIBarButtonItem){
-        let categoryVC = CategoryViewController()
-            self.navigationController?.pushViewController(categoryVC, animated: true)
+        self.delegate?.handleMenuToggle(menuOption: nil)
     }
     
     //세션(과목명)을 눌렀을때 호출되는 메소드
@@ -566,6 +557,11 @@ class StopWatchViewController: UIViewController {
     
     @objc func keyboardWillHide() {
         self.view.bounds.origin = .zero
+    }
+    
+    func openCategoryVC() {
+        let categoryVC = CategoryViewController()
+        self.navigationController?.pushViewController(categoryVC, animated: true)
     }
     
     //탭 제스쳐를 감지하여 뷰를 닫는 액션함수
@@ -625,8 +621,23 @@ class StopWatchViewController: UIViewController {
         
         return year + " " + monthWord
     }
+    
+    //MARK: - SideBarMenu Method
+    // 메뉴 터치에 따라 반응하는 함수
+    func didSelectedMenuOption(menuOption: MenuOption){
+        switch menuOption {
+        case .category:
+            let categoryVC = CategoryViewController()
+            self.navigationController?.pushViewController(categoryVC, animated: true)
+        case .goalTime:
+            self.openGoalTimeEditVC()
+        case .dDay:
+            print("??")
+        case .statistics:
+            print("zz")
+        }
+    }
 }
-
 
 extension StopWatchViewController {
     
@@ -733,11 +744,6 @@ extension StopWatchViewController {
             self.goalTimeTitle.leadingAnchor.constraint(equalTo: self.goalTimeView.leadingAnchor),
             self.goalTimeTitle.widthAnchor.constraint(equalToConstant: 16),
             self.goalTimeTitle.heightAnchor.constraint(equalToConstant: 16),
-            
-            self.goalTimeButton.leadingAnchor.constraint(equalTo: self.goalTimeView.leadingAnchor),
-            self.goalTimeButton.trailingAnchor.constraint(equalTo: self.goalTimeView.trailingAnchor),
-            self.goalTimeButton.topAnchor.constraint(equalTo: self.goalTimeView.topAnchor),
-            self.goalTimeButton.bottomAnchor.constraint(equalTo: self.goalTimeView.bottomAnchor)
         ])
         
         //Level 2
