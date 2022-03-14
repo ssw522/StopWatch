@@ -733,7 +733,7 @@ extension StopWatchViewController {
             self.goalTimeView.widthAnchor.constraint(equalToConstant: 80),
             self.goalTimeView.heightAnchor.constraint(equalToConstant: 30),
             self.goalTimeView.bottomAnchor.constraint(equalTo: self.barView.topAnchor, constant: 0),
-            self.goalTimeView.leadingAnchor.constraint(equalTo: self.barView.leadingAnchor, constant: -4),
+            self.goalTimeView.trailingAnchor.constraint(equalTo: self.barView.trailingAnchor, constant: -4),
 
             self.goalTimeLabel.topAnchor.constraint(equalTo: self.goalTimeView.topAnchor),
             self.goalTimeLabel.bottomAnchor.constraint(equalTo: self.goalTimeView.bottomAnchor),
@@ -783,13 +783,13 @@ extension StopWatchViewController {
         
         NSLayoutConstraint.activate([
             self.barView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -30),
-            self.barView.leadingAnchor.constraint(equalTo: self.frameView.leadingAnchor, constant: 30),
+            self.barView.trailingAnchor.constraint(equalTo: self.frameView.trailingAnchor, constant: -30),
             self.barView.heightAnchor.constraint(equalToConstant: 40),
             self.barView.widthAnchor.constraint(equalToConstant: 240),
         ])
         
         NSLayoutConstraint.activate([
-            self.categoryEditButton.trailingAnchor.constraint(equalTo: self.itemBoxView.trailingAnchor),
+            self.categoryEditButton.leadingAnchor.constraint(equalTo: self.itemBoxView.leadingAnchor),
             self.categoryEditButton.widthAnchor.constraint(equalToConstant: 30),
             self.categoryEditButton.topAnchor.constraint(equalTo: self.itemBoxView.topAnchor),
             self.categoryEditButton.bottomAnchor.constraint(equalTo: self.itemBoxView.bottomAnchor)
@@ -798,14 +798,14 @@ extension StopWatchViewController {
         NSLayoutConstraint.activate([
             self.chartViewButton.topAnchor.constraint(equalTo: self.itemBoxView.topAnchor),
             self.chartViewButton.bottomAnchor.constraint(equalTo: self.itemBoxView.bottomAnchor),
-            self.chartViewButton.trailingAnchor.constraint(equalTo:  self.categoryEditButton.leadingAnchor, constant: -10),
+            self.chartViewButton.leadingAnchor.constraint(equalTo:  self.categoryEditButton.trailingAnchor, constant: 10),
             self.chartViewButton.widthAnchor.constraint(equalToConstant: 30),
         ])
         
         NSLayoutConstraint.activate([
-            self.itemBoxView.leadingAnchor.constraint(equalTo: self.barView.trailingAnchor),
+            self.itemBoxView.leadingAnchor.constraint(equalTo: self.frameView.leadingAnchor, constant: 20),
             self.itemBoxView.heightAnchor.constraint(equalToConstant: 30),
-            self.itemBoxView.trailingAnchor.constraint(equalTo: self.frameView.trailingAnchor, constant: -20),
+            self.itemBoxView.trailingAnchor.constraint(equalTo: self.barView.leadingAnchor, constant: -10),
             self.itemBoxView.centerYAnchor.constraint(equalTo: self.barView.centerYAnchor, constant: -4)
         ])
         

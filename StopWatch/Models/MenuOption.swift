@@ -22,4 +22,13 @@ enum MenuOption: Int,CustomStringConvertible {
         }
     }
     
+    var image: UIImage {
+        switch self {
+        case .category: return UIImage(named: "category") ?? UIImage()
+        case .goalTime: return UIImage(named: "goalTime") ?? UIImage()
+        case .dDay: return UIImage(named: "dday") ?? UIImage()
+        case .statistics: return UIImage(named: "statistics") ?? UIImage()
+        }
+    }
+    
 }

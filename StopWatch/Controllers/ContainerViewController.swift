@@ -49,7 +49,7 @@ class ContainerViewController: UIViewController {
         if isExpand {
             // show menu
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
-                self.homeVC.view.frame.origin.x = (-140) // 왼쪽으로
+                self.homeVC.view.frame.origin.x = 160 // 왼쪽으로
             }, completion: nil)
         }else {
             //hide menu
