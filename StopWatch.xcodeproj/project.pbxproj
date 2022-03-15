@@ -33,6 +33,7 @@
 		DBA7ED5727DDAF89004B0D0E /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA7ED5627DDAF89004B0D0E /* Protocols.swift */; };
 		DBA7ED5927DDAFF4004B0D0E /* MenuOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA7ED5827DDAFF4004B0D0E /* MenuOption.swift */; };
 		DBA7ED5C27DDB790004B0D0E /* MenuOptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA7ED5B27DDB790004B0D0E /* MenuOptionCell.swift */; };
+		DBA7ED6027E0614A004B0D0E /* DdayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA7ED5F27E0614A004B0D0E /* DdayViewController.swift */; };
 		DBAD2A4926D3E4370083478E /* BlackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBAD2A4826D3E4370083478E /* BlackViewController.swift */; };
 		DBB33AA52789B93D00537881 /* EditColorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB33AA42789B93C00537881 /* EditColorView.swift */; };
 		DBBD53002636B109002F5157 /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBD52FF2636B109002F5157 /* CategoryViewController.swift */; };
@@ -76,6 +77,7 @@
 		DBA7ED5627DDAF89004B0D0E /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		DBA7ED5827DDAFF4004B0D0E /* MenuOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuOption.swift; sourceTree = "<group>"; };
 		DBA7ED5B27DDB790004B0D0E /* MenuOptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuOptionCell.swift; sourceTree = "<group>"; };
+		DBA7ED5F27E0614A004B0D0E /* DdayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DdayViewController.swift; sourceTree = "<group>"; };
 		DBAD2A4826D3E4370083478E /* BlackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlackViewController.swift; sourceTree = "<group>"; };
 		DBB33AA42789B93C00537881 /* EditColorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditColorView.swift; sourceTree = "<group>"; };
 		DBBD52FF2636B109002F5157 /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
@@ -145,6 +147,7 @@
 				DBBD52FF2636B109002F5157 /* CategoryViewController.swift */,
 				DBAD2A4826D3E4370083478E /* BlackViewController.swift */,
 				DBA7ED5427DDAC49004B0D0E /* MenuViewController.swift */,
+				DBA7ED5F27E0614A004B0D0E /* DdayViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -383,6 +386,7 @@
 				DB8DB18D2611E67900A5814A /* StopWatchViewController.swift in Sources */,
 				DBA7ED5527DDAC49004B0D0E /* MenuViewController.swift in Sources */,
 				DB8F532F26F085E60071F911 /* CustomTextField.swift in Sources */,
+				DBA7ED6027E0614A004B0D0E /* DdayViewController.swift in Sources */,
 				DB8F533126F22FBD0071F911 /* TodoListHeaderView.swift in Sources */,
 				DB8F533326F316AE0071F911 /* TodoListCell.swift in Sources */,
 				DBB33AA52789B93D00537881 /* EditColorView.swift in Sources */,

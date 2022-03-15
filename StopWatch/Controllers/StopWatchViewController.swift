@@ -212,6 +212,12 @@ class StopWatchViewController: UIViewController {
         return button
     }()
     
+    let pickerView: UIDatePicker = {
+        let view = UIDatePicker()
+        
+        return view
+    }()
+    
     //MARK: Method
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -238,6 +244,7 @@ class StopWatchViewController: UIViewController {
         self.setDeviceMotion()   // coremotion 시작
         self.reloadProgressBar() // 진행바 재로딩
         self.setNavigationBar()  // 네비게이션바 설정
+        self.setDday()
     }
     
     func setNavigationBar() {
@@ -375,6 +382,12 @@ class StopWatchViewController: UIViewController {
                 self.chartView = nil
             }
         }
+    }
+    
+    func setDday(){
+        let ud = UserDefaults.standard
+        let dday = ud.string(forKey: "dday") ?? "0"
+        self.dDayLabel.text = dday + " days left"
     }
     
     //SetNavigationItem
@@ -632,7 +645,8 @@ class StopWatchViewController: UIViewController {
         case .goalTime:
             self.openGoalTimeEditVC()
         case .dDay:
-            print("??")
+            let ddayVC = DdayViewController()
+            self.navigationController?.pushViewController(ddayVC, animated: true)
         case .statistics:
             print("zz")
         }
