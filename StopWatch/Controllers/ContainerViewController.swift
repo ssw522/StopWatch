@@ -17,7 +17,7 @@ class ContainerViewController: UIViewController {
     //MARK: - Method
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = .red
+        self.view.backgroundColor = .standardColor
         self.configureStopWatchViewController()
     }
     
@@ -53,13 +53,13 @@ class ContainerViewController: UIViewController {
             }, completion: nil)
         }else {
             //hide menu
-            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+            UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
                 self.homeVC.view.frame.origin.x = 0
             }){ (_) in // 선택한 옵션이 있으면 옵션에 해당하는 함수 실행, 없으면 그냥 닫힘
-                
+                guard let MenuOption = MenuOption else { return }
+                self.StopWatchVC.didSelectedMenuOption(menuOption: MenuOption)
             }
-            guard let MenuOption = MenuOption else { return }
-            self.StopWatchVC.didSelectedMenuOption(menuOption: MenuOption)
+            
         }
     }
     //MARK: - Selector

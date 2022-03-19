@@ -12,14 +12,17 @@ import RealmSwift
 class StopWatchViewController: UIViewController {
     //MARK: - Properties
     let realm = try! Realm()
-    var saveDate = "" {
+    var saveDate: String = "" {
         didSet{ // 날짜가 바뀔 때마다
             self.setGoalTime() // 목표시간 Label 재설정
             self.reloadProgressBar() // 진행바 재로딩
             self.setTimeLabel() // 현재시간 Label 재설정
-            self.titleView.label.text = self.convertDate() // 타이틀 날짜 다시표시
+            self.titleView.label.text = CalendarMethod().convertDate(date: self.saveDate) // 타이틀 날짜 다시표시
             self.toDoTableView.reloadData()
-            print(saveDate)
+            self.calendarView.day = Int(CalendarMethod().splitDate(date: self.saveDate).2) ?? 0
+            self.calendarView.month = Int(CalendarMethod().splitDate(date: self.saveDate).1) ?? 0
+            self.calendarView.year = Int(CalendarMethod().splitDate(date: self.saveDate).0) ?? 0
+            self.calendarView.calendarView.reloadData()
         }
     }
     
@@ -33,6 +36,7 @@ class StopWatchViewController: UIViewController {
     var tapGesture: UITapGestureRecognizer?
     var tapView: UIView?
     var delegate: StopWatchVCDelegate?
+    var saveDateDelegate: SaveDateDetectionDelegate?
     
     let titleView: TitleView = {
         let view = TitleView()
@@ -240,11 +244,14 @@ class StopWatchViewController: UIViewController {
         self.saveDate = (UIApplication.shared.delegate as! AppDelegate).saveDate //오늘 날짜!
         self.totalTime = self.realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)?.totalTime ?? 0
         self.totalGoalTime = self.realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)?.totalGoalTime ?? 0
-      
+        
         self.setDeviceMotion()   // coremotion 시작
         self.reloadProgressBar() // 진행바 재로딩
         self.setNavigationBar()  // 네비게이션바 설정
         self.setDday()
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        self.calendarView.calendarView.scrollToItem(at: NSIndexPath(item: 12, section: 0) as IndexPath, at: .left, animated: true)
     }
     
     func setNavigationBar() {
@@ -386,8 +393,10 @@ class StopWatchViewController: UIViewController {
     
     func setDday(){
         let ud = UserDefaults.standard
-        let dday = ud.string(forKey: "dday") ?? "0"
-        self.dDayLabel.text = dday + " days left"
+        let day = ud.value(forKey: "dday") as? Date ?? Date()
+        let dayCount = Double(day.timeIntervalSinceNow / 86400) // 하루86400초
+        let dday =  Int(ceil(dayCount)) // 소수점 올림
+        self.dDayLabel.text = "\(dday) days left"
     }
     
     //SetNavigationItem
@@ -406,31 +415,7 @@ class StopWatchViewController: UIViewController {
     }
     
     @objc func respondToButton(_ button:UIButton){
-        var year =  Int(self.splitDate().0)!
-        var month = Int(self.splitDate().1)!
-        let day = Int(self.splitDate().2)!
-        
-        // 다음 달, 이전 달 버튼 클릭시마다 분기하여 동작
-        switch button.tag {
-        case 0: // previous button
-            if month == 1 {
-                year -= 1
-                month = 12
-            }else{
-                month -= 1
-            }
-            break
-        case 1: // next button
-            if month == 12 {
-                year += 1
-                month = 1
-            }else{
-                month += 1
-            }
-            break
-        default:
-            return
-        }
+        let (year,month,day) = CalendarMethod().changeMonth(tag: button.tag, date: self.saveDate)
         
         self.saveDate = String(year) + "." + self.view.returnString(month) + "." + self.view.returnString(day)
         
@@ -439,6 +424,8 @@ class StopWatchViewController: UIViewController {
         self.calendarView.month = month
         self.calendarView.year = year
         self.calendarView.calendarView.reloadData()
+        
+        self.saveDateDelegate?.detectSaveDate(date: self.saveDate)
     }
 
     
@@ -473,6 +460,7 @@ class StopWatchViewController: UIViewController {
             
             return view
         }()
+        
         self.editGoalTimeView!.transform = CGAffineTransform(translationX: 0, y: self.view.frame.height)
         UIView.animate(withDuration: 0.3){
             self.editGoalTimeView!.transform = .identity
@@ -492,7 +480,7 @@ class StopWatchViewController: UIViewController {
     
     // 목표 시간 설정 뷰 닫기
     @objc func didFinishEditingGoalTime(_ sender: UIButton){
-        if sender.tag == 1 {
+        if sender.tag == 1 { // 확인버튼
             let dailyData = self.realm.object(ofType: DailyData.self, forPrimaryKey: self.saveDate)
             try! self.realm.write{
                 dailyData!.totalGoalTime =
@@ -504,16 +492,18 @@ class StopWatchViewController: UIViewController {
             UIView.animate(withDuration: 0.5,animations: {
                 self.editGoalTimeView!.transform = CGAffineTransform(translationX: 0, y: self.view.frame.height)
             }){_ in
+                StopWatchDAO().deleteSegment(date: self.saveDate)
                 self.editGoalTimeView!.removeFromSuperview()
                 self.editGoalTimeView = nil
             }
            
         }
-        
+        //취소버튼
         if sender.tag == 2 {
             UIView.animate(withDuration: 0.5, animations: {
                 self.editGoalTimeView!.transform = CGAffineTransform(translationX: 0, y: self.view.frame.height)
             }){_ in
+                StopWatchDAO().deleteSegment(date: self.saveDate)
                 self.editGoalTimeView!.removeFromSuperview()
                 self.editGoalTimeView = nil
             }
@@ -598,43 +588,6 @@ class StopWatchViewController: UIViewController {
         self.toDoTableView.reloadData()
     }
     
-    // 날짜 년,월,일로 쪼개서 반환
-    func splitDate() -> (String,String,String) {
-        let split = self.saveDate.split(separator: ".")
-        let year = String(split[0])
-        let month = String(split[1])
-        let day = String(split[2])
-        
-        return (year,month,day)
-    }
-    
-    //요일 변화 메소드
-    func convertDate()-> String{
-        var (year,month,_) = self.splitDate()
-        var monthWord = ""
-        year.removeFirst()
-        year.removeFirst()
-        
-        switch month {
-        case "01": monthWord = "January"
-        case "02": monthWord = "February"
-        case "03": monthWord = "March"
-        case "04": monthWord = "April"
-        case "05": monthWord = "May"
-        case "06": monthWord = "June"
-        case "07": monthWord = "July"
-        case "08": monthWord = "August"
-        case "09": monthWord = "September"
-        case "10": monthWord = "October"
-        case "11": monthWord = "November"
-        case "12": monthWord = "December"
-        default:
-            print(self.saveDate)
-        }
-        
-        return year + " " + monthWord
-    }
-    
     //MARK: - SideBarMenu Method
     // 메뉴 터치에 따라 반응하는 함수
     func didSelectedMenuOption(menuOption: MenuOption){
@@ -648,7 +601,14 @@ class StopWatchViewController: UIViewController {
             let ddayVC = DdayViewController()
             self.navigationController?.pushViewController(ddayVC, animated: true)
         case .statistics:
-            print("zz")
+//            let statisticsVC = StatisticsViewController()
+//            self.saveDateDelegate = statisticsVC
+//            statisticsVC.navigationItem.title = CalendarMethod().convertDate(date: self.saveDate)
+//            self.navigationController?.pushViewController(statisticsVC, animated: true)
+//            statisticsVC.previousMonthButton.addTarget(self, action: #selector(self.respondToButton(_:)), for: .touchUpInside)
+//            statisticsVC.nextMonthButton.addTarget(self, action: #selector(self.respondToButton(_:)), for: .touchUpInside)
+            print("준비중")
+            
         }
     }
 }
@@ -657,7 +617,7 @@ extension StopWatchViewController {
     
     //MARK: Configured
     func configured() {
-        self.view.backgroundColor = .standardColor
+        self.view.backgroundColor = .clear
     }
     
     //타이머 구동 방식
@@ -690,7 +650,8 @@ extension StopWatchViewController {
                         
                     }
                 }
-            }else if radian < 100 { //timer stop
+                
+            } else if radian < 100 { //timer stop
                 if proximityState == false {
                     UIDevice.current.isProximityMonitoringEnabled = false
                     if let timerVC = self.concentraionTimerVC{
@@ -700,6 +661,7 @@ extension StopWatchViewController {
             }
         }
     }
+    
     //MARK: AddSubView
     func addSubView(){
         self.view.addSubview(self.frameView)
@@ -785,7 +747,7 @@ extension StopWatchViewController {
             self.calendarView.topAnchor.constraint(equalTo: self.titleView.bottomAnchor, constant: 16),
             self.calendarView.leadingAnchor.constraint(equalTo: self.frameView.leadingAnchor, constant: 10),
             self.calendarView.trailingAnchor.constraint(equalTo: self.frameView.trailingAnchor, constant: -10),
-            self.calendarView.heightAnchor.constraint(equalToConstant: 68)
+            self.calendarView.heightAnchor.constraint(equalToConstant: 80)
         ])
         
         NSLayoutConstraint.activate([

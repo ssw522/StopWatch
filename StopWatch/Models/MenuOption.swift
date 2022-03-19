@@ -30,5 +30,9 @@ enum MenuOption: Int,CustomStringConvertible {
         case .statistics: return UIImage(named: "statistics") ?? UIImage()
         }
     }
-    
+}
+
+enum CalendarMode {
+    case week
+    case month
 }

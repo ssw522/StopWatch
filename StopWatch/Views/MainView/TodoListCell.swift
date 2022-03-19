@@ -142,7 +142,7 @@ class TodoListCell: UITableViewCell {
         
         guard let section = sender.superview?.tag else { return }
         guard let todoListTableView = sender.superview?.superview?.superview as? UITableView else { return }
-//        var index = SingleTonSegment.shared.segments[section].listCheckImageIndex[row]
+
         var index = segment[section].listCheckImageIndex[row]
         index += 1
         try! self.realm.write{

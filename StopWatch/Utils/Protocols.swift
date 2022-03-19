@@ -10,3 +10,7 @@ import UIKit
 protocol StopWatchVCDelegate {
     func handleMenuToggle(menuOption: MenuOption?)
 }
+
+protocol SaveDateDetectionDelegate {
+    func detectSaveDate(date: String)
+}

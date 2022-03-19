@@ -11,6 +11,14 @@ import RealmSwift
 class EditColorView: UIView {
     var hexCode = 0
     var palettes: Palettes?
+    let titleLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = .darkGray
+        label.text = "색상 추가"
+        label.font = UIFont(name: "GodoM", size: 18)
+        return label
+    }()
     
     let guideLabel: UILabel = {
         let label = UILabel()
@@ -28,6 +36,9 @@ class EditColorView: UIView {
         tf.translatesAutoresizingMaskIntoConstraints = false
         tf.borderStyle = .roundedRect
         tf.autocapitalizationType = .allCharacters // 대문자만 입력
+        let attributes = [ NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14) ]
+        tf.attributedPlaceholder = NSAttributedString(
+            string: "ex)ABCDEF", attributes: attributes )
         
         return tf
     }()
@@ -95,6 +106,7 @@ class EditColorView: UIView {
     }
     
     func addsubView(){
+        self.addSubview(self.titleLabel)
         self.addSubview(self.guideLabel)
         self.addSubview(self.getColorCodeTextfield)
         self.addSubview(self.colorPreView)
@@ -110,7 +122,12 @@ class EditColorView: UIView {
     
     func layout() {
         NSLayoutConstraint.activate([
-            self.guideLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
+            self.titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
+            self.titleLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor)
+        ])
+        
+        NSLayoutConstraint.activate([
+            self.guideLabel.topAnchor.constraint(equalTo: self.titleLabel.bottomAnchor, constant: 10),
             self.guideLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             
             self.getColorCodeTextfield.topAnchor.constraint(equalTo: self.guideLabel.bottomAnchor, constant: 20),
@@ -154,7 +171,13 @@ class EditColorView: UIView {
         if (textField.text?.count ?? 0 > maxLength) {
             textField.deleteBackward()
         }else {
+            guard let isASCII = textField.text?.last?.isASCII else { return }
+            // 아스키코드 아니면 지우기!
+            if isASCII == false {
+                textField.deleteBackward()
+            }
             guard let ascii = textField.text?.last?.asciiValue else { return }
+            
             guard self.isChar(ascii: ascii) else { // 16진수가 아니면 지우기
                 textField.deleteBackward()
                 return

@@ -9,7 +9,7 @@ import UIKit
 
 class DdayViewController: UIViewController{
     //MARK: - Properties
-    var dday = 0
+    var dday: Date!
     
     let ddayLabel: UILabel = {
         let label = UILabel()
@@ -35,7 +35,7 @@ class DdayViewController: UIViewController{
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = " "
-        label.textColor = UIColor(red: 204/255, green: 158/255, blue: 142/255, alpha: 1.0) /* #cc9e8e */
+        label.textColor = UIColor(red: 134/255, green: 118/255, blue: 116/255, alpha: 1.0)
         label.font = .systemFont(ofSize: 24, weight: .semibold )
         
         return label
@@ -54,10 +54,11 @@ class DdayViewController: UIViewController{
     
     let okButton: UIButton = {
         let button = UIButton(type: .roundedRect)
+        button.layer.cornerRadius = 10
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("확 인", for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = UIColor(red: 204/255, green: 158/255, blue: 142/255, alpha: 1.0)
+        button.backgroundColor = UIColor(red: 134/255, green: 118/255, blue: 116/255, alpha: 1.0)
         
         return button
     }()
@@ -68,18 +69,28 @@ class DdayViewController: UIViewController{
         self.view.backgroundColor = .white
         self.addsubView()
         self.layout()
-        self.dateLabel.text = self.returnToday(date: Date())
        
         self.datePickerView.addTarget(self, action: #selector(self.didChangeDate), for: .valueChanged)
         self.okButton.addTarget(self, action: #selector(self.clickOKButton), for: .touchUpInside)
+        
         self.navigationController?.navigationBar.isHidden = false
-        self.navigationItem.title = "StopWatch"
+        
+        let label = UILabel()
+        label.text = "공부 습관"
+        label.textColor = .darkGray
+        label.font = UIFont(name: "GodoM", size: 18)
+        self.navigationItem.titleView = label
+        
+        self.dday = UserDefaults.standard.value(forKey: "dday") as? Date ?? Date()
+        self.datePickerView.date = self.dday
+        self.returnDday(date: self.dday)
+        self.dateLabel.text = self.returnToday(date: self.dday)
     }
     
     func returnDday(date: Date){
-        let dday = Double(date.timeIntervalSinceNow / 86400)
-        self.dday = Int(ceil(dday))
-        self.ddayLabel.text = "D-" + "\(self.dday)"
+        let dayCount = Double(date.timeIntervalSinceNow / 86400) // 하루86400초
+        let dday =  Int(ceil(dayCount)) // 소수점 올림
+        self.ddayLabel.text = "D-" + "\(dday)"
     }
     
     func returnToday(date: Date) -> String{
@@ -91,8 +102,9 @@ class DdayViewController: UIViewController{
     
     //MARK: - Selector
     @objc func didChangeDate(){
-        self.dateLabel.text = self.returnToday(date: self.datePickerView.date)
-        returnDday(date: self.datePickerView.date)
+        self.dday = self.datePickerView.date
+        self.dateLabel.text = self.returnToday(date: self.dday)
+        self.returnDday(date: self.dday)
     }
     
     @objc func clickOKButton(){

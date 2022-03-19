@@ -56,9 +56,10 @@ class EditCategoryViewController: UIViewController {
     }()
     
     let okButton: UIButton = {
-        let button = UIButton()
+        let button = UIButton(type: .roundedRect)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("OK", for: .normal)
+        button.setTitleColor(.white, for: .normal)
         button.backgroundColor = .darkGray
         button.layer.cornerRadius = 10
         button.tag = 1
@@ -67,9 +68,10 @@ class EditCategoryViewController: UIViewController {
     }()
     
     let cancelButton: UIButton = {
-        let button = UIButton()
+        let button = UIButton(type: .roundedRect)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Cancel", for: .normal)
+        button.setTitleColor(.white, for: .normal)
         button.backgroundColor = .darkGray
         button.layer.cornerRadius = 10
         button.tag = 2
@@ -200,6 +202,7 @@ class EditCategoryViewController: UIViewController {
         
         //버튼 타이틀을 edit으로 수정하고 edit method,delete method 추가
         self.editColorView?.addButton.setTitle("edit", for: .normal)
+        self.editColorView?.titleLabel.text = "색상 편집"
         self.editColorView?.addButton.addTarget(self, action: #selector(self.editColor(_:)), for: .touchUpInside)
         self.editColorView?.deleteColrButton.addTarget(self, action: #selector(self.deleteColor(_:)), for: .touchUpInside)
         //delete버튼 보이기
@@ -252,7 +255,7 @@ class EditCategoryViewController: UIViewController {
             self.editColorView!.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 50),
             self.editColorView!.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -50),
             self.editColorView!.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
-            self.editColorView!.heightAnchor.constraint(equalToConstant: 140)
+            self.editColorView!.heightAnchor.constraint(equalToConstant: 170)
         ])
     }
 
