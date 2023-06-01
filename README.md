@@ -19,7 +19,5 @@ TodoList + StopWatch 를 통한 효율적인 공부습관을 기르는 [앱](htt
  - Autolayout
  - CoreMotion
  - Proximity Sensor
-
-
-## 피드백 관리
- https://working-melody-26f.notion.site/StopWatch-Feedback-Management-0131fbe9f9d14c5b939c519c167e07d4
+ - Then
+ - SnapKit
