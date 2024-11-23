@@ -25,10 +25,7 @@
 		DB340BC82940750100795FFC /* UITextField+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB340BC72940750100795FFC /* UITextField+.swift */; };
 		DB340BCA2940753400795FFC /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB340BC92940753400795FFC /* UIColor+.swift */; };
 		DB3BB9D72A1904D700E4432A /* ContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3BB9D62A1904D700E4432A /* ContactViewController.swift */; };
-		DB40D1F92609B32C00A4E9FC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB40D1F82609B32C00A4E9FC /* AppDelegate.swift */; };
-		DB40D2002609B32C00A4E9FC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB40D1FE2609B32C00A4E9FC /* Main.storyboard */; };
 		DB40D2022609B32E00A4E9FC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DB40D2012609B32E00A4E9FC /* Assets.xcassets */; };
-		DB40D2052609B32E00A4E9FC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB40D2032609B32E00A4E9FC /* LaunchScreen.storyboard */; };
 		DB4FE82426BF80F100B1DF3E /* SegmentData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4FE82326BF80F100B1DF3E /* SegmentData.swift */; };
 		DB5AE4A8276CB61C00CF737C /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5AE4A7276CB61C00CF737C /* CalendarView.swift */; };
 		DB5AE4AA276CB6D800CF737C /* CalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5AE4A9276CB6D800CF737C /* CalendarCell.swift */; };
@@ -93,11 +90,7 @@
 		DB340BC92940753400795FFC /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		DB3BB9D62A1904D700E4432A /* ContactViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactViewController.swift; sourceTree = "<group>"; };
 		DB40D1F52609B32C00A4E9FC /* StopWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StopWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		DB40D1F82609B32C00A4E9FC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		DB40D1FF2609B32C00A4E9FC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		DB40D2012609B32E00A4E9FC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		DB40D2042609B32E00A4E9FC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		DB40D2062609B32E00A4E9FC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DB4FE82326BF80F100B1DF3E /* SegmentData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SegmentData.swift; path = StopWatch/Models/SegmentData.swift; sourceTree = SOURCE_ROOT; };
 		DB5AE4A7276CB61C00CF737C /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		DB5AE4A9276CB6D800CF737C /* CalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCell.swift; sourceTree = "<group>"; };
@@ -131,6 +124,37 @@
 		DBEC2269276864380083ECDA /* ListEditItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListEditItemView.swift; sourceTree = "<group>"; };
 		DBF7E79126AFF438009902BE /* EditGoalTimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditGoalTimeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		B5D0FB592CF20AE600BEF154 /* Exceptions for "App" folder in "StopWatch" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = DB40D1F42609B32C00A4E9FC /* StopWatch */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		B5D0FB582CF20ADC00BEF154 /* App */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				B5D0FB592CF20AE600BEF154 /* Exceptions for "App" folder in "StopWatch" target */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		B5D0FB5A2CF20B3100BEF154 /* Core */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Core;
+			sourceTree = "<group>";
+		};
+		B5D0FB602CF20B6000BEF154 /* DesignSystem */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = DesignSystem;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		DB40D1F22609B32C00A4E9FC /* Frameworks */ = {
@@ -270,16 +294,15 @@
 		DB40D1F72609B32C00A4E9FC /* StopWatch */ = {
 			isa = PBXGroup;
 			children = (
+				B5D0FB602CF20B6000BEF154 /* DesignSystem */,
+				B5D0FB5A2CF20B3100BEF154 /* Core */,
+				B5D0FB582CF20ADC00BEF154 /* App */,
 				DBBFFBF0293358E800CA3FBC /* Resource */,
 				DB8F532D26F085D50071F911 /* Custom */,
 				DB0F172A261430F7007C8448 /* Utils */,
 				DBA7ED5A27DDAFFF004B0D0E /* Models */,
 				DB289048261C4FF500FCC4BC /* Views */,
 				DB289046261C4F6600FCC4BC /* Controllers */,
-				DB40D1FE2609B32C00A4E9FC /* Main.storyboard */,
-				DB40D2032609B32E00A4E9FC /* LaunchScreen.storyboard */,
-				DB40D1F82609B32C00A4E9FC /* AppDelegate.swift */,
-				DB40D2062609B32E00A4E9FC /* Info.plist */,
 			);
 			path = StopWatch;
 			sourceTree = "<group>";
@@ -364,6 +387,11 @@
 			);
 			dependencies = (
 			);
+			fileSystemSynchronizedGroups = (
+				B5D0FB582CF20ADC00BEF154 /* App */,
+				B5D0FB5A2CF20B3100BEF154 /* Core */,
+				B5D0FB602CF20B6000BEF154 /* DesignSystem */,
+			);
 			name = StopWatch;
 			productName = StopWatch;
 			productReference = DB40D1F52609B32C00A4E9FC /* StopWatch.app */;
@@ -411,9 +439,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DB40D2052609B32E00A4E9FC /* LaunchScreen.storyboard in Resources */,
 				DB40D2022609B32E00A4E9FC /* Assets.xcassets in Resources */,
-				DB40D2002609B32C00A4E9FC /* Main.storyboard in Resources */,
 				DB10DB8C27E4A081000560A3 /* GodoM.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -463,7 +489,6 @@
 				DB30E09A29487D1800F1151A /* UIView+.swift in Sources */,
 				DBEC226A276864380083ECDA /* ListEditItemView.swift in Sources */,
 				DBA7ED6427E301C5004B0D0E /* CalendarMethod.swift in Sources */,
-				DB40D1F92609B32C00A4E9FC /* AppDelegate.swift in Sources */,
 				DBBFFBEF29334A3500CA3FBC /* TimeLabel.swift in Sources */,
 				DB4FE82426BF80F100B1DF3E /* SegmentData.swift in Sources */,
 				DBA7ED5C27DDB790004B0D0E /* MenuOptionCell.swift in Sources */,
@@ -475,25 +500,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXVariantGroup section */
-		DB40D1FE2609B32C00A4E9FC /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				DB40D1FF2609B32C00A4E9FC /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		DB40D2032609B32E00A4E9FC /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				DB40D2042609B32E00A4E9FC /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		DB40D2072609B32E00A4E9FC /* Debug */ = {
@@ -620,8 +626,8 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = V2YNV9QV27;
-				INFOPLIST_FILE = StopWatch/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				INFOPLIST_FILE = StopWatch/App/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -642,8 +648,8 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = V2YNV9QV27;
-				INFOPLIST_FILE = StopWatch/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				INFOPLIST_FILE = StopWatch/App/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
