@@ -25,7 +25,6 @@
 		DB340BC82940750100795FFC /* UITextField+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB340BC72940750100795FFC /* UITextField+.swift */; };
 		DB340BCA2940753400795FFC /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB340BC92940753400795FFC /* UIColor+.swift */; };
 		DB3BB9D72A1904D700E4432A /* ContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3BB9D62A1904D700E4432A /* ContactViewController.swift */; };
-		DB40D2022609B32E00A4E9FC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DB40D2012609B32E00A4E9FC /* Assets.xcassets */; };
 		DB4FE82426BF80F100B1DF3E /* SegmentData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4FE82326BF80F100B1DF3E /* SegmentData.swift */; };
 		DB5AE4A8276CB61C00CF737C /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5AE4A7276CB61C00CF737C /* CalendarView.swift */; };
 		DB5AE4AA276CB6D800CF737C /* CalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5AE4A9276CB6D800CF737C /* CalendarCell.swift */; };
@@ -90,7 +89,6 @@
 		DB340BC92940753400795FFC /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		DB3BB9D62A1904D700E4432A /* ContactViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactViewController.swift; sourceTree = "<group>"; };
 		DB40D1F52609B32C00A4E9FC /* StopWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StopWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		DB40D2012609B32E00A4E9FC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DB4FE82326BF80F100B1DF3E /* SegmentData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SegmentData.swift; path = StopWatch/Models/SegmentData.swift; sourceTree = SOURCE_ROOT; };
 		DB5AE4A7276CB61C00CF737C /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		DB5AE4A9276CB6D800CF737C /* CalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCell.swift; sourceTree = "<group>"; };
@@ -126,7 +124,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		B5D0FB592CF20AE600BEF154 /* Exceptions for "App" folder in "StopWatch" target */ = {
+		B5BE64682CF2205000F28196 /* Exceptions for "App" folder in "StopWatch" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -139,7 +137,7 @@
 		B5D0FB582CF20ADC00BEF154 /* App */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				B5D0FB592CF20AE600BEF154 /* Exceptions for "App" folder in "StopWatch" target */,
+				B5BE64682CF2205000F28196 /* Exceptions for "App" folder in "StopWatch" target */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -152,6 +150,11 @@
 		B5D0FB602CF20B6000BEF154 /* DesignSystem */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = DesignSystem;
+			sourceTree = "<group>";
+		};
+		B5D0FB982CF2106F00BEF154 /* Screen */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Screen;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -237,7 +240,6 @@
 		DB289047261C4F8000FCC4BC /* images */ = {
 			isa = PBXGroup;
 			children = (
-				DB40D2012609B32E00A4E9FC /* Assets.xcassets */,
 			);
 			path = images;
 			sourceTree = "<group>";
@@ -294,6 +296,7 @@
 		DB40D1F72609B32C00A4E9FC /* StopWatch */ = {
 			isa = PBXGroup;
 			children = (
+				B5D0FB982CF2106F00BEF154 /* Screen */,
 				B5D0FB602CF20B6000BEF154 /* DesignSystem */,
 				B5D0FB5A2CF20B3100BEF154 /* Core */,
 				B5D0FB582CF20ADC00BEF154 /* App */,
@@ -391,6 +394,7 @@
 				B5D0FB582CF20ADC00BEF154 /* App */,
 				B5D0FB5A2CF20B3100BEF154 /* Core */,
 				B5D0FB602CF20B6000BEF154 /* DesignSystem */,
+				B5D0FB982CF2106F00BEF154 /* Screen */,
 			);
 			name = StopWatch;
 			productName = StopWatch;
@@ -439,7 +443,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DB40D2022609B32E00A4E9FC /* Assets.xcassets in Resources */,
 				DB10DB8C27E4A081000560A3 /* GodoM.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
