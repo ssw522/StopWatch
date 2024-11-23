@@ -24,7 +24,9 @@
 	<true/>
 	<key>UIAppFonts</key>
 	<array>
-		<string>GodoM.ttf</string>
+		<string>Pretendard-SemiBold.otf</string>
+		<string>Pretendard-Bold.otf</string>
+		<string>Pretendard-Regular.otf</string>
 	</array>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>

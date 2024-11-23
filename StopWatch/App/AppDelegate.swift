@@ -34,16 +34,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        window = UIWindow(frame: UIScreen.main.bounds)
-        window?.rootViewController = ContainerViewController()
-        window?.makeKeyAndVisible()
-        
         self.setFirstDB() // 아무 과목도 없을시  기타 과목 추가
         
         let ud = UserDefaults.standard
         if ud.bool(forKey: "FirstPalette") == false { self.setFirstPalette() }
         
         return true
+    }
+    
+    func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
+        let configuration = UISceneConfiguration(
+            name: nil,
+            sessionRole: connectingSceneSession.role
+        )
+        if connectingSceneSession.role == .windowApplication {
+            configuration.delegateClass = SceneDelegate.self
+        }
+        return configuration
     }
     
     //오늘 날짜 리턴 메소드
