@@ -111,8 +111,8 @@ final class CategoryViewController: UIViewController {
     
     //MARK: - Selector
     @objc func addBarButtonItemMtd(){
-        let editVC = EditCategoryViewController()
-        self.navigationController?.pushViewController(editVC, animated: true)
+//        let editVC = EditCategoryViewController()
+//        self.navigationController?.pushViewController(editVC, animated: true)
     }
     
     @objc func longPressGesture(gesture: UILongPressGestureRecognizer) {
@@ -158,14 +158,14 @@ extension CategoryViewController: UITableViewDelegate, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let segment = self.realm.objects(Segments.self)
-        let editVC = EditCategoryViewController().then {
-            $0.selectedSegmentRow = indexPath.row
-            $0.getNameTextField.text = segment[indexPath.row].name
-            $0.selectedColorCode = segment[indexPath.row].colorCode
-        }
-       
-        self.navigationController?.pushViewController(editVC, animated: true)
+//        let segment = self.realm.objects(Segments.self)
+//        let editVC = EditCategoryViewController().then {
+//            $0.selectedSegmentRow = indexPath.row
+//            $0.getNameTextField.text = segment[indexPath.row].name
+//            $0.selectedColorCode = segment[indexPath.row].colorCode
+//        }
+//       
+//        self.navigationController?.pushViewController(editVC, animated: true)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

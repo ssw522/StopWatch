@@ -175,8 +175,8 @@ final class ConcentrationTimeViewController: UIViewController{
     }
     
     @objc func addCategoryButtonMtd(){
-        let editVC = EditCategoryViewController()
-        self.navigationController?.pushViewController(editVC, animated: true)
+//        let editVC = EditCategoryViewController()
+//        self.navigationController?.pushViewController(editVC, animated: true)
     }
     
 }
