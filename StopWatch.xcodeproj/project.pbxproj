@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		43228812FC89EC6FE9668022 /* Pods_StopWatch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D5E8619A05D6284273C99B3 /* Pods_StopWatch.framework */; };
 		DB08F0C32765DB88001EBBEE /* StopWatchDAO.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB08F0C22765DB88001EBBEE /* StopWatchDAO.swift */; };
 		DB0E89B9262842BE00533009 /* TimeSaveModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0E89B8262842BE00533009 /* TimeSaveModalView.swift */; };
 		DB10DB8C27E4A081000560A3 /* GodoM.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DB10DB8B27E4A081000560A3 /* GodoM.ttf */; };
@@ -61,9 +60,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		5CA68B9216F67301B7F37E82 /* Pods-StopWatch.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StopWatch.debug.xcconfig"; path = "Target Support Files/Pods-StopWatch/Pods-StopWatch.debug.xcconfig"; sourceTree = "<group>"; };
-		8D5E8619A05D6284273C99B3 /* Pods_StopWatch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StopWatch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		A46D2DC1AD4790441A1758B2 /* Pods-StopWatch.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StopWatch.release.xcconfig"; path = "Target Support Files/Pods-StopWatch/Pods-StopWatch.release.xcconfig"; sourceTree = "<group>"; };
 		DB08F0C22765DB88001EBBEE /* StopWatchDAO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopWatchDAO.swift; sourceTree = "<group>"; };
 		DB0E89B8262842BE00533009 /* TimeSaveModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSaveModalView.swift; sourceTree = "<group>"; };
 		DB10DB8B27E4A081000560A3 /* GodoM.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = GodoM.ttf; sourceTree = "<group>"; };
@@ -123,7 +119,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				43228812FC89EC6FE9668022 /* Pods_StopWatch.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -232,8 +227,6 @@
 			children = (
 				DB40D1F72609B32C00A4E9FC /* StopWatch */,
 				DB40D1F62609B32C00A4E9FC /* Products */,
-				F95DBA0BF70FC8275FA2BE45 /* Pods */,
-				DB89756364217619A0677F8E /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -281,14 +274,6 @@
 			path = CalendarView;
 			sourceTree = "<group>";
 		};
-		DB89756364217619A0677F8E /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				8D5E8619A05D6284273C99B3 /* Pods_StopWatch.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		DB8F532D26F085D50071F911 /* Custom */ = {
 			isa = PBXGroup;
 			children = (
@@ -334,15 +319,6 @@
 			path = extension;
 			sourceTree = "<group>";
 		};
-		F95DBA0BF70FC8275FA2BE45 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				5CA68B9216F67301B7F37E82 /* Pods-StopWatch.debug.xcconfig */,
-				A46D2DC1AD4790441A1758B2 /* Pods-StopWatch.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -350,11 +326,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DB40D2092609B32E00A4E9FC /* Build configuration list for PBXNativeTarget "StopWatch" */;
 			buildPhases = (
-				30A0D5039940C22D47761409 /* [CP] Check Pods Manifest.lock */,
 				DB40D1F12609B32C00A4E9FC /* Sources */,
 				DB40D1F22609B32C00A4E9FC /* Frameworks */,
 				DB40D1F32609B32C00A4E9FC /* Resources */,
-				EFF0373BC5C2FA27D26D2271 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -410,48 +384,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		30A0D5039940C22D47761409 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-StopWatch-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		EFF0373BC5C2FA27D26D2271 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-StopWatch/Pods-StopWatch-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-StopWatch/Pods-StopWatch-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-StopWatch/Pods-StopWatch-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		DB40D1F12609B32C00A4E9FC /* Sources */ = {
@@ -647,7 +579,6 @@
 		};
 		DB40D20A2609B32E00A4E9FC /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5CA68B9216F67301B7F37E82 /* Pods-StopWatch.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -670,7 +601,6 @@
 		};
 		DB40D20B2609B32E00A4E9FC /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A46D2DC1AD4790441A1758B2 /* Pods-StopWatch.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
