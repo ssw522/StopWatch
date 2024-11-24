@@ -33,7 +33,7 @@ public extension View {
     }
     
     @ViewBuilder func roundedBorder(
-        _ color: Color = .black,
+        _ color: Color = .getColor(.line_assistive),
         topLeftRadius: CGFloat = 8,
         topRightRadius: CGFloat = 8,
         bottomLeftRadius: CGFloat = 8,

@@ -22,9 +22,7 @@ struct MainTabView: View {
                 ForEach(TabItem.allCases, id: \.self) { tabItem in
                     switch viewModel.state.currentTab {
                     case .todo:
-                        //                        HomeView(viewModel: viewModel.homeViewModel)
-                        //                            .tag(tabItem)
-                        EmptyView()
+                        TodoView()
                         
                     case .stopWatch:
                         //                        PolicyView(viewModel: viewModel.policyViewModel)
@@ -80,7 +78,7 @@ struct MainTabView: View {
                 Text(item.title)
             }
             .setTypo(.caption2)
-            .foregroundStyle(isCurrentTab ? Color.black : Color.blue)
+            .foregroundStyle(isCurrentTab ? Color.getColor(.primary_normal) : .getColor(.text_disable))
             .frame(maxWidth: .infinity)
             .frame(maxHeight: .infinity, alignment: .top)
             .padding(.top, 12)

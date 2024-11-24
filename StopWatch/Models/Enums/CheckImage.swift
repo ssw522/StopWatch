@@ -21,4 +21,13 @@ enum CheckImage: Int {
         case .xmark: return UIImage(systemName: "xmark") ?? UIImage()
         }
     }
+    
+    var title: String {
+        switch self {
+        case .null: return ""
+        case .circle: return "Done"
+        case .triangle: return "In Progress"
+        case .xmark: return "UnDone"
+        }
+    }
 }

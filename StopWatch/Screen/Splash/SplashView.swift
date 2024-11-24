@@ -12,5 +12,8 @@ struct SplashView: View {
     
     var body: some View {
         Color.white
+            .onAppear {
+                viewModel.reduce(.appRoute)
+            }
     }
 }

@@ -27,7 +27,7 @@ final class SplashViewModel: ViewModelable {
     func reduce(_ action: Action) {
         switch action {
         case .appRoute:
-            Task {
+            Task { @MainActor in
                 try? await Task.sleep(for: .seconds(1))
                 coordinator.setFlow(.tab)
             }

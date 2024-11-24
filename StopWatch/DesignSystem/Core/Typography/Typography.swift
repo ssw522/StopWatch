@@ -37,6 +37,7 @@ public enum Typography {
     /// caption
     case caption1
     case caption2
+    case caption3
     
     
     /// input
@@ -48,44 +49,7 @@ extension Typography {
     
     /// SwiftUI Font
     var font: Font {
-        switch self {
-        case .title1:
-            return .pretendard(size: 28, weight: .bold)
-        case .title2:
-            return .pretendard(size: 24, weight: .bold)
-        case .title3:
-            return .pretendard(size: 20, weight: .bold)
-        case .title4:
-            return .pretendard(size: 18, weight: .bold)
-        case .title5:
-            return .pretendard(size: 16, weight: .bold)
-        case .subTitle1:
-            return .pretendard(size: 24, weight: .semibold)
-        case .subTitle2:
-            return .pretendard(size: 20, weight: .semibold)
-        case .subTitle3:
-            return .pretendard(size: 18, weight: .semibold)
-        case .label1:
-            return .pretendard(size: 16, weight: .semibold)
-        case .label2:
-            return .pretendard(size: 14, weight: .semibold)
-        case .label3:
-            return .pretendard(size: 12, weight: .semibold)
-        case .label4:
-            return .pretendard(size: 11, weight: .semibold)
-        case .body1:
-            return .pretendard(size: 16, weight: .regular)
-        case .body2:
-            return .pretendard(size: 14, weight: .regular)
-        case .caption1:
-            return .pretendard(size: 12, weight: .regular)
-        case .caption2:
-            return .pretendard(size: 11, weight: .regular)
-        case .input1:
-            return .pretendard(size: 16, weight: .regular)
-        case .input2:
-            return .pretendard(size: 14, weight: .semibold)
-        }
+        Font(self.uiFont)
     }
     
     
@@ -124,6 +88,8 @@ extension Typography {
             return .pretendard(size: 12, weight: .regular)
         case .caption2:
             return .pretendard(size: 11, weight: .regular)
+        case .caption3:
+            return .pretendard(size: 10, weight: .regular)
         case .input1:
             return .pretendard(size: 16, weight: .regular)
         case .input2:
@@ -158,6 +124,7 @@ extension Typography {
             /// caption
         case .caption1: 18
         case .caption2: 16
+        case .caption3: 14
             
             /// input
         case .input1: 20

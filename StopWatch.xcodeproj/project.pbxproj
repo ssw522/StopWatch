@@ -10,6 +10,7 @@
 		B564BD102CF2081500E560C7 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = B564BD0F2CF2081500E560C7 /* RealmSwift */; };
 		B564BD112CF2081500E560C7 /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = B564BD0F2CF2081500E560C7 /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		B5AB29CC2CF2048700E6D510 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = B5AB29CB2CF2048700E6D510 /* Then */; };
+		B5BFEC2B2CF2299100A98319 /* RealmDBMigrationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BFEC2A2CF2299100A98319 /* RealmDBMigrationHelper.swift */; };
 		B5FC91812CF205010096D444 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = B5FC91802CF205010096D444 /* SnapKit */; };
 		DB08F0C32765DB88001EBBEE /* StopWatchDAO.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB08F0C22765DB88001EBBEE /* StopWatchDAO.swift */; };
 		DB0E89B9262842BE00533009 /* TimeSaveModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0E89B8262842BE00533009 /* TimeSaveModalView.swift */; };
@@ -74,6 +75,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		B5BFEC2A2CF2299100A98319 /* RealmDBMigrationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmDBMigrationHelper.swift; sourceTree = "<group>"; };
 		DB08F0C22765DB88001EBBEE /* StopWatchDAO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopWatchDAO.swift; sourceTree = "<group>"; };
 		DB0E89B8262842BE00533009 /* TimeSaveModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSaveModalView.swift; sourceTree = "<group>"; };
 		DB10DB8B27E4A081000560A3 /* GodoM.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = GodoM.ttf; sourceTree = "<group>"; };
@@ -134,6 +136,11 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		B5BFEC2C2CF22C1F00A98319 /* Entity */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Entity;
+			sourceTree = "<group>";
+		};
 		B5D0FB582CF20ADC00BEF154 /* App */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -296,6 +303,7 @@
 		DB40D1F72609B32C00A4E9FC /* StopWatch */ = {
 			isa = PBXGroup;
 			children = (
+				B5BFEC2C2CF22C1F00A98319 /* Entity */,
 				B5D0FB982CF2106F00BEF154 /* Screen */,
 				B5D0FB602CF20B6000BEF154 /* DesignSystem */,
 				B5D0FB5A2CF20B3100BEF154 /* Core */,
@@ -348,6 +356,7 @@
 				DB2E263C2A246F0C000D922E /* Palette.swift */,
 				DB2E263E2A2470AC000D922E /* Segments.swift */,
 				DB2E26402A24734C000D922E /* DailyData.swift */,
+				B5BFEC2A2CF2299100A98319 /* RealmDBMigrationHelper.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -391,6 +400,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				B5BFEC2C2CF22C1F00A98319 /* Entity */,
 				B5D0FB582CF20ADC00BEF154 /* App */,
 				B5D0FB5A2CF20B3100BEF154 /* Core */,
 				B5D0FB602CF20B6000BEF154 /* DesignSystem */,
@@ -464,6 +474,7 @@
 				DB340BC82940750100795FFC /* UITextField+.swift in Sources */,
 				DB5AE4AE276EFBF700CF737C /* GoalTimeView.swift in Sources */,
 				DB5AE4AA276CB6D800CF737C /* CalendarCell.swift in Sources */,
+				B5BFEC2B2CF2299100A98319 /* RealmDBMigrationHelper.swift in Sources */,
 				DB8DB18D2611E67900A5814A /* StopWatchViewController.swift in Sources */,
 				DB2E26412A24734C000D922E /* DailyData.swift in Sources */,
 				DB2E263A2A246E82000D922E /* CheckImage.swift in Sources */,
