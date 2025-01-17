@@ -18,14 +18,17 @@ class TodoViewModel: ViewModelable {
     }
     
     struct State {
-        
+        var newContent: String = ""
     }
     
     enum Action {
-        
+        case editNewTodoContent(String)
     }
     
     func reduce(_ action: Action) {
-        
+        switch action {
+        case .editNewTodoContent(let newContent):
+            state.newContent = newContent           
+        }
     }
 }

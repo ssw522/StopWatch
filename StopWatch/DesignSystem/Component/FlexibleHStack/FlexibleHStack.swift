@@ -177,7 +177,7 @@ private extension FlexibleHStack {
             let size = sizes[maxHeightIndex]
             
             var spacing = CGFloat.zero
-            if let previousMaxHeightIndex {
+            if let _ = previousMaxHeightIndex {
                 spacing = verticalSpacing
             }
             

@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct TodoView: View {
+    @StateObject var viewModel: TodoViewModel
+    @FocusState var isTyping: Bool
     
     var body: some View {
         WithDesignSystem {
@@ -15,27 +17,27 @@ struct TodoView: View {
         } content: {
             ScrollView {
                 VStack(spacing: .zero) {
+                    FixedSpacer(10)
                     calendarView
-                    FixedSpacer(16)
+                    FixedSpacer(32)
                     todayTodoListView
                 }
             }
             .scrollIndicators(.hidden)
-            FixedSpacer(12)
-            bottomButton
-            FixedSpacer(12)
+            .overlay(alignment: .bottom) {
+                VStack(spacing: .zero) {
+                    bottomButton
+                    FixedSpacer(12)
+                }
+                .opacity(isTyping ? 1.0 : 0.8)
+            }
         }
     }
 }
 
 private extension TodoView {
     var calendarView: some View {
-        Color.gray
-            .frame(height: 80)
-            .frame(maxWidth: .infinity)
-            .overlay {
-                Text("주 단위캘린더")
-            }
+        SWWeeklyCalendarView(displayDate: .now)
     }
     
     var todayTodoListView: some View {
@@ -60,22 +62,31 @@ private extension TodoView {
     }
     
     var bottomButton: some View {
-        Button {
-            
-        } label: {
-            Text("New Todo")
-                .setTypo(.label2)
-                .foregroundStyle(Color.white)
-                .frame(maxWidth: .infinity)
-                .frame(height: 50)
-                .background(Color.gray)
-                .clipShape(.capsule)
-        }
-        .padding(.horizontal, 16)
+        NewTodoView(
+            text: Binding(
+                get: { viewModel.state.newContent },
+                set: { viewModel.reduce(.editNewTodoContent($0)) }),
+            show: false,
+            show2: false,
+            isTyping: _isTyping) { todo in
+                
+            }
+//        Button {
+//            
+//        } label: {
+//            Text("New Todo")
+//                .setTypo(.label2)
+//                .foregroundStyle(Color.white)
+//                .frame(maxWidth: .infinity)
+//                .frame(height: 50)
+//                .background(Color.gray)
+//                .clipShape(.capsule)
+//        }
+//        .padding(.horizontal, 16)
     }
 }
 
 #Preview(body: {
-    TodoView()
+    TodoView(viewModel: .init(coordinator: AppCoordinator.shared, state: .init()))
 })
 

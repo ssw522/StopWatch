@@ -22,7 +22,8 @@ struct MainTabView: View {
                 ForEach(TabItem.allCases, id: \.self) { tabItem in
                     switch viewModel.state.currentTab {
                     case .todo:
-                        TodoView()
+                        let todoViewModel = TodoViewModel(coordinator: MainTabCoordinator(), state: .init())
+                        TodoView(viewModel: todoViewModel)
                         
                     case .stopWatch:
                         //                        PolicyView(viewModel: viewModel.policyViewModel)

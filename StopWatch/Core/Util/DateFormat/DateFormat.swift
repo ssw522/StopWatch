@@ -60,6 +60,9 @@ enum DateFormat: String {
 
     /// 서버 날짜, 시간 (년-월-일 시:분:초)
     case serverDateTime = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
+    
+    /// MMM, yyyy
+    case MMMyyyy = "MMMM, yyyy"
 }
 
 // MARK: - DateFormatter
@@ -75,23 +78,35 @@ extension DateFormat {
     /// - DateFormatter 의 생성 비용은 굉장히 비싸서 재사용 하는 것이 효율적
     /// - DateFormatter는 thread-safe 하기에 전역적으로 사용 가능
     var formatter: DateFormatter {
-        Self.cachedFormatter(ofDateFormat: rawValue)
+        Self.cachedFormatter(
+            ofDateFormat: rawValue,
+            localeFormat: .korea
+        )
     }
 
-    static func cachedFormatter(ofDateFormat dateFormat: String) -> DateFormatter {
-        if let cachedFormatter = DateFormat.cachedFormatters[dateFormat] { return cachedFormatter }
+    static func cachedFormatter(
+        ofDateFormat dateFormat: String,
+        localeFormat: LocaleFormat
+    ) -> DateFormatter {
+        if let cachedFormatter = DateFormat.cachedFormatters[dateFormat+localeFormat.rawValue] { return cachedFormatter
+        }
 
-        let formatter = makeFormatter(withDateFormat: dateFormat)
-        DateFormat.cachedFormatters[dateFormat] = formatter
+        let formatter = makeFormatter(
+            withDateFormat: dateFormat,
+            localeFormat: localeFormat
+        )
+        
+        DateFormat.cachedFormatters[dateFormat+localeFormat.rawValue] = formatter
         return formatter
     }
 
     // MARK: - Private Methods
 
-    private static func makeFormatter(withDateFormat dateFormat: String) -> DateFormatter {
+    private static func makeFormatter(withDateFormat dateFormat: String, localeFormat: LocaleFormat) -> DateFormatter {
         let formatter = DateFormatter()
         formatter.dateFormat = dateFormat
-        formatter.locale = Locale(identifier: "ko_KR")
+        formatter.locale = Locale(identifier: localeFormat.rawValue)
+        
         return formatter
     }
 }

@@ -14,12 +14,27 @@ extension String {
 }
 
 extension Date {
-    func formattedString(by dateFormat: DateFormat) -> String {
-        return dateFormat.formatter.string(from: self)
+    func formattedString(
+        by dateFormat: DateFormat,
+        local: LocaleFormat = .korea
+    ) -> String {
+        let formatter = DateFormat.cachedFormatter(
+            ofDateFormat: dateFormat.rawValue,
+            localeFormat: local
+        )
+        
+        return formatter.string(from: self)
     }
 
-    func formattedString(format: String) -> String {
-        let formatter = DateFormat.cachedFormatter(ofDateFormat: format)
+    func formattedString(
+        format: String,
+        local: LocaleFormat = .korea
+    ) -> String {
+        let formatter = DateFormat.cachedFormatter(
+            ofDateFormat: format,
+            localeFormat: local
+        )
+        
         return formatter.string(from: self)
     }
 }
