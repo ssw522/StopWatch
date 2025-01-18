@@ -26,9 +26,8 @@ struct MainTabView: View {
                         TodoView(viewModel: todoViewModel)
                         
                     case .stopWatch:
-                        //                        PolicyView(viewModel: viewModel.policyViewModel)
-                        //                            .tag(tabItem)
-                        EmptyView()
+                        let viewModel = StopWatchMainViewModel(coordinator: MainTabCoordinator(), state: .init())
+                        StopWatchMainView(viewModel: viewModel)
                         
                     case .chart:
                         //                        FeedView(viewModel: viewModel.feedViewModel)

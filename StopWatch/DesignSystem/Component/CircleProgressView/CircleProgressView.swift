@@ -9,18 +9,18 @@ import SwiftUI
 
 struct CircleProgressView: View {
     @State var value: CGFloat = 0.0
-    @State var style: CircleProgressStyle = .s
+    @State var size: CircleProgressSize = .s
     
     var body: some View {
         ZStack {
             Circle()
-                .stroke(lineWidth: style.lineWidth)
-                .frame(width: style.length, height: style.length)
+                .stroke(lineWidth: size.lineWidth)
+                .frame(width: size.length, height: size.length)
                 .foregroundStyle(Color.white)
                 .shadow(color: .black.opacity(0.1), radius: 10, x: 10, y: 10)
             Circle()
                 .stroke(lineWidth: 0.2)
-                .frame(width: style.length-style.lineWidth-1, height: style.length-style.lineWidth-1)
+                .frame(width: size.length-size.lineWidth-1, height: size.length-size.lineWidth-1)
                 .foregroundStyle(LinearGradient(gradient: Gradient(colors: [.black.opacity(0.3), .clear]), startPoint: .bottomTrailing, endPoint: .topLeading))
                 .overlay {
                     Circle()
@@ -33,21 +33,17 @@ struct CircleProgressView: View {
                 }
             Circle()
                 .trim(from: 0, to: value)
-                .stroke(style: StrokeStyle(lineWidth: style.lineWidth, lineCap: .round))
-                .frame(width: style.length, height: style.length)
+                .stroke(style: StrokeStyle(lineWidth: size.lineWidth, lineCap: .round))
+                .frame(width: size.length, height: size.length)
                 .rotationEffect(.degrees(-90))
-                .foregroundStyle(LinearGradient(gradient: Gradient(colors: [.purple, .blue]), startPoint: .topLeading, endPoint: .bottomTrailing))
-            NumValue(displayedValue: value, color: .black, style: style)
-        }
-        .onTapGesture {
-            withAnimation(.spring().speed(0.5)) {
-                value = 0.7
-            }
+                .foregroundStyle(Color.getColor(.gray_text))
+//                .foregroundStyle(LinearGradient(gradient: Gradient(colors: [.purple, .blue]), startPoint: .topLeading, endPoint: .bottomTrailing))
+            NumValue(displayedValue: value, color: Color.getColor(.text_normal), style: size)
         }
     }
 }
 
-enum CircleProgressStyle {
+enum CircleProgressSize {
     case xs
     case s
     case m
@@ -103,7 +99,7 @@ enum CircleProgressStyle {
 struct NumValue: View {
     var displayedValue: CGFloat
     var color: Color
-    @State var style: CircleProgressStyle
+    @State var style: CircleProgressSize
     
     var body: some View {
         Text("\(Int(displayedValue*100))%")
@@ -112,9 +108,9 @@ struct NumValue: View {
 }
 
 #Preview {
-    CircleProgressView(style: .xs)
-    CircleProgressView(style: .s)
-    CircleProgressView(style: .m)
-    CircleProgressView(style: .l)
-    CircleProgressView(style: .xl)
+    CircleProgressView(size: .xs)
+    CircleProgressView(size: .s)
+    CircleProgressView(size: .m)
+    CircleProgressView(size: .l)
+    CircleProgressView(size: .xl)
 }

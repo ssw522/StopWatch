@@ -18,6 +18,7 @@ struct TodoCell: View {
             VStack(alignment: .leading, spacing: 2) {
                 Text(category)
                     .setTypo(.caption1)
+                    .foregroundStyle(Color.getColor(.text_alternative))
                 Text(content)
                     .setTypo(.label1)
                 if let date {
@@ -28,18 +29,19 @@ struct TodoCell: View {
                         Text(date.formattedString(by: .ahhmm))
                             .setTypo(.caption1)
                     }
+                    .foregroundStyle(Color.getColor(.text_assistive))
                 }
             }
             
             Spacer()
-            CircleProgressView(value: 0.4, style: .xs)
+            CircleProgressView(value: 0.4, size: .xs)
         }
-        .foregroundStyle(Color.white)
+        .foregroundStyle(Color.getColor(.text_normal))
         .frame(maxWidth: .infinity)
         .padding(.horizontal, 16)
         .padding(.bottom, 12)
         .padding(.top, 8)
-        .background(Color.gray)
+        .background(Color.getColor(.background_primary))
         .clipShape(.rect(cornerRadius: 12))
     }
 }

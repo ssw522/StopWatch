@@ -18,12 +18,8 @@ struct SWWeeklyCalendarView: View {
     var body: some View {
         VStack(spacing: .zero) {
             HStack(spacing: 8) {
-                Image(systemName: "calendar")
-                    .resizable()
-                    .frame(width: 24, height: 24)
-                    .foregroundStyle(Color.black)
                 Text(currentDate.formattedString(by: .MMMyyyy, local: .usa))
-                    .font(.pretendard(size: 22, weight: .regular))
+                    .setTypo(.subTitle3)
                     .redacted(reason: .privacy)
                     .animation(.spring, value: displayDate)
             }

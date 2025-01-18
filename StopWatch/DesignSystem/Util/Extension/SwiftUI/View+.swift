@@ -91,5 +91,9 @@ public extension View {
                 }
             }
     }
+    
+    func hSapcing(alignment: Alignment = .leading) -> some View {
+        self.frame(maxWidth: .infinity, alignment: alignment)
+    }
 }
 

@@ -29,7 +29,6 @@ struct TodoView: View {
                     bottomButton
                     FixedSpacer(12)
                 }
-                .opacity(isTyping ? 1.0 : 0.8)
             }
         }
     }
@@ -67,7 +66,6 @@ private extension TodoView {
                 get: { viewModel.state.newContent },
                 set: { viewModel.reduce(.editNewTodoContent($0)) }),
             show: false,
-            show2: false,
             isTyping: _isTyping) { todo in
                 
             }

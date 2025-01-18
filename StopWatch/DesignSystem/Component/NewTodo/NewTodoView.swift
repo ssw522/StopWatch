@@ -10,7 +10,6 @@ import SwiftUI
 struct NewTodoView: View {
     @Binding var text: String
     @State var show = false
-    @State var show2 = false
     @Namespace var animation
     @FocusState var isTyping: Bool
     
@@ -20,7 +19,7 @@ struct NewTodoView: View {
         VStack(spacing: .zero) {
             ZStack(alignment: show ? .topLeading : .center) {
                 RoundedRectangle(cornerRadius: show ? 24 : 40)
-                    .foregroundStyle(Color.gray)
+                    .foregroundStyle(Color.getColor(.gray_text))
                 
                 VStack(alignment: .leading) {
                     if show {
@@ -34,7 +33,7 @@ struct NewTodoView: View {
         }
         .animation(.spring, value: show)
         .frame(height: show ? 200: 50)
-        .padding(.horizontal, show ? 0 : 16)
+        .padding(.horizontal, show ? 16: 16)
         .clipped()
     }
 }
@@ -74,13 +73,13 @@ private extension NewTodoView {
                     .scrollContentBackground(.hidden)
                 if !isTyping {
                     Text("\(Image(systemName: "pencil")) What to do?")
-                        .setTypo(.label2)
                         .foregroundStyle(Color.init(hex: "F4F4E4") ?? .white)
                         .padding(.top, 8)
                         .fixedSize(horizontal: true, vertical: false)
                         .matchedGeometryEffect(id: "text", in: animation)
                 }
             }
+            .setTypo(.label2)
             .padding([.bottom, .horizontal])
             Spacer()
         }
@@ -88,5 +87,5 @@ private extension NewTodoView {
 }
 
 #Preview {
-    NewTodoView(text: .constant("123"), show: true, show2: true, onSave: { _ in })
+    NewTodoView(text: .constant("123"), show: true, onSave: { _ in })
 }
