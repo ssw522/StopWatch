@@ -28,14 +28,14 @@ final class TabViewModel: ViewModelable {
     
     // MARK: - Child ViewModels
     
-//    lazy var homeViewModel: HomeViewModel = {
-//        let coordinator = HomeCoordinator(
-//            navigationController: coordinator.navigationController,
-//            parentCoordinator: coordinator
-//        )
-//        self.coordinator.childCoordinators.append(coordinator)
-//        return .init(coordinator: coordinator)
-//    }()
+    lazy var todoViewModel: TodoViewModel = {
+        let coordinator = TodoCoordinator(
+            navigationController: coordinator.navigationController,
+            parentCoordinator: coordinator
+        )
+        self.coordinator.childCoordinators.append(coordinator)
+        return .init(coordinator: coordinator, state: .init())
+    }()
 //    
 //    lazy var policyViewModel: PolicyViewModel = {
 //        let coordinator = PolicyCoordinator(
@@ -55,13 +55,13 @@ final class TabViewModel: ViewModelable {
 //        return .init(coordinator: coordinator)
 //    }()
 //    
-//    lazy var settingViewModel: SettingViewModel = {
-//        let coordinator = SettingCoordinator(
-//            navigationController: coordinator.navigationController,
-//            parentCoordinator: coordinator)
-//        self.coordinator.childCoordinators.append(coordinator)
-//        return .init(coordinator: coordinator)
-//    }()
+    lazy var settingViewModel: SettingViewModel = {
+        let coordinator = SettingCoordinator(
+            navigationController: coordinator.navigationController,
+            parentCoordinator: coordinator)
+        self.coordinator.childCoordinators.append(coordinator)
+        return .init(coordinator: coordinator, state: .init())
+    }()
     
     func reduce(_ action: Action) {
         switch action {

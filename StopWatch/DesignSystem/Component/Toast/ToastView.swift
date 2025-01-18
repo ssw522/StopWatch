@@ -31,7 +31,7 @@ public struct ToastView: View {
                         .padding(.vertical, 16)
                         .padding(.horizontal, 24)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .background(Color.black.blur(radius: 0.4))
+                        .background(Color.getColor(.gray_text).blur(radius: 0.4))
                         .clipShape(.rect(cornerRadius: 16))
                         .padding(.horizontal, 24)
                         .offset(y: offsetY)

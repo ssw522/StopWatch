@@ -38,10 +38,10 @@ extension CoordinatorType {
         navigationController.pushViewController(viewcontroller, animated: animated)
     }
     
-//    func showToast(_ message: String, duration: Double = 2.0) {
-//        let toastView = ToastView(message: message, duration: duration)
-//        ToastProvider.shared.show(view: toastView, duration: duration)
-//    }
+    func showToast(_ message: String, duration: Double = 2.0) {
+        let toastView = ToastView(message: message, duration: duration)
+        ToastProvider.shared.show(view: toastView, duration: duration)
+    }
     
 //    func showAlert(_ alert: ReceiveAlertView) {
 //        present(alert.viewControllerClear, style: .overFullScreen, animated: false)

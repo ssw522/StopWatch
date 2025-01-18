@@ -22,8 +22,7 @@ struct MainTabView: View {
                 ForEach(TabItem.allCases, id: \.self) { tabItem in
                     switch viewModel.state.currentTab {
                     case .todo:
-                        let todoViewModel = TodoViewModel(coordinator: MainTabCoordinator(), state: .init())
-                        TodoView(viewModel: todoViewModel)
+                        TodoView(viewModel: viewModel.todoViewModel)
                         
                     case .stopWatch:
                         let viewModel = StopWatchMainViewModel(coordinator: MainTabCoordinator(), state: .init())
@@ -34,8 +33,7 @@ struct MainTabView: View {
                         StatisticMainView(viewModel: viewModel)
                         
                     case .setting:
-                        let viewModel = StatisticMainViewModel(coordinator: MainTabCoordinator(), state: .init())
-                        StatisticMainView(viewModel: viewModel)
+                        SettingView(viewModel: viewModel.settingViewModel)
                     }
                 }
             }
@@ -75,7 +73,7 @@ struct MainTabView: View {
                 Text(item.title)
             }
             .setTypo(.caption2)
-            .foregroundStyle(isCurrentTab ? Color.getColor(.primary_normal) : .getColor(.text_disable))
+            .foregroundStyle(isCurrentTab ? Color.getColor(.text_normal) : .getColor(.text_disable))
             .frame(maxWidth: .infinity)
             .frame(maxHeight: .infinity, alignment: .top)
             .padding(.top, 12)
