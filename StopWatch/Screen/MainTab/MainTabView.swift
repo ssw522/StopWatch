@@ -30,15 +30,12 @@ struct MainTabView: View {
                         StopWatchMainView(viewModel: viewModel)
                         
                     case .chart:
-                        //                        FeedView(viewModel: viewModel.feedViewModel)
-                        //                            .tag(tabItem)
-                        EmptyView()
+                        let viewModel = StatisticMainViewModel(coordinator: MainTabCoordinator(), state: .init())
+                        StatisticMainView(viewModel: viewModel)
                         
                     case .setting:
-                        //                        SettingView(viewModel: viewModel.settingViewModel)
-                        //                            .tag(tabItem)
-                        EmptyView()
-                    
+                        let viewModel = StatisticMainViewModel(coordinator: MainTabCoordinator(), state: .init())
+                        StatisticMainView(viewModel: viewModel)
                     }
                 }
             }
