@@ -32,7 +32,7 @@ final class SettingViewModel: ViewModelable {
             coordinator.showToast("추후 지원 예정인 기능입니다.")
         
         case .feedback:
-                break
+            coordinator.setFlow(.feedBack)
         }
     }
 }

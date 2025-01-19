@@ -66,7 +66,7 @@ struct StopWatchMainView: View {
             TimeHistoryCell(date: .now, todo: "영어 단어 암기", todoTime: "50분")
             TimeHistoryCell(date: .now, todo: "가슴 운동", todoTime: "1시간 20분")
         }
-        .hSapcing()
+        .hSpacing()
         .padding(.horizontal, 20)
         .padding(.vertical, 16)
         .background(Color.getColor(.background_primary))

@@ -40,7 +40,8 @@ struct SettingView: View {
                 settingCell("문의하기", icon: .init(systemName: "text.document.fill")) {
                     viewModel.reduce(.feedback)
                 }
-                settingCell("앱 버전", icon: .init(systemName: "text.document.fill")) {
+                let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] ?? 1.0
+                settingCell("앱 버전", icon: .init(systemName: "info.circle.fill"), content: "\(version)") {
                     
                 }
             }
@@ -48,7 +49,7 @@ struct SettingView: View {
         }
     }
     
-    func settingCell(_ title: String, icon: Image, action: (()->Void)?) -> some View {
+    func settingCell(_ title: String, icon: Image, content: String? = .none, action: (()->Void)?) -> some View {
         Button {
             action?()
         } label: {
@@ -62,6 +63,11 @@ struct SettingView: View {
                     .setTypo(.body1)
                     .foregroundStyle(Color.getColor(.text_normal))
                 Spacer()
+                if let content {
+                    Text(content)
+                        .setTypo(.body2)
+                        .foregroundStyle(Color.getColor(.text_assistive))
+                }
             }
             .padding(.vertical, 8)
         }

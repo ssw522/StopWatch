@@ -19,11 +19,16 @@ final class SettingCoordinator: CoordinatorType {
     }
     
     func setFlow(_ flow: Flow) {
-        
+        switch flow {
+        case .feedBack:
+            let viewModel = FeedBackViewModel(coordinator: self, state: .init())
+            let view = FeedBackView(viewModel: viewModel).viewController
+            push(view)
+        }
     }
     
     enum Flow {
-        
+        case feedBack
     }
     
     
