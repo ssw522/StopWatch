@@ -9,8 +9,7 @@ import SwiftUI
 
 struct SWWeeklyCalendarView: View {
     private let calendarService = CalendarService()
-    @State var displayDate: Date?
-    @State var selectedDate: Date?
+    @Binding var displayDate: Date?
     @State var dates: [Date] = []
     
     private var currentDate: Date { displayDate ?? .now }
@@ -36,14 +35,14 @@ struct SWWeeklyCalendarView: View {
                                 CalendarLargeCell(
                                     day: day,
                                     weekdaySymbol: symbol,
-                                    isSelected: selectedDate?.formattedString(by: .yyyyMMdd) == date.formattedString(by: .yyyyMMdd)
+                                    isSelected: displayDate?.formattedString(by: .yyyyMMdd) == date.formattedString(by: .yyyyMMdd)
                                 )
-                                .onTapGesture {
-                                    selectedDate = date
-                                }
                             } else {
                                 CalendarLargeCell(day: day, weekdaySymbol: symbol)
                             }
+                        }
+                        .onTapGesture {
+                            displayDate = date
                         }
                         .frame(width: UIScreen.main.bounds.width/5)
                         .scaleEffect(
@@ -72,10 +71,8 @@ struct SWWeeklyCalendarView: View {
             }
         }
         .onAppear {
-            displayDate = .now
             let days = calendarService.numberOfDays(in: currentDate)
             dates = (-7..<days+7).map { calendarService.getDate(for: $0, date: currentDate) }
-            displayDate = .now
         }
     }
     
@@ -123,5 +120,5 @@ struct CalendarLargeCell: View {
 }
 
 #Preview(body: {
-    SWWeeklyCalendarView(displayDate: .now)
+    SWWeeklyCalendarView(displayDate: .constant(.now))
 })

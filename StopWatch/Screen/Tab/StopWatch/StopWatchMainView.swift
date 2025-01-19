@@ -26,12 +26,6 @@ struct StopWatchMainView: View {
                 FixedSpacer(24)
             }
             .frame(maxWidth: .infinity)
-            .overlay(alignment: .top) {
-                VStack(spacing: .zero) {
-                    
-                    FixedSpacer(16)
-                }
-            }
         }
     }
     

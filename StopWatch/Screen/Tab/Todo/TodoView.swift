@@ -36,7 +36,12 @@ struct TodoView: View {
 
 private extension TodoView {
     var calendarView: some View {
-        SWWeeklyCalendarView(displayDate: .now)
+        SWWeeklyCalendarView(
+            displayDate: Binding(
+                get: { viewModel.state.currentDate },
+                set: { viewModel.reduce(.changeDate($0)) }
+            )
+        )
     }
     
     var todayTodoListView: some View {

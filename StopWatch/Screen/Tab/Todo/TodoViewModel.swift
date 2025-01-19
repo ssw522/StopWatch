@@ -18,17 +18,22 @@ class TodoViewModel: ViewModelable {
     }
     
     struct State {
+        var currentDate: Date = .now
         var newContent: String = ""
     }
     
     enum Action {
         case editNewTodoContent(String)
+        case changeDate(Date?)
     }
     
     func reduce(_ action: Action) {
         switch action {
         case .editNewTodoContent(let newContent):
-            state.newContent = newContent           
+            state.newContent = newContent
+            
+        case .changeDate(let newDate):
+            self.state.currentDate = newDate ?? .now
         }
     }
 }
