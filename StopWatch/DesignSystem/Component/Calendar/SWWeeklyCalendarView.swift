@@ -14,65 +14,74 @@ struct SWWeeklyCalendarView: View {
     
     private var currentDate: Date { displayDate ?? .now }
     
+    init(displayDate: Binding<Date?>) {
+        self._displayDate = displayDate
+    }
+    
     var body: some View {
         VStack(spacing: .zero) {
-            HStack(spacing: 8) {
-                Text(currentDate.formattedString(by: .MMMyyyy, local: .usa))
-                    .setTypo(.subTitle3)
-                    .redacted(reason: .privacy)
-                    .animation(.spring, value: displayDate)
-            }
-            
-            FixedSpacer(20)
-            ScrollView(.horizontal) {
-                LazyHStack(spacing: .zero) {
-                    ForEach(dates, id: \.self) { date in
-                        let symbol = calendarService.getWeekDay(with: date, format: .english_short)
-                        let day = calendarService.getDay(with: date)
-                        
-                        Group {
-                            if date.formattedString(by: .yyyyMM) == currentDate.formattedString(by: .yyyyMM) {
-                                CalendarLargeCell(
-                                    day: day,
-                                    weekdaySymbol: symbol,
-                                    isSelected: displayDate?.formattedString(by: .yyyyMMdd) == date.formattedString(by: .yyyyMMdd)
-                                )
-                            } else {
-                                CalendarLargeCell(day: day, weekdaySymbol: symbol)
-                            }
-                        }
-                        .onTapGesture {
-                            displayDate = date
-                        }
-                        .frame(width: UIScreen.main.bounds.width/5)
-                        .scaleEffect(
-                            getScale(
-                                scalar: daysBetween(start: date, end: currentDate)
-                            )
-                        )
-                        .opacity(date.formattedString(by: .yyyyMMdd) == currentDate.formattedString(by: .yyyyMMdd) ? 1.0 : 0.6)
+            ScrollViewReader { reader in
+                HStack(spacing: 8) {
+                    Text(currentDate.formattedString(by: .MMMyyyy, local: .usa))
+                        .setTypo(.subTitle3)
+                        .redacted(reason: .privacy)
                         .animation(.spring, value: displayDate)
-                        .id(date.formattedString(by: .yyyyMMdd) + currentDate.formattedString(by: .yyyyMM))
+                }
+                
+                FixedSpacer(20)
+                
+                ScrollView(.horizontal) {
+                    LazyHStack(spacing: .zero) {
+                        ForEach(dates, id: \.self) { date in
+                            let symbol = calendarService.getWeekDay(with: date, format: .english_short)
+                            let day = calendarService.getDay(with: date)
+                            
+                            Group {
+                                if date.formattedString(by: .yyyyMM) == currentDate.formattedString(by: .yyyyMM) {
+                                    CalendarLargeCell(
+                                        day: day,
+                                        weekdaySymbol: symbol,
+                                        isSelected: displayDate?.formattedString(by: .yyyyMMdd) == date.formattedString(by: .yyyyMMdd)
+                                    )
+                                } else {
+                                    CalendarLargeCell(day: day, weekdaySymbol: symbol)
+                                }
+                            }
+                            .onTapGesture {
+                                withAnimation {
+                                    displayDate = date
+                                }
+                            }
+                            .frame(width: UIScreen.main.bounds.width/5)
+                            .scaleEffect(
+                                getScale(
+                                    scalar: daysBetween(start: date, end: currentDate)
+                                )
+                            )
+                            .opacity(date.formattedString(by: .yyyyMMdd) == currentDate.formattedString(by: .yyyyMMdd) ? 1.0 : 0.6)
+                            .animation(.spring, value: displayDate)
+                            .id(date.formattedString(by: .yyyyMMdd))
+                            //                            .id(date.formattedString(by: .yyyyMMdd) + currentDate.formattedString(by: .yyyyMM))
+                        }
+                    }
+                    .scrollTargetLayout()
+                }
+                .scrollTargetBehavior(.viewAligned)
+                .scrollPosition(id: $displayDate, anchor: .center)
+                .scrollIndicators(.hidden)
+                .onScrollPhaseChange { oldPhase, newPhase in
+                    if !newPhase.isScrolling {
+                        let days = calendarService.numberOfDays(in: currentDate)
+                        self.dates = (-7..<days+7).map { calendarService.getDate(for: $0, date: currentDate) }
+                        
                     }
                 }
-                .scrollTargetLayout()
+                .onChange(of: dates, { oldValue, newValue in
+                    if oldValue.isEmpty && newValue.isNotEmpty {
+                        reader.scrollTo(currentDate.formattedString(by: .yyyyMMdd), anchor: .center)
+                    }
+                })
             }
-            .scrollTargetBehavior(.viewAligned)
-            .scrollPosition(id: $displayDate, anchor: .center)
-            .scrollIndicators(.hidden)
-            .onScrollPhaseChange { oldPhase, newPhase in
-                if !newPhase.isScrolling {
-                    let days = calendarService.numberOfDays(in: currentDate)
-                    self.dates = (-7..<days+7).map { calendarService.getDate(for: $0, date: currentDate) }
-                }
-            }
-            .onChange(of: dates) { oldValue, newValue in
-                print("dates change")
-            }
-        }
-        .onAppear {
-            let days = calendarService.numberOfDays(in: currentDate)
-            dates = (-7..<days+7).map { calendarService.getDate(for: $0, date: currentDate) }
         }
     }
     
