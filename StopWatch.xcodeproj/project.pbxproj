@@ -136,6 +136,11 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		B53CE96E2D4224DC006DD784 /* Repository */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Repository;
+			sourceTree = "<group>";
+		};
 		B5BFEC2C2CF22C1F00A98319 /* Entity */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Entity;
@@ -303,6 +308,7 @@
 		DB40D1F72609B32C00A4E9FC /* StopWatch */ = {
 			isa = PBXGroup;
 			children = (
+				B53CE96E2D4224DC006DD784 /* Repository */,
 				B5BFEC2C2CF22C1F00A98319 /* Entity */,
 				B5D0FB982CF2106F00BEF154 /* Screen */,
 				B5D0FB602CF20B6000BEF154 /* DesignSystem */,
@@ -400,6 +406,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				B53CE96E2D4224DC006DD784 /* Repository */,
 				B5BFEC2C2CF22C1F00A98319 /* Entity */,
 				B5D0FB582CF20ADC00BEF154 /* App */,
 				B5D0FB5A2CF20B3100BEF154 /* Core */,

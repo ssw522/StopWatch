@@ -22,12 +22,16 @@ final class SettingViewModel: ViewModelable {
     }
     
     enum Action {
+        case categoryManage
         case notificationSetting
         case feedback
     }
     
     func reduce(_ action: Action) {
         switch action {
+        case .categoryManage:
+            coordinator.setFlow(.categoryList)
+            
         case .notificationSetting:
             coordinator.showToast("추후 지원 예정인 기능입니다.")
         

@@ -7,22 +7,35 @@
 
 import Foundation
 
-public class DependencyBox {
+public protocol DependencyBoxProtocol {
     
+    func register<T>(
+        _ type: T.Type?,
+        name: String?,
+        scope: ObjectScope,
+        factory: @escaping () -> T
+    ) -> Self
     
-    // 의존성을 등록하기 위한 레지스트리 (타입 + 태그 조합을 키로 사용)
-    private var registry = [String: () -> Any]()
-    private var singletonInstances = [String: Any]()  // 싱글톤 인스턴스 저장
-    
-    public init() { }
-    
-    private func key<T>(for type: T.Type, name: String? = nil) -> String {
+    func resolve<T>(name: String?) -> T
+}
+
+extension DependencyBoxProtocol {
+    func key<T>(for type: T.Type, name: String? = nil) -> String {
         if let name = name {
             return "\(String(describing: T.self))-\(name)"
         } else {
             return String(describing: T.self)
         }
     }
+}
+
+public class DependencyBox: DependencyBoxProtocol {
+    
+    // 의존성을 등록하기 위한 레지스트리 (타입 + 태그 조합을 키로 사용)
+    private var registry = [String: () -> Any]()
+    private var singletonInstances = [String: Any]()  // 싱글톤 인스턴스 저장
+    
+    public init() { }
     
     // 의존성 등록 함수
     @discardableResult
@@ -48,12 +61,14 @@ public class DependencyBox {
     // 의존성 주입(Resolve) 함수
     public func resolve<T>(name: String? = nil) -> T {
         let key = self.key(for: T.self, name: name)
+        
         guard let factory = registry[key] else {
             fatalError("No registered dependency found for \(key)")
         }
         guard let instance = factory() as? T else {
             fatalError("Dependency type mismatch for \(key)")
         }
+        
         return instance
     }
 }
@@ -61,4 +76,5 @@ public class DependencyBox {
 public extension DependencyBox {
     
     static let live = DependencyBox()
+    static let preview = DependencyBox()
 }

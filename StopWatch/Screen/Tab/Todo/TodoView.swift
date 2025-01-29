@@ -17,10 +17,14 @@ struct TodoView: View {
         } content: {
             ScrollView {
                 VStack(spacing: .zero) {
-                    FixedSpacer(10)
+//                    FixedSpacer(10)
                     calendarView
                     FixedSpacer(32)
-                    todayTodoListView
+                    if viewModel.state.todoList.isNotEmpty {
+                        todayTodoListView
+                    } else {
+                        emptyView
+                    }
                 }
             }
             .scrollIndicators(.hidden)
@@ -31,10 +35,23 @@ struct TodoView: View {
                 }
             }
         }
+        .onAppear {
+            viewModel.reduce(.fetchDate)
+        }
     }
 }
 
 private extension TodoView {
+    var emptyView: some View {
+        VStack(spacing: .zero) {
+            Spacer(minLength: 200)
+            Text("오늘 추가된 할 일이 없어요")
+                .setTypo(.label1)
+                .foregroundStyle(Color.getColor(.text_disable))
+            Spacer()
+        }
+    }
+    
     var calendarView: some View {
         SWWeeklyCalendarView(
             displayDate: Binding(
@@ -43,7 +60,7 @@ private extension TodoView {
             )
         )
     }
-    
+     
     var todayTodoListView: some View {
         VStack(spacing: 8) {
             HStack(spacing: .zero) {
@@ -55,41 +72,46 @@ private extension TodoView {
             .padding(.horizontal, 16)
             
             VStack(spacing: 8) {
-                TodoCell(category: "프로그래밍", content: "알고리즘 풀기", date: .now, state: .circle)
-                TodoCell(category: "프로그래밍", content: "프로젝트 회의 진행", date: .now, state: .triangle)
-                TodoCell(category: "영어", content: "단어 200개 외우기", state: .circle)
-                TodoCell(category: "영어", content: "영어강의 2개 듣기", state: .xmark)
-                TodoCell(category: "운동", content: "헬스 1시간 하고오기", state: .circle)
-            }
+                ForEach(viewModel.state.todoList, id: \.id) {
+                    TodoCell(todo: $0, state: .circle)
+                }
+            } 
             .padding(.horizontal, 12)
         }
     }
     
     var bottomButton: some View {
-        NewTodoView(
-            text: Binding(
-                get: { viewModel.state.newContent },
-                set: { viewModel.reduce(.editNewTodoContent($0)) }),
-            show: false,
-            isTyping: _isTyping) { todo in
-                
+        HStack(spacing: .zero) {
+            NewTodoView(
+                isTyping: _isTyping,
+                text: Binding(
+                    get: { viewModel.state.newContent },
+                    set: { viewModel.reduce(.editNewTodoContent($0)) }),
+                show: $viewModel.state.isExpendedNewTodo,
+                categoryList: viewModel.state.categoryList
+            ) { todo in
+                viewModel.reduce(.addTodo(todo))
+            } didTapAddCategory: {
+                viewModel.reduce(.didTapCreateCategory)
             }
-//        Button {
-//            
-//        } label: {
-//            Text("New Todo")
-//                .setTypo(.label2)
-//                .foregroundStyle(Color.white)
-//                .frame(maxWidth: .infinity)
-//                .frame(height: 50)
-//                .background(Color.gray)
-//                .clipShape(.capsule)
-//        }
-//        .padding(.horizontal, 16)
+            
+            if !viewModel.state.isExpendedNewTodo {
+                Button {
+                    
+                } label: {
+                    Image(systemName: "archivebox.fill")
+                        .padding()
+                        .foregroundStyle(Color.getColor(.white))
+                        .background(Color.getColor(.gray_text))
+                        .clipShape(.circle)
+                }
+                FixedSpacer(12)
+            }
+        }
     }
 }
 
 #Preview(body: {
-    TodoView(viewModel: .init(coordinator: AppCoordinator.shared, state: .init()))
+    TodoView(viewModel: .init(coordinator: TodoCoordinator.init(navigationController: .default(), parentCoordinator: .none), state: .init()))
 })
 

@@ -7,6 +7,10 @@
 
 import SwiftUI
 
+enum SettingParentFlow: ParentFlow {
+    case didFinishPop
+}
+
 final class SettingCoordinator: CoordinatorType {
     
     var childCoordinators: [any CoordinatorType] = []
@@ -23,17 +27,32 @@ final class SettingCoordinator: CoordinatorType {
         case .feedBack:
             let viewModel = FeedBackViewModel(coordinator: self, state: .init())
             let view = FeedBackView(viewModel: viewModel).viewController
+            
             push(view)
+            
+        case .categoryList:
+            let coordinator = CategoryCoordinator(navigationController: navigationController, parentCoordinator: self)
+            childCoordinators.append(coordinator)
+            coordinator.setFlow(.categoryList)
         }
     }
     
     enum Flow {
         case feedBack
+        case categoryList
     }
     
     
     
     func setParentFlow(_ flow: any ParentFlow) {
+        guard let parentFlow = flow as? SettingParentFlow else {
+            return
+        }
         
+        switch parentFlow {
+        case .didFinishPop:
+            pop()
+            childCoordinators = []
+        }
     }
 }

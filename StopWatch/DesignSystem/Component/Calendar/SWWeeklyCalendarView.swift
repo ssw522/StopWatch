@@ -60,8 +60,7 @@ struct SWWeeklyCalendarView: View {
                             )
                             .opacity(date.formattedString(by: .yyyyMMdd) == currentDate.formattedString(by: .yyyyMMdd) ? 1.0 : 0.6)
                             .animation(.spring, value: displayDate)
-                            .id(date.formattedString(by: .yyyyMMdd))
-                            //                            .id(date.formattedString(by: .yyyyMMdd) + currentDate.formattedString(by: .yyyyMM))
+                            .id(date.formattedString(by: .yyyyMMdd) + currentDate.formattedString(by: .yyyyMM))
                         }
                     }
                     .scrollTargetLayout()
@@ -69,16 +68,15 @@ struct SWWeeklyCalendarView: View {
                 .scrollTargetBehavior(.viewAligned)
                 .scrollPosition(id: $displayDate, anchor: .center)
                 .scrollIndicators(.hidden)
-                .onScrollPhaseChange { oldPhase, newPhase in
+                .onScrollPhaseChange { oldPhas, newPhase in
                     if !newPhase.isScrolling {
                         let days = calendarService.numberOfDays(in: currentDate)
                         self.dates = (-7..<days+7).map { calendarService.getDate(for: $0, date: currentDate) }
-                        
                     }
                 }
                 .onChange(of: dates, { oldValue, newValue in
                     if oldValue.isEmpty && newValue.isNotEmpty {
-                        reader.scrollTo(currentDate.formattedString(by: .yyyyMMdd), anchor: .center)
+                        reader.scrollTo(currentDate.formattedString(by: .yyyyMMdd) + currentDate.formattedString(by: .yyyyMM), anchor: .center)
                     }
                 })
             }

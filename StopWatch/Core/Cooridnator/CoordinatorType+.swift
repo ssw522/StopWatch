@@ -43,9 +43,9 @@ extension CoordinatorType {
         ToastProvider.shared.show(view: toastView, duration: duration)
     }
     
-//    func showAlert(_ alert: ReceiveAlertView) {
-//        present(alert.viewControllerClear, style: .overFullScreen, animated: false)
-//    }
+    func showAlert(_ alert: StopWatchAlertView) {
+        present(alert.viewControllerClear, style: .overFullScreen, animated: false)
+    }
     
     func changeTab(tab: TabItem) {
 //        if let tabCoordinator = AppCoordinator.shared.childCoordinators.first(where: { $0 is MainTabCoordinator }) as? MainTabCoordinator {

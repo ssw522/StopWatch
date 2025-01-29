@@ -8,12 +8,20 @@
 import SwiftUI
 
 struct NewTodoView: View {
-    @Binding var text: String
-    @State var show = false
+    
     @Namespace var animation
     @FocusState var isTyping: Bool
     
-    var onSave: (Todo) -> Void
+    @Binding var text: String
+    @Binding var show: Bool
+    
+    @State var selectedCategory: Category?
+    @State var selectedDate: Date? = .now
+    @State var isPresentedCalendar: Bool = false
+    
+    let categoryList: [Category]
+    var didTapAdd: (Todo) -> Void
+    var didTapAddCategory: (()->Void)?
     
     var body: some View {
         VStack(spacing: .zero) {
@@ -30,15 +38,29 @@ struct NewTodoView: View {
                 }
                 .frame(maxWidth: .infinity, alignment: show ? .leading : .center)
             }
+            
+            if show {
+                FixedSpacer(12)
+                addButton
+            }
         }
         .animation(.spring, value: show)
-        .frame(height: show ? 200: 50)
+        .frame(height: show ? 280: 50)
         .padding(.horizontal, show ? 16: 16)
         .clipped()
+        .overlay {
+            if isPresentedCalendar {
+                let bindingDate = Binding($selectedDate, default: Date())
+                SystemCalendarModalView(date: bindingDate, isPresented: $isPresentedCalendar)
+                    .transition(.opacity)
+                    .offset(y: -100)
+            }
+        }
     }
 }
 
 private extension NewTodoView {
+    // MARK: - Add TodoView
     var addTodoView: some View {
         Text("New Todo")
             .setTypo(.label2)
@@ -49,14 +71,15 @@ private extension NewTodoView {
             }
     }
     
+    
+    // MARK: - Edit TodoView
     var editNewTodoView: some View {
         VStack(spacing: .zero) {
             HStack(spacing: .zero) {
                 Spacer()
                 Button {
                     withAnimation {
-                        show = false
-                        text = ""
+                        resetData()
                     }
                 } label: {
                     Image(systemName: "xmark.circle.fill")
@@ -66,6 +89,7 @@ private extension NewTodoView {
                         .padding([.top, .trailing])
                 }
             }
+            
             ZStack(alignment: .topLeading) {
                 TextEditor(text: $text)
                     .focused($isTyping)
@@ -81,11 +105,140 @@ private extension NewTodoView {
             }
             .setTypo(.label2)
             .padding([.bottom, .horizontal])
+            
+            Spacer()
+            Divider()
+                .hSpacing()
+                .background(Color.white)
+                .padding(.horizontal, 24)
+                .foregroundStyle(Color.white)
+            
+            VStack(spacing: 12) {
+                selectCategoryView
+                selectedDateView
+            }
+            .padding(.horizontal, 24)
+            .padding(.vertical, 12)
+        }
+    }
+    
+    var addButton: some View {
+        Button {
+            guard selectedCategory != nil else { return }
+            let newTodo = Todo(date: selectedDate, content: text, stateIndex: 0, category: selectedCategory)
+            didTapAdd(newTodo)
+            resetData()
+        } label: {
+            Text("Add")
+                .hSpacing(alignment: .center)
+                .padding()
+                .background(Color.getColor(.gray_text))
+                .opacity(selectedCategory != nil ? 1 : 0.7)
+                .clipShape(.rect(cornerRadius: 24))
+                .foregroundStyle(Color.getColor(.white))
+                .animation(.spring, value: selectedCategory)
+        }
+    }
+    
+    // MARK: - Select Category
+    var selectCategoryView: some View {
+        HStack(spacing: .zero) {
+            Menu {
+                Button {
+                    didTapAddCategory?()
+                } label: {
+                    Text("카테고리 추가")
+                }
+                
+                ForEach(categoryList, id: \.id) { category in
+                    Button {
+                        selectedCategory = category
+                    } label: {
+                        Text(category.name)
+                    }
+                }
+            } label: {
+                Text(selectedCategory?.name ?? "+ Category")
+                    .setTypo(.label2)
+                    .padding(.vertical, 4)
+                    .padding(.horizontal, 12)
+                    .background(selectedCategory != nil ? Color.getColor(.background_primary) : .clear)
+                    .roundedBorder(selectedCategory != nil ? .clear : Color.getColor(.background_primary), radius: 14, linewidth: 1)
+                    .foregroundStyle(selectedCategory != nil ? Color.getColor(.gray_text) : .white)
+                    .overlay(alignment: .topTrailing) {
+                        Text("*")
+                            .foregroundStyle(Color.red)
+                            .offset(x: 5,y: -6)
+                    }
+            }
+            Spacer()
+        }
+        .foregroundStyle(Color.white)
+    }
+    
+    
+    // MARK: - Select Date
+    @ViewBuilder var selectedDateView: some View {
+        HStack(spacing: .zero) {
+            Button {
+                withAnimation {
+                    if selectedDate == nil {
+                        selectedDate = .now
+                    }
+                    
+                    isPresentedCalendar = true
+                }
+            } label: {
+                Text(selectedDate?.formattedString(by: .yyyyMMddEEEKorean) ?? "+ Date")
+                    .setTypo(.label2)
+                    .padding(.vertical, 4)
+                    .padding(.horizontal, 12)
+                    .background(selectedDate != nil ? Color.getColor(.background_primary) : .clear)
+                    .roundedBorder(selectedDate != nil ? .clear : Color.getColor(.background_primary), radius: 14, linewidth: 1)
+                    .foregroundStyle(selectedDate != nil ? Color.getColor(.gray_text) : .white)
+            }
+            .onChange(of: selectedDate) { oldValue, newValue in
+                isPresentedCalendar = false
+            }
+            
+            if selectedDate != nil {
+                FixedSpacer(8)
+                Button {
+                    withAnimation {
+                        selectedDate = nil
+                    }
+                } label: {
+                    Image(systemName: "xmark.circle.fill")
+                        .resizable()
+                        .frame(width: 22, height: 22)
+                        .foregroundStyle(Color.getColor(.fill_disable))
+                }
+            }
+            
             Spacer()
         }
     }
 }
 
+// MARK: - Private Method
+private extension NewTodoView {
+    func resetData() {
+        text = ""
+        selectedDate = .now
+        selectedCategory = .none
+        show = false
+    }
+}
+
 #Preview {
-    NewTodoView(text: .constant("123"), show: true, onSave: { _ in })
+    NewTodoView(
+        text: .constant(""),
+        show: .constant(true),
+        categoryList: [
+            .englishMock,
+            .exerciseMock,
+            .programmingMock
+        ],
+        didTapAdd: { _ in
+        })
 }

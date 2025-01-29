@@ -35,6 +35,6 @@ public struct WithDesignSystem<TopNavigation: View, Content: View, BottomButton:
         }
         .frame(maxWidth: .infinity)
         .hideKeyboardOnTapBackground(background: background)
-        .background(Color(uiColor: background))
+        .background(Color(uiColor: background).ignoresSafeArea(.container, edges: .all))
     }
 }

@@ -8,20 +8,18 @@
 import SwiftUI
 
 struct TodoCell: View {
-    var category: String
-    var content: String
-    var date: Date?
+    let todo: Todo
     var state: CheckImage
     
     var body: some View {
         HStack(spacing: .zero) {
             VStack(alignment: .leading, spacing: 2) {
-                Text(category)
+                Text(todo.category?.name ?? "")
                     .setTypo(.caption1)
                     .foregroundStyle(Color.getColor(.text_alternative))
-                Text(content)
+                Text(todo.content)
                     .setTypo(.label1)
-                if let date {
+                if let date = todo.date {
                     HStack(spacing: 4) {
                         Image(systemName: "clock").renderingMode(.template)
                             .resizable()
@@ -34,7 +32,7 @@ struct TodoCell: View {
             }
             
             Spacer()
-            CircleProgressView(value: 0.4, size: .xs)
+//            CircleProgressView(value: 0.4, size: .xs)
         }
         .foregroundStyle(Color.getColor(.text_normal))
         .frame(maxWidth: .infinity)

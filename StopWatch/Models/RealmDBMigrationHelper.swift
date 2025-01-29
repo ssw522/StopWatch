@@ -24,8 +24,8 @@ class RealmDBMigrationHelper {
                     }
                     
                     // 1. 새로운 객체 만들고
-                    var todo = Todo()
-                    todo["totalTime"]
+//                    var todo = Todo()
+//                    todo["totalTime"]
 //                    todo.date =
                     // 2. 객체 새로 생성
 //                    migration.create(<#T##typeName: String##String#>, value: <#T##Any#>)

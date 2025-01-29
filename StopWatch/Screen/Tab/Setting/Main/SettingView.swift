@@ -34,6 +34,9 @@ struct SettingView: View {
                     .setTypo(.body1)
                 
                 FixedSpacer(8)
+                settingCell("카테고리 관리", icon: .init(systemName: "list.bullet.rectangle.fill")) {
+                    viewModel.reduce(.categoryManage)
+                }
                 settingCell("알림 설정", icon: .init(systemName: "bell.fill")) {
                     viewModel.reduce(.notificationSetting)
                 }

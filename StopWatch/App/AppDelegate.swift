@@ -34,6 +34,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        injectDependency()
+        
         self.setFirstDB() // 아무 과목도 없을시  기타 과목 추가
         
         let ud = UserDefaults.standard

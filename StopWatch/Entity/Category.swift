@@ -9,7 +9,28 @@ import Foundation
 import RealmSwift
 
 class Category: Object {
-    @Persisted(primaryKey: true) var id : String = UUID().uuidString // 과목번호
-    @Persisted var name: String // 과목명
-    @Persisted var colorCode: Int //과목색상코드
+    @Persisted(primaryKey: true) var id : String
+    @Persisted var name: String
+    
+    convenience init(id: String = UUID().uuidString, name: String) {
+        self.init()
+        self.id = id
+        self.name = name
+    }
+}
+
+
+// MARK: - Mock Data
+extension Category {
+    static var programmingMock: Category {
+        .init(name: "프로그래밍")
+    }
+    
+    static var englishMock: Category {
+        .init(name: "영어")
+    }
+    
+    static var exerciseMock: Category {
+        .init(name: "운동")
+    }
 }
