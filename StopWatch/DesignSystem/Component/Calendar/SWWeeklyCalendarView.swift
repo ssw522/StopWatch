@@ -11,6 +11,8 @@ struct SWWeeklyCalendarView: View {
     private let calendarService = CalendarService()
     @Binding var displayDate: Date?
     @State var dates: [Date] = []
+    @State var isPresentedModalCalendar: Bool = false
+    @State var isScrolling: Bool = false
     
     private var currentDate: Date { displayDate ?? .now }
     
@@ -26,6 +28,9 @@ struct SWWeeklyCalendarView: View {
                         .setTypo(.subTitle3)
                         .redacted(reason: .privacy)
                         .animation(.spring, value: displayDate)
+                }
+                .onTapGesture {
+                    isPresentedModalCalendar = true
                 }
                 
                 FixedSpacer(20)
@@ -75,10 +80,25 @@ struct SWWeeklyCalendarView: View {
                     }
                 }
                 .onChange(of: dates, { oldValue, newValue in
-                    if oldValue.isEmpty && newValue.isNotEmpty {
+                    print("oldValue: \(oldValue)")
+                    print("newValue: \(newValue)")
+                    if newValue.isNotEmpty {
                         reader.scrollTo(currentDate.formattedString(by: .yyyyMMdd) + currentDate.formattedString(by: .yyyyMM), anchor: .center)
                     }
                 })
+                .onChange(of: displayDate) { oldValue, newValue in
+                    if isPresentedModalCalendar {
+                        let days = calendarService.numberOfDays(in: currentDate)
+                        self.dates = (-7..<days+7).map { calendarService.getDate(for: $0, date: currentDate) }
+                    }
+                }
+            }
+        }
+        .overlay {
+            if isPresentedModalCalendar {
+                let bindingDate = Binding($displayDate, default: .now)
+                SystemCalendarModalView(date: bindingDate, isPresented: $isPresentedModalCalendar)
+                    .offset(y: 100)
             }
         }
     }

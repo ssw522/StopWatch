@@ -25,16 +25,6 @@ struct SWCalendarView: View {
             }
             .tabViewStyle(.page)
             .frame(height: 380)
-            
-//            ScrollView(.horizontal) {
-//                HStack(spacing: .zero) {
-//                    ForEach([previousMonthDate, displayDate, nextMonthDate], id: \.self) { date in
-//                        calendarGridView(date: date)
-//                    }
-//                }
-//                .scrollTargetLayout()
-//            }
-//            .scrollTargetBehavior(.viewAligned)
         }
     }
 }

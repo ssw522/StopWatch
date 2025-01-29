@@ -59,6 +59,7 @@ private extension TodoView {
                 set: { viewModel.reduce(.changeDate($0)) }
             )
         )
+        .zIndex(1)
     }
      
     var todayTodoListView: some View {
