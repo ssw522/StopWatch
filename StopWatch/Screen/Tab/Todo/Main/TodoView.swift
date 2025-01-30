@@ -17,7 +17,6 @@ struct TodoView: View {
         } content: {
             ScrollView {
                 VStack(spacing: .zero) {
-//                    FixedSpacer(10)
                     calendarView
                     FixedSpacer(32)
                     if viewModel.state.todoList.isNotEmpty {
@@ -64,13 +63,15 @@ private extension TodoView {
      
     var todayTodoListView: some View {
         VStack(spacing: 8) {
-            HStack(spacing: .zero) {
-                Text("Today")
-                    .setTypo(.label2)
-                    .foregroundStyle(Color.getColor(.text_assistive))
-                Spacer()
+            if viewModel.state.currentDate.formattedString(by: .yyyyMMdd) == Date.now.formattedString(by: .yyyyMMdd) {
+                HStack(spacing: .zero) {
+                    Text("Today")
+                        .setTypo(.label2)
+                        .foregroundStyle(Color.getColor(.text_assistive))
+                    Spacer()
+                }
+                .padding(.horizontal, 16)
             }
-            .padding(.horizontal, 16)
             
             VStack(spacing: 8) {
                 ForEach(viewModel.state.todoList, id: \.id) {
@@ -98,7 +99,7 @@ private extension TodoView {
             
             if !viewModel.state.isExpendedNewTodo {
                 Button {
-                    
+                    viewModel.reduce(.didTapStorage)
                 } label: {
                     Image(systemName: "archivebox.fill")
                         .padding()
