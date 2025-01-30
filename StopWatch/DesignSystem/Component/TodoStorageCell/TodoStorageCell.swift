@@ -1,15 +1,16 @@
 //
-//  TodoCell.swift
+//  TodoStorageCell.swift
 //  StopWatch
 //
-//  Created by iOS신상우 on 11/24/24.
+//  Created by iOS신상우 on 1/30/25.
 //
 
 import SwiftUI
 
-struct TodoCell: View {
+struct TodoStorageCell: View {
     let todo: Todo
-    var state: CheckImage
+    var isEditMode: Bool = false
+    var isSelected: Bool = false
     
     var body: some View {
         HStack(spacing: .zero) {
@@ -22,7 +23,9 @@ struct TodoCell: View {
             }
             
             Spacer()
-//            CircleProgressView(value: 0.4, size: .xs)
+            if isEditMode {
+                Image(isSelected ? .checkFillOn : .checkFillOff)
+            }
         }
         .foregroundStyle(Color.getColor(.text_normal))
         .frame(maxWidth: .infinity)

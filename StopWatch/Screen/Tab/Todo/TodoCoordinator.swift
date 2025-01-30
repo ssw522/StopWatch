@@ -19,11 +19,17 @@ final class TodoCoordinator: CoordinatorType {
     }
     
     func setFlow(_ flow: Flow) {
-
+        switch flow {
+        case .storage:
+            let viewModel = TodoStorageViewModel(coordinator: self, state: .init())
+            let view = TodoStorageView(viewModel: viewModel).viewController
+            
+            push(view)
+        }
     }
     
     enum Flow {
-
+        case storage
     }
     
     func setParentFlow(_ flow: any ParentFlow) {

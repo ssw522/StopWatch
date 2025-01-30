@@ -16,7 +16,7 @@ extension AppDelegate {
             let realm = try Realm(configuration: .defaultConfiguration)
             DependencyBox.live
                 .register((any CategoryRepository).self) {
-                    CategoryRepositoryImpl()
+                    CategoryRepositoryImpl(realm: realm)
                 }
                 .register((any TodoRepository).self) {
                     TodoRepositoryImpl(realm: realm)

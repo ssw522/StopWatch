@@ -52,10 +52,10 @@ struct NewTodoView: View {
             if isPresentedCalendar {
                 let bindingDate = Binding($selectedDate, default: Date())
                 SystemCalendarModalView(date: bindingDate, isPresented: $isPresentedCalendar)
-                    .transition(.opacity)
                     .offset(y: -100)
             }
         }
+        .animation(.easeInOut, value: isPresentedCalendar)
     }
 }
 

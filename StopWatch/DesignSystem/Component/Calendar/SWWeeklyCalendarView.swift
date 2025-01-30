@@ -99,8 +99,10 @@ struct SWWeeklyCalendarView: View {
                 let bindingDate = Binding($displayDate, default: .now)
                 SystemCalendarModalView(date: bindingDate, isPresented: $isPresentedModalCalendar)
                     .offset(y: 100)
+                    
             }
         }
+        .animation(.easeInOut, value: isPresentedModalCalendar)
     }
     
     /// 월 변경
