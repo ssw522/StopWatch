@@ -49,7 +49,17 @@ final class TodoEditorBottomSheetViewModel: ViewModelable {
         switch action {
             
         case .didTapDelete:
-            break
+            do {
+                let content = todo.content
+                try todoRepo.delete(entity: todo)
+                coordinator.showToast("'\(content)'가 삭제되었습니다.")
+                coordinator.dismiss()
+                updateTodoListHandler?()
+                
+            } catch {
+                coordinator.showToast("삭제 실패")
+            }
+            
         case .didTapUpdateCategory:
             break
         
