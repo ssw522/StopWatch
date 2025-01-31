@@ -129,7 +129,7 @@ private extension NewTodoView {
     var addButton: some View {
         Button {
             guard selectedCategory != nil else { return }
-            let newTodo = Todo(date: selectedDate, content: text, stateIndex: 0, category: selectedCategory)
+            let newTodo = Todo(date: selectedDate, content: text, category: selectedCategory)
             didTapAdd(newTodo)
             resetData()
         } label: {

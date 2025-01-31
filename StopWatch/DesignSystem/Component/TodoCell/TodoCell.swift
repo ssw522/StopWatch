@@ -9,7 +9,6 @@ import SwiftUI
 
 struct TodoCell: View {
     let todo: Todo
-    var state: CheckImage
     
     var body: some View {
         HStack(spacing: .zero) {
@@ -22,7 +21,7 @@ struct TodoCell: View {
             }
             
             Spacer()
-            CircleProgressView(value: 0.4, size: .xs)
+            CircleProgressView(value: todo.progress, size: .xs)
         }
         .foregroundStyle(Color.getColor(.text_normal))
         .frame(maxWidth: .infinity)

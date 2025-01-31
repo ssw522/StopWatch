@@ -11,6 +11,7 @@ final class TodoEditorBottomSheetViewModel: ViewModelable {
     let coordinator: any CoordinatorType
     
     let todo: Todo
+    let categoryList: [Category]
     let updateTodoListHandler: (()->Void)?
     
     private let dependency: DependencyBox
@@ -21,28 +22,31 @@ final class TodoEditorBottomSheetViewModel: ViewModelable {
         coordinator: any CoordinatorType,
         dependency: DependencyBox = .live,
         todo: Todo,
-        state: State = .init(),
+        categoryList: [Category],
         updateTodoListHandler: (()->Void)?
     ) {
         self.coordinator = coordinator
         self.dependency = dependency
         self.todo = todo
-        self.state = state
+        self.categoryList = categoryList
+        self.state = .init(progress: todo.progress)
         self.updateTodoListHandler = updateTodoListHandler
     }
     
     struct State {
-        var progress: CGFloat = 0
+        var progress: CGFloat = .zero
         var isPresentedCalendarModal: Bool = false
     }
     
     enum Action {
         case didTapDelete
-        case didTapUpdateCategory
+        case didTapUpdateCategory(Category)
         case didTapUpdateDate
         case didTapNotificationSetting
         case changeProgress(CGFloat)
+        case updateProgress(CGFloat)
         case updateDate(Date)
+        case archive
     }
     
     func reduce(_ action: Action) {
@@ -60,8 +64,19 @@ final class TodoEditorBottomSheetViewModel: ViewModelable {
                 coordinator.showToast("삭제 실패")
             }
             
-        case .didTapUpdateCategory:
-            break
+        case .didTapUpdateCategory(let category):
+            do {
+                try todoRepo.update(
+                    entity: todo,
+                    keypaths: [(\.category, category )]
+                )
+                
+                coordinator.showToast("'\(todo.content)'가 \(category.name)으로 변경되었습니다.")
+                coordinator.dismiss()
+                updateTodoListHandler?()
+            } catch {
+                coordinator.showToast("업데이트 실패")
+            }
         
         case .didTapUpdateDate:
             state.isPresentedCalendarModal = true
@@ -84,6 +99,32 @@ final class TodoEditorBottomSheetViewModel: ViewModelable {
                 updateTodoListHandler?()
             } catch {
                 coordinator.showToast("업데이트 실패")
+            }
+            
+        case .updateProgress(let progress):
+            do {
+                try todoRepo.update(
+                    entity: todo,
+                    keypaths: [(\.progress, progress )]
+                )
+                let percent = "\(Int(progress*100))%"
+                coordinator.showToast("진행도가 \(percent)로 변경되었습니다.")
+                updateTodoListHandler?()
+            } catch {
+                coordinator.showToast("업데이트 실패")
+            }
+            
+        case .archive:
+            do {
+                try todoRepo.update(
+                    entity: todo,
+                    keypaths: [(\.date, .none )]
+                )
+                coordinator.showToast("'\(todo.content)'가 보관함에 보관되었습니다.")
+                coordinator.dismiss()
+                updateTodoListHandler?()
+            } catch {
+                coordinator.showToast("보관 실패")
             }
         }
     }

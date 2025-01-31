@@ -78,7 +78,7 @@ private extension TodoView {
                     Button {
                         viewModel.reduce(.didTapTodo(todo))
                     } label: {
-                        TodoCell(todo: todo, state: .circle)
+                        TodoCell(todo: todo)
                     }
                 }
             } 

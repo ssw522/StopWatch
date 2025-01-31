@@ -111,7 +111,7 @@ class TodoViewModel: ViewModelable {
             coordinator.setFlow(.storage)
             
         case .didTapTodo(let todo):
-            let viewModel = TodoEditorBottomSheetViewModel(coordinator: self.coordinator, todo: todo) { [weak self] in
+            let viewModel = TodoEditorBottomSheetViewModel(coordinator: self.coordinator, todo: todo, categoryList: state.categoryList) { [weak self] in
                 self?.state.todoList.removeAll()
                 self?.reduce(.fetchDate)
             }

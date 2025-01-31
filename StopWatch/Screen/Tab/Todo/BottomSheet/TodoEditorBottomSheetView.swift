@@ -57,11 +57,16 @@ struct TodoEditorBottomSheetView: View {
                 .background(Color.getColor(.background_primary))
                 .foregroundStyle(Color.getColor(.gray_text))
                 .clipShape(.rect(cornerRadius: 12))
-                
             }
             
-            Button {
-                viewModel.reduce(.didTapUpdateCategory)
+            Menu {
+                ForEach(viewModel.categoryList, id: \.id) { category in
+                    Button {
+                        viewModel.reduce(.didTapUpdateCategory(category))
+                    } label: {
+                        Text(category.name)
+                    }
+                }
             } label: {
                 VStack(spacing: 8) {
                     Image(systemName: "folder.badge.gearshape")
@@ -83,6 +88,10 @@ struct TodoEditorBottomSheetView: View {
         VStack(spacing: 12) {
             menuItem(image: Image(systemName: "bell"), title: "알림 설정") {
                 viewModel.reduce(.didTapNotificationSetting)
+            }
+            
+            menuItem(image: Image(systemName: "archivebox"), title: "보관하기") {
+                viewModel.reduce(.archive)
             }
             
             menuItem(image: Image(systemName: "trash"), title: "삭제", isDeleteCell: true) {
@@ -108,11 +117,14 @@ struct TodoEditorBottomSheetView: View {
                         get: { viewModel.state.progress },
                         set: { viewModel.reduce(.changeProgress($0))})
                 ) { isEditing in
-                    print(isEditing)
+                    if !isEditing {
+                        viewModel.reduce(.updateProgress(viewModel.state.progress))
+                    }
                 }
                 .setTypo(.body2)
                 .foregroundStyle(Color.getColor(.gray_text))
                 .tint(Color.getColor(.gray_text))
+                
                 Text("\(Int(viewModel.state.progress*100))%")
                     .hSpacing(alignment: .center)
                     .foregroundStyle(Color.getColor(.gray_text))
@@ -146,7 +158,7 @@ struct TodoEditorBottomSheetView: View {
 #Preview {
     TodoEditorBottomSheetView(
         viewModel: .init(
-            coordinator: AppCoordinator.shared, todo: .mockData1, updateTodoListHandler: .none
+            coordinator: AppCoordinator.shared, todo: .mockData1, categoryList: [], updateTodoListHandler: .none
         )
     )
 }
