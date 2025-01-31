@@ -22,7 +22,7 @@ struct TodoCell: View {
             }
             
             Spacer()
-//            CircleProgressView(value: 0.4, size: .xs)
+            CircleProgressView(value: 0.4, size: .xs)
         }
         .foregroundStyle(Color.getColor(.text_normal))
         .frame(maxWidth: .infinity)

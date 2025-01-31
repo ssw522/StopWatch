@@ -41,6 +41,7 @@ class TodoViewModel: ViewModelable {
         case createCategory(name: String)
         case editCategoryName(String)
         case didTapStorage
+        case didTapTodo(Todo)
     }
     
     func reduce(_ action: Action) {
@@ -108,6 +109,15 @@ class TodoViewModel: ViewModelable {
             
         case .didTapStorage:
             coordinator.setFlow(.storage)
+            
+        case .didTapTodo(let todo):
+            let viewModel = TodoEditorBottomSheetViewModel(coordinator: self.coordinator, todo: todo) { [weak self] in
+                self?.state.todoList.removeAll()
+                self?.reduce(.fetchDate)
+            }
+            let view = TodoEditorBottomSheetView(viewModel: viewModel).panModal(height: .none)
+            
+            coordinator.presentPanModals(view)
         }
     }
 }

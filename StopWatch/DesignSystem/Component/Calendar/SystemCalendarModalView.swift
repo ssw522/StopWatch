@@ -8,10 +8,20 @@
 import SwiftUI
 
 struct SystemCalendarModalView: View {
-    @Binding var date: Date
+    @State var selectedDate: Date
     @Binding var isPresented: Bool
     
-    @State var hideTime: Bool = true
+    var action: ((Date)->Void)?
+    
+    init(
+        selectedDate: Date = .now,
+        isPresented: Binding<Bool>,
+        action: ((Date) -> Void)? = nil
+    ) {
+        self.selectedDate = selectedDate
+        self._isPresented = isPresented
+        self.action = action
+    }
     
     var body: some View {
         VStack(spacing: .zero) {
@@ -28,7 +38,13 @@ struct SystemCalendarModalView: View {
                 }
             }
             
-            DatePicker.init("", selection: $date, displayedComponents: [.date])
+            DatePicker.init("",
+                selection: Binding(
+                    get: { selectedDate },
+                    set: { didTappedDay(with: $0) }
+                ),
+                displayedComponents: [.date]
+            )
                 .datePickerStyle(.graphical)
                 .labelsHidden()
                 .tint(Color.getColor(.gray_text))
@@ -38,9 +54,15 @@ struct SystemCalendarModalView: View {
         .clipShape(.rect(cornerRadius: 16))
         .padding(.horizontal, 38)
     }
+    
+    func didTappedDay(with date: Date) {
+        selectedDate = date
+        action?(selectedDate)
+        isPresented = false
+    }
 }
 
 #Preview {
-    SystemCalendarModalView(date: .constant(.now), isPresented: .constant(true))
+    SystemCalendarModalView(isPresented: .constant(true))
 }
 

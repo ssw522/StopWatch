@@ -19,9 +19,9 @@ extension CoordinatorType {
         navigationController.present(viewcontroller, animated: animated)
     }
     
-//    func presentPanModals(_ viewController: PanModalPresentable.LayoutType) {
-//        navigationController.presentPanModal(viewController)
-//    }
+    func presentPanModals(_ viewController: PanModalPresentable.LayoutType) {
+        navigationController.presentPanModal(viewController)
+    }
     
     func dismiss(animated: Bool = true, completion: (()->Void)? = .none) {
         navigationController.dismiss(animated: animated) { completion?() }

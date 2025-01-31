@@ -74,8 +74,12 @@ private extension TodoView {
             }
             
             VStack(spacing: 8) {
-                ForEach(viewModel.state.todoList, id: \.id) {
-                    TodoCell(todo: $0, state: .circle)
+                ForEach(viewModel.state.todoList, id: \.id) { todo in
+                    Button {
+                        viewModel.reduce(.didTapTodo(todo))
+                    } label: {
+                        TodoCell(todo: todo, state: .circle)
+                    }
                 }
             } 
             .padding(.horizontal, 12)

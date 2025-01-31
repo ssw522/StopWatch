@@ -28,7 +28,6 @@ class TodoStorageViewModel: ViewModelable {
         var todoList: [Todo] = []
         var selectedList: [Todo] = []
         var isPresentedModalCalendar: Bool = false
-        var changeDate: Date = .now
     }
     
     enum Action {
@@ -95,7 +94,6 @@ class TodoStorageViewModel: ViewModelable {
                 state.todoList.removeAll { state.selectedList.contains($0) }
                 reduce(.changeEditMode)
                 state.isPresentedModalCalendar = false
-                state.changeDate = .now
                 
                 coordinator.showToast("\(date.formattedString(by: .yyyyMMdd))날짜에 추가되었어요!")
             } catch {

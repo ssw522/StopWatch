@@ -50,9 +50,13 @@ struct NewTodoView: View {
         .clipped()
         .overlay {
             if isPresentedCalendar {
-                let bindingDate = Binding($selectedDate, default: Date())
-                SystemCalendarModalView(date: bindingDate, isPresented: $isPresentedCalendar)
-                    .offset(y: -100)
+                SystemCalendarModalView(
+                    selectedDate: selectedDate ?? .now,
+                    isPresented: $isPresentedCalendar
+                ) {
+                    selectedDate = $0
+                }
+                .offset(y: -100)
             }
         }
         .animation(.easeInOut, value: isPresentedCalendar)

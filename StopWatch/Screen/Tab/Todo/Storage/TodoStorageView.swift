@@ -37,13 +37,11 @@ struct TodoStorageView: View {
             .overlay {
                 if viewModel.state.isPresentedModalCalendar {
                     SystemCalendarModalView(
-                        date: $viewModel.state.changeDate,
                         isPresented: $viewModel.state.isPresentedModalCalendar
-                    )
+                    ) {
+                        viewModel.reduce(.changeDate($0))
+                    }
                 }
-            }
-            .onChange(of: viewModel.state.changeDate) { oldValue, newValue in
-                viewModel.reduce(.changeDate(newValue))
             }
             
         } bottomButton: {
