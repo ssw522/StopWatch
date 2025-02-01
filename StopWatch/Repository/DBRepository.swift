@@ -10,7 +10,7 @@ import RealmSwift
 
 protocol DBRepository {
     associatedtype Entity = Object
-    
+
     func getAll() throws -> [Entity]
     
     func create(entity: Entity) throws
@@ -24,4 +24,22 @@ protocol DBRepository {
     func delete(entity: Entity) throws
     
     func delete(entities: [Entity]) throws
+}
+
+enum ComparisonOperator {
+    case greaterThan
+    case greaterThanOrEqual
+    case lessThan
+    case lessThanOrEqual
+    case equal
+
+    func apply<T: Comparable>(_ lhs: T, _ rhs: T) -> Bool {
+        switch self {
+        case .greaterThan: return lhs > rhs
+        case .greaterThanOrEqual: return lhs >= rhs
+        case .lessThan: return lhs < rhs
+        case .lessThanOrEqual: return lhs <= rhs
+        case .equal: return lhs == rhs
+        }
+    }
 }

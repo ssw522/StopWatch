@@ -81,17 +81,16 @@ class TodoViewModel: ViewModelable {
                     message: .none,
                     inputMessage: Binding(
                         get: { self.state.categoryName },
-                        set: { self.reduce(.editCategoryName($0)) }
+                        set: { self.state.categoryName = $0 }
                     )
                 )
                 .addAction(title: "취소", style: .cancel, action: { [weak self] in
                     self?.state.categoryName = ""
-                    self?.coordinator.dismiss()
+                    self?.coordinator.dismiss(animated: false)
                 })
                 .addAction(title: "추가", style: .primary, action: { [weak self] in
-                    self?.coordinator.dismiss()
+                    self?.coordinator.dismiss(animated: false)
                     self?.reduce(.createCategory(name: self?.state.categoryName ?? ""))
-                    
                 })
             )
             

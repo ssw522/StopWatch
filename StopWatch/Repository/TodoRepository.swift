@@ -17,6 +17,7 @@ final class TodoRepositoryImpl: TodoRepository {
     private let realm: Realm
     
     init(realm: Realm) {
+        
         self.realm = realm
     }
     

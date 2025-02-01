@@ -17,15 +17,6 @@ struct CategoryListView: View {
                     viewModel.reduce(.pop)
                 }), centerTitle: "카테고리 목록"
             )
-            .suffix {
-                Button {
-                    
-                } label: {
-                    Image(systemName: "pencil")
-                        .foregroundStyle(Color.getColor(.text_normal))
-                }
-                FixedSpacer(24)
-            }
         } content: {
             if viewModel.state.categories.isNotEmpty {
                 listView
@@ -55,8 +46,12 @@ struct CategoryListView: View {
         ScrollView {
             VStack(spacing: 12) {
                 FixedSpacer(12)
-                ForEach(viewModel.state.categories, id: \.id) {
-                    categoryCell(with: $0)
+                ForEach(viewModel.state.categories, id: \.id) { category in
+                    Button {
+                        viewModel.reduce(.didTapCategory(category: category))
+                    } label: {
+                        categoryCell(with: category)
+                    }
                 }
             }
         }
@@ -83,6 +78,7 @@ struct CategoryListView: View {
         }
         .setTypo(.label1)
         .padding()
+        .foregroundStyle(Color.getColor(.gray_text))
         .background(Color.getColor(.background_primary))
         .clipShape(.rect(cornerRadius: 12))
     }

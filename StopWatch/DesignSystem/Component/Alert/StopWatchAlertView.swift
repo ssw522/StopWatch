@@ -5,17 +5,25 @@
 //  Created by iOS신상우 on 1/24/25.
 //
 
-import Foundation
-
-
 import SwiftUI
 
 struct StopWatchAlertView: View {
     @State private var animation: Bool = false
+    
     let title: String
     let message: String?
     var actions: [StopWatchActionView] = []
     var inputMessage: Binding<String>?
+    
+    init(
+        title: String,
+        message: String?,
+        inputMessage: Binding<String>? = nil
+    ) {
+        self.title = title
+        self.message = message
+        self.inputMessage = inputMessage
+    }
     
     var body: some View {
         ZStack {
@@ -37,10 +45,10 @@ struct StopWatchAlertView: View {
                     if let inputMessage {
                         FixedSpacer(8)
                         TextField("", text: inputMessage)
-                            .padding(.horizontal)
-                            .padding(.vertical, 8)
-                            .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.getColor(.line_assistive), lineWidth: 1))
-                            .setTypo(.label1)
+                        .padding(.horizontal)
+                        .padding(.vertical, 8)
+                        .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.getColor(.line_assistive), lineWidth: 1))
+                        .setTypo(.label1)
                     }
                     FixedSpacer(20)
                     HStack(spacing: 8) {
@@ -78,8 +86,30 @@ extension StopWatchAlertView {
         style: StopWatchActionView.ActionStyle,
         action: (()->Void)?
     ) -> StopWatchAlertView {
+        
         var new = self
-        let newAction = StopWatchActionView(title: title, style: style, action: action)
+        let newAction = StopWatchActionView(
+            title: title,
+            style: style,
+            action: action
+        )
+
+        new.actions.append(newAction)
+        return new
+    }
+    
+    func addTextFieldAction(
+        title: String,
+        style: StopWatchActionView.ActionStyle,
+        action: (()->Void)?
+    ) -> StopWatchAlertView {
+        var new = self
+        let newAction = StopWatchActionView(
+            title: title,
+            style: style,
+            action: action
+        )
+        
         new.actions.append(newAction)
         return new
     }
@@ -138,8 +168,7 @@ extension StopWatchActionView.ActionStyle {
 #Preview {
     StopWatchAlertView(
         title: "모달 제목",
-        message: "일이삼사오육칠팔구십일이삼",
-        inputMessage: .constant("123")
+        message: "일이삼사오육칠팔구십일이삼"
     )
     .addAction(
         title: "취소",
