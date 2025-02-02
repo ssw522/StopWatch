@@ -36,15 +36,15 @@ final class TabViewModel: ViewModelable {
         self.coordinator.childCoordinators.append(coordinator)
         return .init(coordinator: coordinator, state: .init())
     }()
-//    
-//    lazy var policyViewModel: PolicyViewModel = {
-//        let coordinator = PolicyCoordinator(
-//            navigationController: coordinator.navigationController,
-//            parentCoordinator: self.coordinator
-//        )
-//        self.coordinator.childCoordinators.append(coordinator)
-//        return .init(coordinator: coordinator)
-//    }()
+  
+    lazy var stopWatchViewModel: StopWatchMainViewModel = {
+        let coordinator = StopWatchCoordinator(
+            navigationController: coordinator.navigationController,
+            parentCoordinator: self.coordinator
+        )
+        self.coordinator.childCoordinators.append(coordinator)
+        return .init(coordinator: coordinator, state: .init())
+    }()
 //
 //    lazy var feedViewModel: FeedViewModel = {
 //        let coordinator = FeedCoordinator(

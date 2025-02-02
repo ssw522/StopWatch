@@ -37,6 +37,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         injectDependency()
         
+        
         self.setFirstDB() // 아무 과목도 없을시  기타 과목 추가
         
         let ud = UserDefaults.standard

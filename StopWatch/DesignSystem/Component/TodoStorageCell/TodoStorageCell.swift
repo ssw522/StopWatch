@@ -15,9 +15,12 @@ struct TodoStorageCell: View {
     var body: some View {
         HStack(spacing: .zero) {
             VStack(alignment: .leading, spacing: 2) {
-                Text(todo.category?.name ?? "")
-                    .setTypo(.caption1)
-                    .foregroundStyle(Color.getColor(.text_alternative))
+                if let category = todo.category {
+                    Text(category.name)
+                        .setTypo(.caption1)
+                        .foregroundStyle(Color.getColor(.text_alternative))
+                }
+                
                 Text(todo.content)
                     .setTypo(.label1)
             }

@@ -21,6 +21,14 @@ extension AppDelegate {
                 .register((any TodoRepository).self) {
                     TodoRepositoryImpl(realm: realm)
                 }
+                .register((any TimeCheckReopsitory).self) {
+                    TimeCheckReopsitoryImpl(realm: realm)
+                }
+//            let timeCheckRepo = TimeCheckReopsitoryImpl(realm: realm)
+//            
+//            
+//            let allEntity = try? timeCheckRepo.getAll()
+//            try? timeCheckRepo.delete(entities: allEntity ?? [])
         } catch {
             print("😅😅😅😅\(error)😅😅😅😅")
         }

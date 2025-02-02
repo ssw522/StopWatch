@@ -25,8 +25,7 @@ struct MainTabView: View {
                         TodoView(viewModel: viewModel.todoViewModel)
                         
                     case .stopWatch:
-                        let viewModel = StopWatchMainViewModel(coordinator: MainTabCoordinator(), state: .init())
-                        StopWatchMainView(viewModel: viewModel)
+                        StopWatchMainView(viewModel: viewModel.stopWatchViewModel)
                         
                     case .chart:
                         let viewModel = StatisticMainViewModel(coordinator: MainTabCoordinator(), state: .init())
