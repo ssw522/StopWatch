@@ -33,6 +33,9 @@ struct TodoView: View {
                     FixedSpacer(12)
                 }
             }
+            .onTapGesture {
+                viewModel.state.isExpendedNewTodo = false
+            }
         }
         .onAppear {
             viewModel.reduce(.fetchDate)
@@ -79,6 +82,16 @@ private extension TodoView {
                         viewModel.reduce(.didTapTodo(todo))
                     } label: {
                         TodoCell(todo: todo)
+                            .gesture(
+                                DragGesture()
+                                    .onChanged { drag in
+                                        if drag.translation.width > 100 {
+                                            viewModel.reduce(.rightDrag(todo))
+                                        } else if drag.translation.width < -100 {
+                                            viewModel.reduce(.leftDrag(todo))
+                                        }
+                                    }
+                            )
                     }
                 }
             } 

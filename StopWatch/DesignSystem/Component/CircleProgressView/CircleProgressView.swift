@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct CircleProgressView: View {
-    @State var value: CGFloat = 0.0
-    @State var size: CircleProgressSize = .s
+    var value: CGFloat = 0.0
+    var size: CircleProgressSize = .s
     
     var body: some View {
         ZStack {
@@ -99,7 +99,7 @@ enum CircleProgressSize {
 struct NumValue: View {
     var displayedValue: CGFloat
     var color: Color
-    @State var style: CircleProgressSize
+    var style: CircleProgressSize
     
     var body: some View {
         Text("\(Int(displayedValue*100))%")

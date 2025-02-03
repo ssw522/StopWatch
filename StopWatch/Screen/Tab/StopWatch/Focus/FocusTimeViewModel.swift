@@ -68,6 +68,8 @@ final class FocusTimeViewModel: ViewModelable {
                         breakTime: state.breakTime,
                         todo: selectedTodo)
                 )
+            } else {
+                coordinator.showToast("1개 이상의 Todo를 선택해주세요.")
             }
         }
     }

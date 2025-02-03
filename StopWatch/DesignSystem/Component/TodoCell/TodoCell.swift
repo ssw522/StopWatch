@@ -21,6 +21,17 @@ struct TodoCell: View {
                 
                 Text(todo.content)
                     .setTypo(.label1)
+                    .overlay {
+                        GeometryReader { reader in
+                            Rectangle()
+                                .fill(Color.getColor(.gray_text))
+                                .offset(y: reader.size.height/2)
+                                .frame(
+                                    width: todo.progress == 1 ? reader.size.width : 0,
+                                    height: 1
+                                )
+                        }
+                    }
             }
             
             Spacer()
@@ -33,5 +44,6 @@ struct TodoCell: View {
         .padding(.top, 8)
         .background(Color.getColor(.background_primary))
         .clipShape(.rect(cornerRadius: 12))
+        .animation(.easeInOut(duration: 2.0), value: todo.progress)
     }
 }

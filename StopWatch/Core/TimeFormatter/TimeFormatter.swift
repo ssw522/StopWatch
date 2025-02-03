@@ -23,7 +23,6 @@ struct TimeFormatter {
         } else {
             return String(format: format.rawValue, hours.toInt, minutes.toInt, seconds.toInt)
         }
-        
     }
     
     enum TimeFormat: String {

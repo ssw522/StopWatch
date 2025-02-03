@@ -20,6 +20,7 @@ struct TimeHistoryCell: View {
             FixedSpacer(12)
             Text(todo)
                 .setTypo(.label2)
+                .lineLimit(1)
                 .foregroundStyle(Color.getColor(.text_alternative))
             Spacer()
             Text(todoTime)

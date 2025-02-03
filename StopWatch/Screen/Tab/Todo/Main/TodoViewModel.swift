@@ -42,6 +42,9 @@ class TodoViewModel: ViewModelable {
         case editCategoryName(String)
         case didTapStorage
         case didTapTodo(Todo)
+        
+        case rightDrag(Todo)
+        case leftDrag(Todo)
     }
     
     func reduce(_ action: Action) {
@@ -58,6 +61,7 @@ class TodoViewModel: ViewModelable {
             self.state.currentDate = newDate ?? .now
             let todoList = try? todoRepo.getAll()
                 .filter { $0.date?.formattedString(by: .yyyyMMdd) == newDate?.formattedString(by: .yyyyMMdd) }
+            state.isExpendedNewTodo = false
             state.todoList = todoList ?? []
             
         case .addTodo(let newTodo):
@@ -107,19 +111,52 @@ class TodoViewModel: ViewModelable {
             state.categoryName = name
             
         case .didTapStorage:
+            state.isExpendedNewTodo = false
             coordinator.setFlow(.storage)
             
         case .didTapTodo(let todo):
+            state.isExpendedNewTodo = false
             let viewModel = TodoEditorBottomSheetViewModel(coordinator: self.coordinator, todo: todo, categoryList: state.categoryList) { [weak self] in
                 self?.state.todoList.removeAll()
                 self?.reduce(.fetchDate)
+                
             }
             let view = TodoEditorBottomSheetView(viewModel: viewModel).panModal(height: .none)
             
             coordinator.presentPanModals(view)
+            
+        case .rightDrag(let todo):
+            if todo.progress < 1.0 {
+                updateProgress(with: todo, to: 1)
+            }
+            
+        case .leftDrag(let todo):
+            if todo.progress > 0.0 {
+                updateProgress(with: todo, to: 0)
+            }
         }
     }
 }
+
+// MARK: - private Method
+private extension TodoViewModel {
+    func updateProgress(with todo: Todo, to progress: CGFloat) {
+        do {
+            try todoRepo.update(
+                entity: todo,
+                keypaths: [(\.progress, progress )]
+            )
+            let percent = "\(Int(progress*100))%"
+            coordinator.showToast("진행도가 \(percent)로 변경되었습니다.")
+            self.state.todoList.removeAll()
+            self.reduce(.fetchDate)
+
+        } catch {
+            coordinator.showToast("업데이트 실패")
+        }
+    }
+}
+
 
 // MARK: - UseCase DI
 private extension TodoViewModel {
