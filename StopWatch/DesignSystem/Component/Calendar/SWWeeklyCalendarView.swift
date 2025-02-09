@@ -90,13 +90,9 @@ struct SWWeeklyCalendarView: View {
             if isPresentedModalCalendar {
                 SystemCalendarModalView(selectedDate: currentDate, isPresented: $isPresentedModalCalendar) { date in
                     displayDate = date
-                    if isPresentedModalCalendar {
-                        let days = calendarService.numberOfDays(in: date)
-                        self.dates = (-7..<days+7).map { calendarService.getDate(for: $0, date: date) }
-                    }
-                }
-                    .offset(y: 100)
-                    
+                    let days = calendarService.numberOfDays(in: date)
+                    self.dates = (-7..<days+7).map { calendarService.getDate(for: $0, date: date) }
+                }.offset(y: 100)
             }
         }
         .animation(.easeInOut, value: isPresentedModalCalendar)

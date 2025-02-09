@@ -26,19 +26,6 @@ struct TodoEditorBottomSheetView: View {
                 FixedSpacer(12)
             }
         }
-        .overlay(alignment: .top) {
-            if viewModel.state.isPresentedCalendarModal {
-                SystemCalendarModalView(
-                    selectedDate: viewModel.todo.date ?? .now,
-                    isPresented: $viewModel.state.isPresentedCalendarModal
-                ) {
-                    viewModel.reduce(.updateDate($0))
-                }
-                .scaleEffect(0.7)
-                .shadow(radius: 20)
-            }
-        }
-        .animation(.spring, value: viewModel.state.isPresentedCalendarModal)
     }
     
     // MARK: - UpdateCardView
@@ -132,10 +119,7 @@ struct TodoEditorBottomSheetView: View {
                     .fixedSize()
             }
             .padding(.horizontal, 28)
-            
         }
-        
-        
     }
     
     func menuItem(image: Image, title: String, isDeleteCell: Bool = false, action: (()->Void)?) -> some View {
@@ -158,7 +142,7 @@ struct TodoEditorBottomSheetView: View {
 #Preview {
     TodoEditorBottomSheetView(
         viewModel: .init(
-            coordinator: AppCoordinator.shared, todo: .mockData1, categoryList: [], updateTodoListHandler: .none
+            coordinator: AppCoordinator.shared, todo: .mockData1, categoryList: [], delegate: .none, updateTodoListHandler: .none
         )
     )
 }

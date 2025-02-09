@@ -40,6 +40,23 @@ struct TodoView: View {
         .onAppear {
             viewModel.reduce(.fetchDate)
         }
+        .overlay {
+            if viewModel.state.isPresentedModalCalendar {
+                ZStack {
+                    Color.getColor(.dim)
+                        .ignoresSafeArea()
+                        .onTapGesture {
+                            viewModel.state.isPresentedModalCalendar = false
+                        }
+                    SystemCalendarModalView(
+                        selectedDate: viewModel.state.currentDate,
+                        isPresented: $viewModel.state.isPresentedModalCalendar) { date in
+                            viewModel.reduce(.updateTodoDate(date))
+                        }
+                }
+            }
+        }
+        .animation(.easeInOut, value: viewModel.state.isPresentedModalCalendar)
     }
 }
 
@@ -85,9 +102,9 @@ private extension TodoView {
                             .gesture(
                                 DragGesture()
                                     .onChanged { drag in
-                                        if drag.translation.width > 100 {
+                                        if drag.translation.width > 80 {
                                             viewModel.reduce(.rightDrag(todo))
-                                        } else if drag.translation.width < -100 {
+                                        } else if drag.translation.width < -80 {
                                             viewModel.reduce(.leftDrag(todo))
                                         }
                                     }
@@ -103,9 +120,6 @@ private extension TodoView {
         HStack(spacing: .zero) {
             NewTodoView(
                 isTyping: _isTyping,
-                text: Binding(
-                    get: { viewModel.state.newContent },
-                    set: { viewModel.reduce(.editNewTodoContent($0)) }),
                 show: $viewModel.state.isExpendedNewTodo,
                 categoryList: viewModel.state.categoryList
             ) { todo in

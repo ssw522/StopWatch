@@ -25,8 +25,9 @@ class TodoViewModel: ViewModelable {
     
     struct State {
         var isExpendedNewTodo: Bool = false
+        var isPresentedModalCalendar: Bool = false
+        var selectedTodo: Todo?
         var currentDate: Date = .now
-        var newContent: String = ""
         var todoList: [Todo] = []
         var categoryList: [Category] = []
         var categoryName: String = ""
@@ -34,14 +35,17 @@ class TodoViewModel: ViewModelable {
     
     enum Action {
         case fetchDate
-        case editNewTodoContent(String)
         case changeDate(Date?)
-        case addTodo(Todo)
+        
         case didTapCreateCategory
         case createCategory(name: String)
         case editCategoryName(String)
+        
         case didTapStorage
+        
         case didTapTodo(Todo)
+        case addTodo(Todo)
+        case updateTodoDate(Date)
         
         case rightDrag(Todo)
         case leftDrag(Todo)
@@ -53,9 +57,6 @@ class TodoViewModel: ViewModelable {
             let categoryList = try? categoryRepo.getAll()
             state.categoryList = categoryList ?? []
             reduce(.changeDate(state.currentDate))
-            
-        case .editNewTodoContent(let newContent):
-            state.newContent = newContent
             
         case .changeDate(let newDate):
             self.state.currentDate = newDate ?? .now
@@ -116,11 +117,16 @@ class TodoViewModel: ViewModelable {
             
         case .didTapTodo(let todo):
             state.isExpendedNewTodo = false
-            let viewModel = TodoEditorBottomSheetViewModel(coordinator: self.coordinator, todo: todo, categoryList: state.categoryList) { [weak self] in
+            let viewModel = TodoEditorBottomSheetViewModel(
+                coordinator: self.coordinator,
+                todo: todo,
+                categoryList: state.categoryList,
+                delegate: self
+            ) { [weak self] in
                 self?.state.todoList.removeAll()
                 self?.reduce(.fetchDate)
-                
             }
+            
             let view = TodoEditorBottomSheetView(viewModel: viewModel).panModal(height: .none)
             
             coordinator.presentPanModals(view)
@@ -134,6 +140,25 @@ class TodoViewModel: ViewModelable {
             if todo.progress > 0.0 {
                 updateProgress(with: todo, to: 0)
             }
+            
+        case .updateTodoDate(let newDate):
+            do {
+                if let selectedTodo = state.selectedTodo {
+                    try todoRepo.update(
+                        entity: selectedTodo,
+                        keypaths: [(\.date, newDate)]
+                    )
+                    
+                    coordinator.showToast("'\(selectedTodo.content)'가 \(newDate.formattedString(by: .yyyyMMdd)) 날짜로 변경되었습니다.")
+                    
+                    reduce(.fetchDate)
+                }
+                
+            } catch {
+                coordinator.showToast("업데이트 실패")
+            }
+            
+            state.selectedTodo = .none
         }
     }
 }
@@ -142,12 +167,15 @@ class TodoViewModel: ViewModelable {
 private extension TodoViewModel {
     func updateProgress(with todo: Todo, to progress: CGFloat) {
         do {
+            let percent = "\(Int(progress*100))%"
+            
             try todoRepo.update(
                 entity: todo,
                 keypaths: [(\.progress, progress )]
             )
-            let percent = "\(Int(progress*100))%"
+            
             coordinator.showToast("진행도가 \(percent)로 변경되었습니다.")
+
             self.state.todoList.removeAll()
             self.reduce(.fetchDate)
 
@@ -163,4 +191,13 @@ private extension TodoViewModel {
     var todoRepo: any TodoRepository { dependency.resolve() }
     
     var categoryRepo: any CategoryRepository { dependency.resolve() }
+}
+
+// MARK: - EditBottomSheetDelegateMethod
+extension TodoViewModel: TodoEditorBottomSheetViewModelDelegate {
+    func didTapUpdateDate(with todo: Todo) {
+        coordinator.dismiss()
+        state.isPresentedModalCalendar = true
+        state.selectedTodo = todo
+    }
 }

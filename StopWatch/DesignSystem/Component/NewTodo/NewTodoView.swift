@@ -12,7 +12,7 @@ struct NewTodoView: View {
     @Namespace var animation
     @FocusState var isTyping: Bool
     
-    @Binding var text: String
+    @State var text: String = ""
     @Binding var show: Bool
     
     @State var selectedCategory: Category?
@@ -236,7 +236,6 @@ private extension NewTodoView {
 
 #Preview {
     NewTodoView(
-        text: .constant(""),
         show: .constant(true),
         categoryList: [
             .englishMock,

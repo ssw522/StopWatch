@@ -7,6 +7,10 @@
 
 import Foundation
 
+protocol TodoEditorBottomSheetViewModelDelegate: AnyObject {
+    func didTapUpdateDate(with todo: Todo)
+}
+
 final class TodoEditorBottomSheetViewModel: ViewModelable {
     let coordinator: any CoordinatorType
     
@@ -15,6 +19,7 @@ final class TodoEditorBottomSheetViewModel: ViewModelable {
     let updateTodoListHandler: (()->Void)?
     
     private let dependency: DependencyBox
+    weak var delegate: TodoEditorBottomSheetViewModelDelegate?
     
     @Published var state: State
     
@@ -23,6 +28,7 @@ final class TodoEditorBottomSheetViewModel: ViewModelable {
         dependency: DependencyBox = .live,
         todo: Todo,
         categoryList: [Category],
+        delegate: TodoEditorBottomSheetViewModelDelegate?,
         updateTodoListHandler: (()->Void)?
     ) {
         self.coordinator = coordinator
@@ -31,11 +37,11 @@ final class TodoEditorBottomSheetViewModel: ViewModelable {
         self.categoryList = categoryList
         self.state = .init(progress: todo.progress)
         self.updateTodoListHandler = updateTodoListHandler
+        self.delegate = delegate
     }
     
     struct State {
         var progress: CGFloat = .zero
-        var isPresentedCalendarModal: Bool = false
     }
     
     enum Action {
@@ -45,7 +51,6 @@ final class TodoEditorBottomSheetViewModel: ViewModelable {
         case didTapNotificationSetting
         case changeProgress(CGFloat)
         case updateProgress(CGFloat)
-        case updateDate(Date)
         case archive
     }
     
@@ -79,27 +84,13 @@ final class TodoEditorBottomSheetViewModel: ViewModelable {
             }
         
         case .didTapUpdateDate:
-            state.isPresentedCalendarModal = true
+            delegate?.didTapUpdateDate(with: todo)
             
         case .didTapNotificationSetting:
             coordinator.showToast("추후 지원 예정인 기능입니다.")
             
         case .changeProgress(let progress):
             state.progress = progress
-            
-        case .updateDate(let date):
-            do {
-                try todoRepo.update(
-                    entity: todo,
-                    keypaths: [(\.date, date )]
-                )
-                
-                coordinator.showToast("'\(todo.content)'가 \(date.formattedString(by: .yyyyMMdd)) 날짜로 변경되었습니다.")
-                coordinator.dismiss()
-                updateTodoListHandler?()
-            } catch {
-                coordinator.showToast("업데이트 실패")
-            }
             
         case .updateProgress(let progress):
             do {
