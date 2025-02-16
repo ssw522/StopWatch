@@ -142,6 +142,7 @@ class TodoViewModel: ViewModelable {
             }
             
         case .updateTodoDate(let newDate):
+            
             do {
                 if let selectedTodo = state.selectedTodo {
                     try todoRepo.update(
@@ -158,6 +159,7 @@ class TodoViewModel: ViewModelable {
                 coordinator.showToast("업데이트 실패")
             }
             
+            state.isPresentedModalCalendar = false
             state.selectedTodo = .none
         }
     }

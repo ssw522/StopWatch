@@ -44,7 +44,6 @@ struct NewTodoView: View {
                 addButton
             }
         }
-        .animation(.spring, value: show)
         .frame(height: show ? 280: 50)
         .padding(.horizontal, show ? 16: 16)
         .clipped()
@@ -60,6 +59,7 @@ struct NewTodoView: View {
             }
         }
         .animation(.easeInOut, value: isPresentedCalendar)
+        .animation(.spring, value: show)
     }
 }
 

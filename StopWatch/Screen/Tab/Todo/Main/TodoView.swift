@@ -26,15 +26,15 @@ struct TodoView: View {
                     }
                 }
             }
+            .onTapGesture {
+                viewModel.state.isExpendedNewTodo = false
+            }
             .scrollIndicators(.hidden)
             .overlay(alignment: .bottom) {
                 VStack(spacing: .zero) {
                     bottomButton
                     FixedSpacer(12)
                 }
-            }
-            .onTapGesture {
-                viewModel.state.isExpendedNewTodo = false
             }
         }
         .onAppear {
@@ -56,6 +56,7 @@ struct TodoView: View {
                 }
             }
         }
+        .animation(.smooth(duration: 0.25), value: viewModel.state.isExpendedNewTodo)
         .animation(.easeInOut, value: viewModel.state.isPresentedModalCalendar)
     }
 }

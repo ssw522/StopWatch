@@ -105,7 +105,11 @@ struct SWWeeklyCalendarView: View {
     
     private func daysBetween(start: Date, end: Date) -> Int {
         let calendar = Calendar.current
-        let components = calendar.dateComponents([.day], from: start, to: end)
+        let startOfDay = calendar.startOfDay(for: start)
+        let endOfDay = calendar.startOfDay(for: end)
+        
+        let components = calendar.dateComponents([.day], from: startOfDay, to: endOfDay)
+        
         return abs(components.day ?? 0)
     }
     
